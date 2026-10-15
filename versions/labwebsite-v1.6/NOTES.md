@@ -39,3 +39,6 @@ v1.6 is v1.5 with five views (Home · Research · People · News · Contact): a 
 
 ## 2026-10-15 revision: Contact simplified
 - Contact keeps only the phead (04 / Collaborate, h1, lede) and one `bg-light` section `#contact-email` with the `.kv` list: three name/title rows with plain mailto links, plus the address row. Removed: the three "Ways to join" rows (Ph.D. students / Undergraduates / Collaborators, `#contact-phd` …), the "Write to us." heading + lead, and the Copy buttons (the copy JS stays, unused). Dist rebuilt (2,226,811 B), jscheck OK, shots `dist/shots-v1.6/*-contact-*` at 1440 (1503 px) and 390 (1839 px), h-overflow 0.
+
+## 2026-10-15 revision: publications fold holds everything before 2026
+- `#news-papers` shows only the two 2026 papers (the manuscript and Cong et al.); the 2022 (Xin & Zhu) and 2020 (LB-CNN) rows moved into `#news-more`, so the fold is now "Earlier work · 15 papers, 2003–2022". Fold CSS/JS unchanged. News at 1440: 2364 px (was 2770).
