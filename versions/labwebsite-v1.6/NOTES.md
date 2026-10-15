@@ -36,3 +36,6 @@ v1.6 is v1.5 with five views (Home · Research · People · News · Contact): a 
 - Home rows: each of the 8 clicks opens Research with the stage li at y 160 (header bottom 73, sub-nav bottom 125: +87 / +35) at 1440 and at y 148 (65 / 117: +83 / +31) at 390; focus on the stage h3 (tabindex -1); sub-nav shows A or B. Keyboard: Tab reaches the row link (2 px outline), Enter does the same. Hover: label rgb(48,83,90) -> ink; gold rows stay rgb(155,123,57).
 - Fold on #news: false/inert/4 papers -> true/17 -> false/inert/4; `#news-more` opens it; `#news-papers` lands at 96 px (80 at 390).
 - Shots: `dist/shots-v1.6/labwebsite-v1.6-{1440,390}-<route>-NN.png` (56 tiles; full-page tiles can catch reveals mid-way).
+
+## 2026-10-15 revision: Contact simplified
+- Contact keeps only the phead (04 / Collaborate, h1, lede) and one `bg-light` section `#contact-email` with the `.kv` list: three name/title rows with plain mailto links, plus the address row. Removed: the three "Ways to join" rows (Ph.D. students / Undergraduates / Collaborators, `#contact-phd` …), the "Write to us." heading + lead, and the Copy buttons (the copy JS stays, unused). Dist rebuilt (2,226,811 B), jscheck OK, shots `dist/shots-v1.6/*-contact-*` at 1440 (1503 px) and 390 (1839 px), h-overflow 0.
