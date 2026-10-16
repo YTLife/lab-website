@@ -1,0 +1,2523 @@
+<!doctype html>
+<!-- LabWebsite v1.7 — 2026-10-15 (v1.6 polished; see NOTES.md) -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Research lab studying computational human motion and biological response to health-oriented movement.">
+<meta name="theme-color" content="#f5f6f3">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Human Motion &amp; Molecular Health Lab">
+<meta property="og:description" content="Research lab studying computational human motion and biological response to health-oriented movement.">
+<title>Human Motion &amp; Molecular Health Lab</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='27' cy='9.5' r='3.6' fill='%23168d84'/%3E%3Cpath d='M8 22 C16 16 30 15 41 19' fill='none' stroke='%2314272c' stroke-width='2.8' stroke-linecap='round'/%3E%3Cpath d='M25 17 C21 25 27 30 23 38 M23 38 L14 44 M24 33 C29 36 33 39 36 44' fill='none' stroke='%2314272c' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" as="fetch" href="../../shared/assets/motion/taiji-umons-f.bin" id="motion-src" crossorigin>
+<link rel="preload" as="fetch" href="../../shared/assets/motion/taiji-umons-m.bin" id="motion-src-m" crossorigin>
+<script type="importmap">{"imports":{"three":"../../shared/assets/vendor/three.module.min.js"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<script>(function(){var d=document.documentElement,v=(location.hash.slice(1).split('-')[0]||'home'),ok='home research people news contact'.split(' ');d.classList.add('js');d.setAttribute('data-view',ok.indexOf(v)>-1?v:'home');})();</script>
+<!-- Every statement about funding, manuscripts in preparation, recruiting and people's roles carries a
+     "CONFIRM WITH PI" comment. Search for CONFIRM before publishing. -->
+<!-- CONFIRM WITH PI: lab name and affiliation wording. The lab is not an official Purdue unit; no Purdue mark is used. -->
+<style>
+:root{--deep:#eef1ee;--deep2:#e8eeeb;--band:#e8eeeb;--night:#e8eeeb;--panel:#f5f6f3;
+  --bg:#f5f6f3;--mist:#e8eeeb;--paper:#eef1ee;
+  --ink:#14272c;--muted:#456267;--tealt:#396c71;--line:#dbe3e0;--line2:#cad6d2;
+  --cyan:#168d84;--cyan2:#168d84;--teal:#168d84;--gold:#9b7b39;
+  --dline:#284950;--dline2:#294950;--dtext:#a9bec0;--dlabel:#456267;--dhead:#d7e2e3;
+  --max:1200px;--hdr:72px;
+  --sans:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:400;color:var(--ink);background:var(--deep);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+b,strong{font-weight:600}
+h1,h2,h3,h4{margin:0;font-weight:500;text-wrap:balance}
+p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+figure{margin:0}
+a{color:inherit}
+img{max-width:100%;display:block}
+.wrap{width:min(calc(100% - 48px),var(--max));margin:0 auto}
+[id]{scroll-margin-top:96px}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:4px}
+.lt :focus-visible{outline-color:var(--teal)}
+[tabindex="-1"]:focus{outline:none}
+.skip{position:absolute;left:16px;top:-60px;z-index:100;background:var(--cyan);color:var(--ink)fff;padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;text-decoration:none}
+.skip:focus{top:12px}
+[hidden]{display:none!important}
+/* ---------- grounds ---------- */
+.lt{color:var(--ink)}
+.bg-light{background:var(--bg)}
+.bg-paper{background:var(--paper)}
+.bg-mist{background:var(--mist)}
+.pad{padding:104px 0}
+/* ---------- the one micro style ---------- */
+.micro{font-size:12px;line-height:1.4;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.lt .micro{color:#30535a}
+.micro b{font-weight:600;color:var(--cyan)}
+.lt .micro b{color:var(--tealt)}
+/* ---------- utility bar + header ---------- */
+.util{background:var(--night);color:#456267;font-size:13px;line-height:1.3}
+.util .wrap{display:flex;justify-content:space-between;align-items:center;min-height:34px;gap:16px;padding:6px 0}
+.util a{color:#30535a;text-decoration:none}
+.util a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.util .sep{color:#cad6d2;margin:0 6px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(245,246,243,0.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(20,39,44,0.072)}
+.nav{height:var(--hdr);display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;min-width:0}
+.logo>span:last-child{display:flex;flex-direction:column;line-height:1.3;min-width:0}
+.logo b{font-size:16px;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
+.logo small{font-size:13px;color:var(--dlabel);white-space:nowrap}
+.logo-mark{flex:none;width:38px;height:38px;border:1px solid #cad6d2;border-radius:50%;position:relative}
+.logo-mark:after{content:"";position:absolute;width:7px;height:7px;border-radius:50%;background:var(--cyan);left:50%;top:50%;transform:translate(-50%,-50%);box-shadow:0 0 15px var(--cyan)}
+.site-nav{display:flex;gap:26px;align-items:center}
+.site-nav a{position:relative;color:#30535a;text-decoration:none;font-size:14px;font-weight:500;padding:8px 0;white-space:nowrap;transition:color .15s}
+.site-nav a:hover{color:var(--ink)}
+.site-nav a[aria-current="page"]{color:var(--ink)}
+.site-nav a[aria-current="page"]:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:1px;background:var(--cyan)}
+.nav-toggle{display:none;width:44px;height:44px;border-radius:12px;border:1px solid #cad6d2;background:transparent;align-items:center;justify-content:center;flex-direction:column;gap:6px;cursor:pointer;padding:0}
+.nav-toggle i{display:block;width:20px;height:2px;background:#fff;border-radius:1px;transition:transform .15s}
+.nav-toggle[aria-expanded="true"] i:first-child{transform:translateY(4px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] i:last-child{transform:translateY(-4px) rotate(-45deg)}
+/* ---------- shared pieces ---------- */
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--cyan);color:var(--ink)fff;text-decoration:none;border-radius:999px;padding:13px 22px;font-size:16px;font-weight:600;transition:background .15s}
+.btn:hover{background:var(--cyan2)}
+.btn .ar{transition:transform .15s}
+.btn:hover .ar{transform:translateX(3px)}
+.tlink{color:#30535a;text-decoration:none;font-size:16px;font-weight:500;border-bottom:1px solid #cad6d2;padding-bottom:3px;transition:color .15s,border-color .15s}
+.tlink:hover{color:var(--ink);border-color:var(--cyan)}
+.lt .tlink{color:var(--tealt);border-color:#cad6d2}
+.lt .tlink:hover{color:var(--ink);border-color:var(--teal)}
+.more{font-size:16px;font-weight:500;color:var(--cyan2);text-decoration:none;white-space:nowrap}
+.more:hover{color:var(--ink)}
+.lt .more{color:var(--tealt)}
+.lt .more:hover{color:var(--ink)}
+/* section header (C recipe) */
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:end;margin-bottom:48px}
+.sec-head h2{font-size:clamp(34px,4.2vw,56px);line-height:1.05;font-weight:600;letter-spacing:-.035em;margin-top:16px}
+.sec-head p{font-size:16px;color:var(--muted)}
+.sec-head .act{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+/* page header (inner views) */
+.phead{position:relative;overflow:hidden;background:linear-gradient(135deg,#eef1ee,#e8eeeb);color:var(--ink);padding:92px 0 72px}
+.phead-in{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:end}
+.phead h1{font-size:clamp(40px,4.6vw,64px);line-height:1.02;font-weight:600;letter-spacing:-.04em;margin-top:18px;max-width:13em}
+.phead .lede{font-size:18px;line-height:1.55;color:var(--dtext);max-width:32em}
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 10px;border:1px solid var(--line2);border-radius:6px;font-size:12px;font-weight:600;line-height:1;color:#30535a;text-decoration:none;white-space:nowrap;background:transparent;font-family:var(--sans);cursor:pointer;transition:color .15s,border-color .15s}
+.chip:hover{color:var(--teal);border-color:var(--teal)}
+/* figures */
+figcaption{font-size:13px;line-height:1.45;color:var(--muted);margin-top:12px;max-width:72ch}
+.cap-tag{margin-right:8px}
+/* ================= HOME ================= */
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#eef1ee,#e8eeeb);color:var(--ink);padding:76px 0 0}
+.hero-layout{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:center}
+.eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:26px}
+.eyebrow i{width:28px;height:1px;background:var(--cyan);flex:none}
+.hero h1{font-size:clamp(46px,5.9vw,80px);line-height:.98;font-weight:600;letter-spacing:-.045em}
+.hero h1 em{display:block;font-style:normal;color:var(--cyan2);font-weight:400}
+.hero-intro{font-size:18px;line-height:1.55;color:#30535a;max-width:29em;margin-top:26px}
+.hero-actions{display:flex;gap:26px;align-items:center;margin-top:34px;flex-wrap:wrap}
+.hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:44px;padding-top:22px;border-top:1px solid rgba(20,39,44,0.09)}
+.hero-meta div{display:flex;flex-direction:column;gap:6px}
+.hero-meta span:last-child{font-size:16px;font-weight:500;color:var(--dhead)}
+.stage{position:relative;aspect-ratio:1/1;max-height:700px;border:1px solid rgba(22,141,132,0.096);border-radius:28px;background:rgba(20,39,44,0.023);overflow:hidden;box-shadow:0 30px 80px rgba(20,39,44,0.088)}
+.corner{position:absolute;width:16px;height:16px;border-color:#cad6d2;border-style:solid;border-width:0}
+.corner.c1{left:14px;top:14px;border-left-width:1px;border-top-width:1px}
+.corner.c2{right:14px;top:14px;border-right-width:1px;border-top-width:1px}
+.corner.c3{left:14px;bottom:14px;border-left-width:1px;border-bottom-width:1px}
+.corner.c4{right:14px;bottom:14px;border-right-width:1px;border-bottom-width:1px}
+.stage-top{position:absolute;left:30px;right:30px;top:26px;display:flex;justify-content:space-between;gap:12px;z-index:3}
+.stage-top .micro{color:var(--dlabel)}
+.live:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cyan);margin-right:8px;vertical-align:1px;box-shadow:0 0 10px var(--cyan)}
+.orbit-back,.orbit-front{position:absolute;left:7%;width:86%;top:55%;height:12%;border-radius:50%;z-index:1}
+.orbit-back{border-top:1px dashed rgba(22,141,132,0.12)}
+.orbit-front{border-bottom:1px dashed rgba(22,141,132,0.285);z-index:3}
+.tdot{position:absolute;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:var(--cyan);opacity:.5;z-index:3}
+.tdot:after{content:"";position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(22,141,132,0.285);opacity:0}
+.tdot.d1{left:21.5%;top:65.5%}
+.tdot.d2{left:40.5%;top:66.85%}
+.tdot.d3{left:59.5%;top:66.85%}
+.tdot.d4{left:78.5%;top:65.5%}
+.tdot.d3{opacity:1;box-shadow:0 0 14px var(--cyan)}
+.tdot.d3:after{opacity:1}
+.stage-bottom{position:absolute;left:30px;right:30px;bottom:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;z-index:3}
+.stage-bottom div{border-left:1px solid #cad6d2;padding-left:12px;display:flex;flex-direction:column;line-height:1.35}
+.stage-bottom small{font-size:12px;color:#396c71;font-weight:600;letter-spacing:.12em}
+.stage-bottom b{font-size:14px;font-weight:600;margin-top:3px}
+.stage-bottom span{font-size:13px;color:var(--dlabel)}
+.stage-side{position:absolute;right:-14px;top:42%;transform:rotate(90deg);font-size:12px;letter-spacing:.16em;color:#cad6d2;font-weight:600;z-index:3}
+.ticker{position:relative;z-index:2;margin-top:64px;height:64px;border-top:1px solid rgba(20,39,44,0.063);overflow:hidden;display:flex;align-items:center}
+.ticker-track{display:flex;flex:none;align-items:center;gap:16px;white-space:nowrap;color:#456267;font-size:12px;font-weight:600;letter-spacing:.12em;padding-right:16px}
+.ticker-track i{width:3px;height:3px;border-radius:50%;background:#cad6d2;flex:none}
+@media (prefers-reduced-motion:no-preference){
+  .tdot{animation:dotseq 8s ease-in-out infinite}
+  .tdot:after{animation:ringseq 8s ease-out infinite}
+  .tdot.d1,.tdot.d1:after{animation-delay:-7s}
+  .tdot.d2,.tdot.d2:after{animation-delay:-5s}
+  .tdot.d3,.tdot.d3:after{animation-delay:-3s}
+  .tdot.d4,.tdot.d4:after{animation-delay:-1s}
+  .ticker-track{animation:tick 70s linear infinite}
+  .ring .spin{animation:spin 36s linear infinite;transform-origin:300px 300px}
+}
+@keyframes dotseq{0%{opacity:.4;box-shadow:none}8%,24%{opacity:1;box-shadow:0 0 14px #168d84}40%,100%{opacity:.4;box-shadow:none}}
+@keyframes ringseq{0%{opacity:0;transform:scale(.4)}8%{opacity:1;transform:scale(1)}30%{opacity:0;transform:scale(1.8)}100%{opacity:0;transform:scale(1.8)}}
+@keyframes tick{to{transform:translateX(-100%)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* statement band */
+.statement{background:var(--band);padding:40px 0}
+.statement-layout{display:grid;grid-template-columns:170px minmax(0,1fr);gap:40px;align-items:baseline}
+.statement h2{font-size:clamp(22px,2.1vw,28px);line-height:1.4;font-weight:300;color:#30535a;letter-spacing:-.005em;max-width:none}
+.statement h2 strong{color:var(--ink);font-weight:600}
+/* CTA band (Home) */
+.cta{position:relative;overflow:hidden;background:linear-gradient(135deg,#eef1ee,#e8eeeb);color:var(--ink);padding:96px 0}
+.cta .micro,.contact .micro{color:#456267}
+.cta-layout{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:start}
+.cta h2{font-size:clamp(30px,3.2vw,44px);line-height:1.08;font-weight:600;letter-spacing:-.03em;margin-top:14px}
+.cta p{font-size:16px;color:#30535a;margin-top:14px;max-width:34em}
+.cta .btn{margin-top:26px}
+/* ================= RESEARCH ================= */
+.subnav{position:sticky;top:calc(var(--hdr) + env(safe-area-inset-top,0px));z-index:40;background:rgba(245,246,243,0.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(20,39,44,0.072)}
+.subnav ul{display:flex;gap:30px;overflow-x:auto;scrollbar-width:none}
+.subnav ul::-webkit-scrollbar{display:none}
+.subnav a{position:relative;display:block;padding:15px 0 14px;font-size:14px;font-weight:500;color:#30535a;text-decoration:none;white-space:nowrap;transition:color .15s}
+.subnav a:hover{color:var(--ink)}
+.subnav a.on{color:var(--ink)}
+.subnav a.on:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--cyan);border-radius:1px}
+.split{display:grid;grid-template-columns:1fr 1fr;border-radius:28px;overflow:hidden;border:1px solid var(--dline2);box-shadow:0 30px 70px rgba(20,39,44,0.072)}
+.scale{padding:36px 38px 34px;display:flex;flex-direction:column}
+.scale-a{background:#fff;color:var(--ink)}
+.scale-b{background:linear-gradient(145deg,#e8eeeb,#f5f6f3);color:var(--ink)}
+.scale-top{display:flex;justify-content:space-between;align-items:center}
+.scale-top .L{font-size:22px;font-weight:600;color:var(--teal)}
+.scale-b .scale-top .L{color:var(--cyan)}
+.scale-a .micro{color:#30535a}
+.scale h3{font-size:30px;line-height:1.15;font-weight:600;margin-top:22px;letter-spacing:-.025em}
+.scale>p{font-size:16px;color:var(--muted);margin-top:10px;max-width:34em}
+.scale-b>p{color:#456267}
+.srows{margin-top:24px;border-top:1px solid var(--line)}
+.srows div{display:grid;grid-template-columns:128px minmax(0,1fr);gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.srows .micro{padding-top:2px}
+.srows span:last-child{font-size:16px;color:var(--muted)}
+.scale-b .srows,.scale-b .srows div{border-color:var(--dline)}
+.scale-b .srows span:last-child{color:var(--dtext)}
+.srows .fut .micro{color:var(--gold)}
+.scale-foot{margin-top:auto;padding-top:22px;display:flex;flex-wrap:wrap;gap:8px 22px;font-size:14px}
+.scale-foot a{text-decoration:none;font-weight:500;color:var(--tealt)}
+.scale-b .scale-foot a{color:var(--cyan2)}
+.scale-foot a:hover{text-decoration:underline;text-underline-offset:3px}
+.loop-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:center}
+.ring{position:relative;width:min(100%,460px);aspect-ratio:1/1;margin:0 auto}
+.ring svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.ring .base{fill:none;stroke:rgba(20,39,44,0.063);stroke-width:1}
+.ring .arc{fill:none;stroke:#396c71;stroke-width:1.6}
+.ring .arc.fb{stroke:#538989;stroke-dasharray:5 6}
+.ring .arc-label{font-family:var(--sans);font-size:17px;font-weight:600;letter-spacing:.16em;fill:#456267}
+.ring .node-bg{fill:#eef1ee;stroke:#538989;stroke-width:1.4}
+.ring .icon{fill:none;stroke:#168d84;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.ring .icon .fill{fill:#168d84;stroke:none}
+.ring .spark{fill:var(--cyan)}
+.ring .spark-glow{fill:rgba(22,141,132,0.12)}
+.nl{position:absolute;display:flex;flex-direction:column;align-items:center;text-align:center;line-height:1.2;text-decoration:none;color:var(--dhead);font-size:17px;font-weight:600;letter-spacing:-.01em;transform:translateX(-50%);white-space:nowrap;transition:color .15s}
+.nl small{font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--cyan);margin-bottom:5px}
+.nl:hover{color:var(--ink)}
+.nl.n1{left:25.25%;bottom:calc(83.25% + 2px)}
+.nl.n2{left:74.75%;bottom:calc(83.25% + 2px)}
+.nl.n3{left:74.75%;top:calc(83.25% + 2px)}
+.nl.n4{left:25.25%;top:calc(83.25% + 2px)}
+.ring-center{position:absolute;left:50%;top:50%;width:46%;transform:translate(-50%,-50%);text-align:center}
+.ring-center .rc{font-size:16px;line-height:1.45;color:#30535a;margin-top:8px;text-wrap:balance}
+.loop-fig figcaption{margin:40px auto 0;max-width:460px}
+.steps-list{border-top:1px solid var(--dline)}
+.steps-list li{display:grid;grid-template-columns:176px minmax(0,1fr);gap:18px;padding:18px 0;border-bottom:1px solid var(--dline)}
+.steps-list .micro{color:var(--cyan2);padding-top:3px}
+.steps-list .micro b{color:#396c71;margin-right:6px}
+.steps-list p{font-size:16px;line-height:1.55;color:var(--dtext)}
+/* ================= ruled gutter rows (People, Contact) ================= */
+.gut{display:grid;grid-template-columns:160px minmax(0,1fr);gap:40px;border-top:1px solid var(--line2);padding:28px 0 8px}
+.gut+.gut{margin-top:28px}
+.gut>.micro{padding-top:4px}
+.copy{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 14px;border-radius:999px;border:1px solid var(--teal);background:transparent;color:var(--tealt);font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,color .15s}
+.copy:hover{background:var(--teal);color:var(--ink)}
+.copy.ok{background:var(--teal);color:var(--ink)}
+.nojs-hide{display:none}
+html.js .nojs-hide{display:inline-flex}
+/* ================= PEOPLE ================= */
+.cards2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.pcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;display:grid;grid-template-columns:132px minmax(0,1fr);gap:24px;align-items:start}
+.pcard h3{font-size:20px;line-height:1.3;font-weight:600;letter-spacing:-.01em}
+.pcard .role{font-size:16px;color:var(--ink);margin-top:2px}
+.pcard .dept{font-size:14px;color:var(--muted)}
+.pcard dl{margin:16px 0 0;border-top:1px solid var(--line)}
+.pcard dl div{display:grid;grid-template-columns:100px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.pcard dt{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#30535a;padding-top:2px}
+.pcard dd{margin:0;font-size:14px;line-height:1.5;color:#30535a}
+.pcard .chips{margin-top:16px}
+.cards2.one{grid-template-columns:1fr}
+.pcard.wide{grid-template-columns:160px minmax(0,1fr);gap:32px;padding:28px}
+.pcard.wide dl div{grid-template-columns:120px minmax(0,1fr)}
+.recruit{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:baseline;font-size:16px;color:var(--ink)}
+/* ================= PUBLICATIONS ================= */
+.pub-group{display:grid;grid-template-columns:160px minmax(0,1fr);gap:40px;border-top:1px solid var(--line2);padding-top:26px}
+.pub-group+.pub-group{margin-top:56px}
+.pub-group>.gl{display:flex;flex-direction:column;gap:8px}
+.pub-group>.gl .cnt{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pub-intro{font-size:16px;color:var(--muted);padding-bottom:18px;margin-bottom:22px;border-bottom:1px solid var(--line);max-width:none}
+.pub-intro a{color:var(--tealt);text-decoration:none;font-weight:500}
+.pub-intro a:hover{text-decoration:underline;text-underline-offset:3px}
+.pub{display:grid;grid-template-columns:64px minmax(0,1fr);gap:24px;align-items:baseline;padding:22px 0;border-bottom:1px solid var(--line)}
+.pub:first-of-type{padding-top:4px}
+.pub .micro{display:block;margin-bottom:8px;color:var(--tealt)}
+.pub h3{font-size:18px;line-height:1.4;font-weight:600;color:var(--ink);max-width:48em;text-wrap:pretty}
+.pub .au{font-size:14px;color:var(--muted);margin-top:6px}
+.pub .au b{color:var(--ink);font-weight:600}
+.pub .ve{font-size:14px;color:var(--muted);margin-top:2px}
+.pub .chips{margin-top:14px}
+.bib{flex:none}
+.bib[open]{flex-basis:100%}
+.bib summary{cursor:pointer}
+.bib summary{list-style:none}
+.bib summary::-webkit-details-marker{display:none}
+.bib-box{margin-top:12px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start}
+.bib pre{margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;line-height:1.5;color:#30535a;white-space:pre-wrap;word-break:break-word}
+/* ================= CONTACT ================= */
+.aud p{font-size:16px;line-height:1.6;color:#30535a;margin-top:8px;max-width:64ch}
+.aud .chips{margin-top:16px}
+.contact{position:relative;overflow:hidden;background:linear-gradient(135deg,#eef1ee,#e8eeeb);color:var(--ink);padding:88px 0}
+.contact-layout{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:start}
+.contact h2{font-size:clamp(30px,3.2vw,44px);line-height:1.08;font-weight:600;margin-top:14px;letter-spacing:-.03em}
+.contact .lead{font-size:16px;color:#30535a;margin-top:14px;max-width:30em}
+.kv{border-top:1px solid rgba(20,39,44,0.09)}
+.kv>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 24px;padding:18px 0;border-bottom:1px solid rgba(20,39,44,0.09)}
+.kv h3{font-size:18px;font-weight:600}
+.kv p{font-size:14px;color:var(--dtext)}
+.kv a{color:var(--ink);text-decoration:none;border-bottom:1px solid #538989;font-size:16px;font-weight:500}
+.kv a:hover{border-color:var(--cyan)}
+.kv .addr{grid-template-columns:1fr}
+.kv .addr p{font-size:16px;color:#30535a}
+/* ================= FOOTER ================= */
+footer{background:var(--night);color:#456267;padding:64px 0 0}
+.foot{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:40px}
+.foot .logo b{color:var(--dhead)}
+.foot p{font-size:14px;line-height:1.55;margin-top:18px;max-width:28em}
+.foot h2{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#456267;margin-bottom:14px}
+.foot li{margin-top:8px;font-size:14px}
+.foot a{color:#30535a;text-decoration:none}
+.foot a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.foot-base{display:flex;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;margin-top:56px;padding:20px 0 28px;border-top:1px solid rgba(20,39,44,0.063);font-size:13px;color:#456267}
+/* ================= views ================= */
+html.js .view{display:none;scroll-margin-top:200vh}
+html.js .view.on{display:block}
+html.js[data-view="home"] #home,html.js[data-view="research"] #research,html.js[data-view="people"] #people,html.js[data-view="news"] #news,html.js[data-view="contact"] #contact{display:block}
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{transition:none!important;animation:none!important}
+}
+/* ================= responsive ================= */
+@media (max-width:1180px){
+  .site-nav{gap:20px}
+}
+@media (max-width:1040px){
+  .nav-toggle{display:flex}
+  html.js .site-nav{display:none;position:absolute;top:var(--hdr);left:16px;right:16px;background:#f5f6f3;border:1px solid #cad6d2;border-radius:16px;padding:8px 18px;flex-direction:column;align-items:stretch;gap:0;box-shadow:0 30px 80px rgba(20,39,44,0.088)}
+  html.js .site-nav.open{display:flex}
+  .site-nav a{padding:13px 0;font-size:16px;border-bottom:1px solid rgba(20,39,44,0.063)}
+  .site-nav a:last-child{border-bottom:0}
+  .site-nav a[aria-current="page"]:after{left:-18px;right:auto;top:14px;bottom:14px;width:2px;height:auto}
+  html:not(.js) .nav{height:auto;flex-wrap:wrap;padding:14px 0}
+  html:not(.js) .nav-toggle{display:none}
+  html:not(.js) .site-nav{flex-wrap:wrap;gap:4px 18px}
+  html:not(.js) .site-nav a{border:0;padding:6px 0;font-size:14px}
+  .hero-layout,.sec-head,.phead-in,.cta-layout,.loop-row,.contact-layout{grid-template-columns:minmax(0,1fr);gap:36px}
+  .stage{max-width:640px;width:100%;margin:0 auto}
+  .split{grid-template-columns:1fr}
+  .cards2{grid-template-columns:1fr}
+  .foot{grid-template-columns:1fr 1fr}
+  .foot>div:first-child{grid-column:1 / -1}
+}
+@media (max-width:740px){
+  :root{--hdr:64px}
+  .wrap{width:calc(100% - 32px)}
+  .util .wrap{font-size:12px}
+  .util .full{display:none}
+  .logo b{font-size:14px}
+  .logo small{font-size:12px}
+  .logo-mark{width:34px;height:34px}
+  html.js .site-nav{left:16px;right:16px}
+  [id]{scroll-margin-top:80px}
+  .pad{padding:72px 0}
+  .hero{padding-top:52px}
+  .hero-intro{font-size:17px}
+  .hero-meta{gap:14px;margin-top:36px}
+  .hero-meta span:last-child{font-size:14px}
+  .stage{aspect-ratio:4/5;border-radius:22px}
+  .stage-top{left:18px;right:18px;top:20px}
+  .stage-top .micro{letter-spacing:.06em}
+  .corner,.stage-side,.xs-hide{display:none}
+  .stage-bottom{left:18px;right:18px;bottom:18px;gap:8px}
+  .stage-bottom div{padding-left:9px}
+  .stage-bottom b{font-size:13px}
+  .stage-bottom span{display:none}
+  .ticker{margin-top:44px}
+  .statement{padding:36px 0}
+  .statement-layout{grid-template-columns:1fr;gap:18px}
+  .sec-head{margin-bottom:34px;gap:16px}
+  .phead{padding:60px 0 48px}
+  .phead h1{font-size:38px}
+  .phead .lede{font-size:17px}
+  .cta{padding:72px 0}
+  .split{border-radius:22px}
+  .scale{padding:26px 22px 26px}
+  .srows div,.steps-list li{grid-template-columns:1fr;gap:4px}
+  .ring .arc-label{font-size:21px;letter-spacing:.12em}
+  .nl{font-size:16px}
+  .ring-center .rc{font-size:13px}
+  .subnav ul{gap:24px;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent);padding-right:32px}
+  .gut,.pub-group{grid-template-columns:1fr;gap:16px}
+  .pcard,.pcard.wide{grid-template-columns:1fr;gap:18px;padding:20px}
+  .pcard.wide dl div{grid-template-columns:96px minmax(0,1fr)}
+  .pcard .portrait{width:104px}
+  .pcard dl div{grid-template-columns:96px minmax(0,1fr)}
+  .contact{padding:72px 0}
+  .kv>div{grid-template-columns:1fr;gap:4px}
+  .foot{grid-template-columns:1fr 1fr;gap:32px}
+  .foot-base{flex-direction:column;gap:6px}
+}
+@media (max-width:400px){
+  .logo-mark{width:30px;height:30px}
+  .logo{gap:10px}
+  .logo b{font-size:14px}
+}
+/* ================= craft pass: detail-level refinement (appended; overrides above) ================= */
+:root{--ease:cubic-bezier(.2,.7,.2,1);--rule-dk:rgba(155,216,211,.38);--rule-lt:rgba(57,108,113,.42)}
+::selection{background:rgba(22,141,132,0.24);color:var(--ink)}
+.lt ::selection{background:rgba(22,141,132,.2);color:var(--ink)}
+a{text-underline-offset:.22em;text-decoration-thickness:1px}
+p,li,dd,figcaption{text-wrap:pretty}
+/* focus: the global rule set border-radius:4px on the focused element itself; keep each shape */
+.btn:focus-visible,.copy:focus-visible,.skip:focus-visible{border-radius:999px}
+.chip:focus-visible{border-radius:6px}
+.nav-toggle:focus-visible{border-radius:12px}
+/* sticky header: same colour over light bands (no grey show-through), a touch more blur */
+.top{background:rgba(245,246,243,0.9);-webkit-backdrop-filter:saturate(160%) blur(16px);backdrop-filter:saturate(160%) blur(16px)}
+/* primary nav: indicator sits on the header's bottom hairline; hover draws it in at half strength */
+@media (min-width:1041px){
+  .site-nav a{line-height:24px;padding:8px 0}
+  .site-nav a:after{content:"";position:absolute;left:0;right:0;bottom:calc((40px - var(--hdr)) / 2 - 1px);height:2px;border-radius:1px;background:var(--cyan);transform:scaleX(0);transform-origin:0 50%;opacity:.45;transition:transform .28s var(--ease),opacity .28s var(--ease)}
+  .site-nav a:hover:after{transform:scaleX(1)}
+  .site-nav a[aria-current="page"]:after{bottom:calc((40px - var(--hdr)) / 2 - 1px);transform:none;opacity:1}
+}
+/* research sub-nav: crisp top edge, hover underline, focus ring that the scroller cannot clip */
+.subnav{border-top:1px solid rgba(20,39,44,0.054)}
+.subnav ul{margin:0 -10px;padding:0 10px}
+.subnav a{padding-left:10px;padding-right:10px;margin:0 -10px}
+.subnav a:focus-visible{outline-offset:-2px;border-radius:6px}
+.subnav a:after{content:"";position:absolute;left:10px;right:10px;bottom:0;height:2px;border-radius:1px;background:var(--cyan);transform:scaleX(0);transform-origin:0 50%;opacity:.45;transition:transform .28s var(--ease),opacity .28s var(--ease)}
+.subnav a:hover:after{transform:scaleX(1)}
+.subnav a.on:after{left:10px;right:10px;transform:none;opacity:1}
+/* hairline hierarchy (booktabs): the rule that opens a list or group is stronger than the rules between rows */
+.steps-list,.kv{border-top-color:var(--rule-dk)}
+.gut,.pub-group{border-top-color:var(--rule-lt)}
+/* vertical cadence: one step for statement, partner and contact bands; heads sit on the last baseline */
+@media (min-width:741px){
+  .statement{padding:40px 0}
+  .contact{padding:96px 0}
+}
+.sec-head,.phead-in{align-items:last baseline}
+/* ticker: fade the ends instead of cutting words */
+.ticker{-webkit-mask-image:linear-gradient(90deg,transparent,#000 72px,#000 calc(100% - 72px),transparent);mask-image:linear-gradient(90deg,transparent,#000 72px,#000 calc(100% - 72px),transparent)}
+/* arrows move with their link */
+.more span[aria-hidden],.tlink span[aria-hidden]{display:inline-block;transition:transform .25s var(--ease)}
+.more:hover span[aria-hidden],.tlink:hover span[aria-hidden]{transform:translateX(3px)}
+.tlink[href^="http"]:hover span[aria-hidden]{transform:translate(2px,-2px)}
+/* chips */
+.chip{transition:color .2s var(--ease),border-color .2s var(--ease),background-color .2s var(--ease)}
+.chip:hover{background:rgba(22,141,132,.06)}
+.bib[open]>summary.chip{color:var(--teal);border-color:var(--teal);background:rgba(22,141,132,.06)}
+/* gutter label sits on the baseline of the first row beside it (not where the gutter holds a card) */
+.pub-group,.gut:not(:has(.pcard)){align-items:baseline}
+.gut:not(:has(.pcard))>.micro{padding-top:0}
+@media (min-width:741px){
+  .kv>div{grid-template-columns:minmax(0,1fr) auto}
+}
+/* footer: link columns start on the site's right column (x of every 1fr/1fr split) */
+@media (min-width:1041px){
+  .foot{grid-template-columns:calc(50% + 12px) repeat(3,minmax(0,1fr));column-gap:24px}
+}
+/* phone: 44px tap targets, no cramped two-column stacks */
+@media (max-width:740px){
+  .pcard dl div,.pcard.wide dl div{grid-template-columns:minmax(0,1fr);gap:2px}
+  .chips{gap:12px 8px}
+  .chip{height:32px}
+  .chip{padding:0 12px}
+  .chip,.copy,.more,.tlink,.kv a,.pcard dd a{position:relative}
+  .chip:after,.copy:after,.more:after,.tlink:after,.kv a:after,.pcard dd a:after{content:"";position:absolute;left:-4px;right:-4px;top:50%;height:44px;transform:translateY(-50%)}
+  .scale-foot{gap:0 22px;padding-top:11px}
+  .scale-foot a{padding:11px 0}
+  .foot li{margin-top:0}
+  .foot li a{display:inline-block;padding:11px 0;line-height:22px}
+  .foot h2{margin-bottom:4px}
+  .util .wrap{min-height:44px;padding:0}
+  .util a{display:inline-flex;align-items:center;min-height:44px}
+  .nl:after{content:"";position:absolute;inset:-4px -8px}
+  .subnav ul{padding-right:42px}
+}
+/* ================= v4: type, logo, portraits, contact ================= */
+:root{--sans:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.micro,.ticker-track,.stage-bottom small,.pcard dt,.nl small,.dt,.cap-tag,.stage-top,.bib pre{font-family:var(--mono)}
+.micro,.ticker-track,.stage-bottom small,.pcard dt,.nl small{font-size:12px;font-weight:500;letter-spacing:.06em}
+.dt{font-size:13px;letter-spacing:0}
+.stage-top .micro{letter-spacing:.06em}
+.logo-mark{border:0;border-radius:0;position:static;display:block;width:38px;height:38px;overflow:visible}
+.logo-mark:after{content:none}
+.logo:hover .logo-mark circle:last-of-type{filter:drop-shadow(0 0 5px rgba(22,141,132,0.525))}
+img.portrait,.pcard img.portrait{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:50%;background:var(--deep2);box-shadow:0 0 0 1px rgba(20,39,44,.08)}
+.pcard.wide img.portrait{width:148px}
+.kv .em{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.contact .copy{border-color:#538989;color:#30535a;height:30px;padding:0 12px}
+.contact .copy:hover,.contact .copy.ok{background:var(--cyan);border-color:var(--cyan);color:var(--ink)fff}
+@media (max-width:740px){
+  .logo{min-height:44px}
+  .pcard.wide img.portrait{width:104px}
+}
+/* ================= v5: light theme · harmony over contrast ================= */
+:root{--deep:#eef1ee;--deep2:#e8eeeb;--band:#e8eeeb;--night:#e8eeeb;--panel:#f5f6f3;
+  --dline:var(--line);--dline2:var(--line);--dtext:#30535a;--dlabel:#456267;--dhead:var(--ink);
+  --cyan:#168d84;--cyan2:#396c71;--rule-dk:var(--rule-lt);
+  --surface:#fafbf9;--shadow:0 1px 0 rgba(255,255,255,.7) inset,0 36px 72px -44px rgba(20,39,44,.26);
+  --ease:cubic-bezier(.2,.7,.2,1);}
+body{background:var(--bg);color:var(--ink)}
+.lt{color:var(--ink)}
+:focus-visible{outline-color:var(--teal)}
+.skip,.btn,.copy:hover,.copy.ok{color:#fff}
+.btn{background:var(--teal);transition:background .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease)}
+.btn:hover{background:var(--tealt);transform:translateY(-1px);box-shadow:0 14px 28px -16px rgba(22,141,132,.7)}
+::selection{background:rgba(22,141,132,.18);color:var(--ink)}
+/* type: calmer weights and tracking */
+.hero h1{font-size:clamp(44px,5.5vw,76px);line-height:1;font-weight:500;letter-spacing:-.038em}
+.hero h1 em{color:var(--tealt);font-weight:400}
+.sec-head h2,.cta h2,.contact h2{font-weight:500;letter-spacing:-.03em}
+.phead h1{font-weight:500;letter-spacing:-.034em}
+.statement h2{color:#456267}
+.statement h2 strong{color:var(--ink);font-weight:500}
+/* header */
+.util{background:var(--mist);color:#456267;border-bottom:1px solid var(--line)}
+.util a{color:#30535a}
+.util a:hover{color:var(--ink)}
+.util .sep{color:#cad6d2}
+.top{background:rgba(245,246,243,.84);-webkit-backdrop-filter:saturate(140%) blur(18px);backdrop-filter:saturate(140%) blur(18px);border-bottom:1px solid rgba(20,39,44,.07);transition:box-shadow .35s var(--ease),background .35s var(--ease)}
+.top.scrolled{background:rgba(245,246,243,.92);box-shadow:0 12px 32px -26px rgba(20,39,44,.4)}
+.logo{color:var(--ink)}
+.logo small{color:#456267}
+.logo-mark{border:0;border-radius:0;position:static;display:block;width:38px;height:38px;overflow:visible}
+.logo-mark:after{content:none}
+.logo:hover .logo-mark circle:last-of-type{filter:none}
+.site-nav a{color:#30535a}
+.site-nav a:hover,.site-nav a[aria-current="page"]{color:var(--ink)}
+.nav-toggle{border-color:var(--line2)}
+.nav-toggle i{background:var(--ink)}
+@media (max-width:1040px){
+  html.js .site-nav{background:#f5f6f3;border-color:var(--line);box-shadow:0 30px 60px -30px rgba(20,39,44,.3)}
+  .site-nav a{border-bottom-color:rgba(20,39,44,.07)}
+}
+/* shared grounds */
+.hero{background:linear-gradient(180deg,#eef1ee,#e8eeeb)}
+.phead{background:linear-gradient(180deg,#eef1ee,#e8eeeb);color:var(--ink);border-bottom:1px solid var(--line)}
+.phead .lede,.hero-intro{color:#30535a}
+.hero-meta{border-top-color:var(--line2)}
+.hero-meta span:last-child{color:var(--ink)}
+.eyebrow i{background:var(--teal)}
+/* stages: frosted panels on the light ground */
+.stage{background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(255,255,255,.38));border:1px solid var(--line);box-shadow:var(--shadow)}
+.corner{border-color:rgba(22,141,132,.32)}
+.stage-top .micro{color:#456267}
+.live:before{box-shadow:0 0 0 3px rgba(22,141,132,.14)}
+.orbit-back{border-top-color:rgba(22,141,132,.18)}
+.orbit-front{border-bottom-color:rgba(22,141,132,.34)}
+.tdot{background:var(--teal)}
+.tdot.d3{box-shadow:0 0 0 5px rgba(22,141,132,.14)}
+.tdot:after{border-color:rgba(22,141,132,.3)}
+@keyframes dotseq{0%{opacity:.35;box-shadow:none}8%,24%{opacity:1;box-shadow:0 0 0 5px rgba(22,141,132,.14)}40%,100%{opacity:.35;box-shadow:none}}
+.stage-bottom div{border-left-color:var(--line2)}
+.stage-bottom small{color:var(--teal)}
+.ticker{border-top-color:var(--line)}
+.ticker-track{color:#456267}
+.ticker-track i{background:rgba(22,141,132,.4)}
+/* surfaces */
+.pcard{background:var(--surface);border-color:var(--line);transition:border-color .35s var(--ease),box-shadow .35s var(--ease)}
+.pcard:hover{border-color:rgba(22,141,132,.26);box-shadow:0 28px 56px -44px rgba(20,39,44,.36)}
+.split{border-color:var(--line);box-shadow:var(--shadow)}
+.scale-a{background:var(--surface)}
+.scale-b{background:#e8eeeb;color:var(--ink)}
+.scale-b>p,.scale-b .srows span:last-child{color:#30535a}
+.scale-b .srows,.scale-b .srows div{border-color:var(--line2)}
+.scale-b .scale-foot a{color:var(--tealt)}
+/* loop ring */
+.ring .base{stroke:rgba(20,39,44,.08)}
+.ring .node-bg{fill:var(--surface);stroke:#cad6d2}
+.ring .icon{stroke:var(--teal)}
+.ring .icon .fill{fill:var(--teal)}
+.ring .spark-glow{fill:rgba(22,141,132,.14)}
+.nl{color:var(--ink)}
+.nl:hover{color:var(--teal)}
+.ring-center .rc{color:#30535a}
+/* bands */
+.cta,.contact{background:radial-gradient(900px 480px at 88% 110%,rgba(22,141,132,.09),transparent 70%),var(--paper);color:var(--ink)}
+.cta p,.contact .lead{color:#30535a}
+.kv{border-top-color:var(--rule-lt)}
+.kv>div{border-bottom-color:var(--line)}
+.kv a{color:var(--ink);border-bottom-color:var(--line2)}
+.kv a:hover{border-color:var(--teal)}
+.contact .copy{border-color:var(--teal);color:var(--tealt)}
+.contact .copy:hover,.contact .copy.ok{background:var(--teal);border-color:var(--teal);color:#fff}
+.subnav{background:rgba(245,246,243,.9);border-bottom-color:var(--line);border-top-color:rgba(20,39,44,.05)}
+.subnav a{color:#456267}
+.subnav a:hover,.subnav a.on{color:var(--ink)}
+footer{background:var(--mist);color:#456267;border-top:1px solid var(--line2)}
+.foot .logo b{color:var(--ink)}
+.foot h2{color:#456267}
+.foot a{color:#30535a}
+.foot a:hover{color:var(--ink)}
+.foot-base{border-top-color:rgba(20,39,44,.08);color:#456267}
+/* ---------- motion: one quiet vocabulary (rise, fade, draw) ---------- */
+@media (prefers-reduced-motion:no-preference){
+  html.js .view.on{animation:viewIn .6s var(--ease) both}
+  .hero .eyebrow,.hero h1,.hero-intro,.hero-actions,.hero-meta,.phead-in>*{animation:riseIn .9s var(--ease) both}
+  .hero h1{animation-delay:.06s}
+  .hero-intro{animation-delay:.13s}
+  .hero-actions{animation-delay:.19s}
+  .hero-meta{animation-delay:.25s}
+  .phead-in>*+*{animation-delay:.1s}
+  .hero-fig .stage{animation:stageIn 1.1s var(--ease) .08s both}
+  .rv{opacity:0;transform:translate3d(0,18px,0);transition:opacity .85s var(--ease),transform .85s var(--ease);transition-delay:calc(var(--i,0)*70ms)}
+  .rv.in{opacity:1;transform:none}
+  .pub{animation:rowIn .5s var(--ease) both;animation-delay:calc(var(--i,0)*45ms)}
+  .chip,.more,.tlink{transition:color .25s var(--ease),border-color .25s var(--ease),background-color .25s var(--ease)}
+}
+@keyframes viewIn{from{opacity:0}to{opacity:1}}
+@keyframes riseIn{from{opacity:0;transform:translate3d(0,16px,0)}to{opacity:1;transform:none}}
+@keyframes stageIn{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:none}}
+@keyframes rowIn{from{opacity:0;transform:translate3d(0,10px,0)}to{opacity:1;transform:none}}
+.statement{background:var(--bg)}
+/* ================= v6: firmer contrast · two grounds · one card · one accent ================= */
+:root{--card:#ffffff;--dtext:#2d5058;--r-lg:20px;--r-md:16px;--r-sm:10px}
+.hero,.phead{background:var(--mist)}
+.bg-paper{background:var(--mist)}
+.statement,.cta{background:var(--bg)}
+.contact{background:var(--mist)}
+footer{background:var(--bg);border-top:1px solid var(--line2)}
+.util{background:var(--card);border-bottom:1px solid var(--line)}
+.top{background:rgba(255,255,255,.92)}
+.top.scrolled{background:rgba(255,255,255,.97)}
+@media (max-width:1040px){
+  html.js .site-nav{background:var(--card)}
+}
+/* one card style */
+.stage,.split,.pcard{background:var(--card);border:1px solid var(--line);box-shadow:none}
+.stage,.split{border-radius:var(--r-lg)}
+.pcard{border-radius:var(--r-md)}
+.pcard:hover{box-shadow:0 22px 44px -36px rgba(20,39,44,.34)}
+.scale-a{background:var(--card)}
+.scale-b{background:var(--bg)}
+.ring .node-bg{fill:var(--card)}
+/* display text in ink, emphasis always teal */
+.hero h1 em{color:var(--teal)}
+.statement h2{color:var(--ink)}
+.statement h2 strong{color:var(--teal);font-weight:300}
+.hero-intro,.phead .lede,.sec-head p,.cta p,.contact .lead,.aud p,.scale>p,.steps-list p{color:var(--dtext)}
+.logo-mark .arm{transform-box:view-box;transform-origin:25px 17px;transition:transform .7s var(--ease)}
+@media (prefers-reduced-motion:no-preference){
+  .logo:hover .logo-mark .arm{transform:rotate(-7deg)}
+}
+/* Home CTA takes the second ground, as the Contact page's email band does */
+.cta.bg-mist{background:var(--mist)}
+/* research sections sit under the sticky sub-nav */
+#research .pad[id]{scroll-margin-top:124px}
+/* Framework's long-term line and the Contact page's second sentence */
+.statement.bg-mist{background:var(--mist)}
+.phead h1 em{display:block;font-style:normal;color:var(--teal);font-weight:400}
+/* hero stage: the preview's parametric body in four poses, standing on one orbit */
+.hero-fig .stage{aspect-ratio:6/5}
+.poses img{position:absolute;width:29%;height:auto;transform-origin:50% 100%;z-index:2}
+.poses .ps1{left:7%;bottom:28.8%;opacity:.3;transform:scale(.85)}
+.poses .ps2{left:26%;bottom:24.95%;opacity:.6}
+.poses .ps3{left:45%;bottom:26.35%;transform:scale(1.08);z-index:3}
+.poses .ps4{left:64%;bottom:27.8%;opacity:.45;transform:scale(.9)}
+/* Research: one area per scale, text beside a schematic */
+.area{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:center}
+.area-r .area-fig{order:-1}
+.area h2{font-size:clamp(30px,3.2vw,44px);line-height:1.08;font-weight:500;letter-spacing:-.03em;margin-top:22px}
+.area-txt>p{font-size:18px;line-height:1.55;color:var(--dtext);margin-top:16px;max-width:32em}
+.area .srows{margin-top:30px}
+.bg-paper .srows,.bg-paper .srows div{border-color:var(--line2)}
+.bg-paper .cells,.bg-paper .cells li{border-color:var(--line2)}
+.area-txt>.area-foot{display:grid;gap:4px;margin-top:22px;font-size:16px;line-height:1.55}
+.area-foot .micro{color:var(--tealt)}
+.area-foot a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line2);transition:border-color .25s var(--ease)}
+.area-foot a:hover{border-color:var(--teal)}
+.fig-stage{aspect-ratio:5/4;max-height:none}
+.fig-pose{position:absolute;left:31%;bottom:14%;width:38%;height:auto;z-index:2}
+.fig-stage .orbit-back,.fig-stage .orbit-front{left:20%;width:60%;top:67%;height:14%}
+.triad{position:absolute;left:26px;bottom:24px;width:64px;height:64px;overflow:visible;z-index:3}
+.triad path{fill:none;stroke:#538989;stroke-width:1.2;stroke-linecap:round}
+.triad text{font-family:var(--mono);font-size:12px;fill:var(--tealt)}
+.net{position:absolute;left:8%;top:15%;width:84%;height:auto;z-index:2}
+.net .e path{fill:none;stroke:#538989;stroke-width:1}
+.net .e .w{stroke:#cad6d2;stroke-dasharray:2 5}
+.net .hub{fill:rgba(22,141,132,.12);stroke:var(--teal);stroke-width:1.4}
+.net .n{fill:var(--teal)}
+.net .o{fill:var(--card);stroke:#396c71;stroke-width:1.3}
+.stage-bottom.omics{grid-template-columns:repeat(4,minmax(0,1fr))}
+/* ruled cells: Q1–Q4 (four across) and Methods (three by two) */
+.cells{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule-lt);border-bottom:1px solid var(--line)}
+.cells.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cells li{display:flex;flex-direction:column;min-width:0;padding:26px 24px 30px}
+.cells.c4 li+li,.cells.c3 li:not(:nth-child(3n+1)){border-left:1px solid var(--line)}
+.cells.c3 li:nth-child(n+4){border-top:1px solid var(--line)}
+.cells.c4 li:first-child,.cells.c3 li:nth-child(3n+1){padding-left:0}
+.cells.c4 li:last-child,.cells.c3 li:nth-child(3n){padding-right:0}
+.cells .n{font-size:40px;line-height:1;font-weight:400;letter-spacing:-.02em;color:var(--teal);font-variant-numeric:tabular-nums}
+.cells h3{font-size:20px;line-height:1.3;font-weight:600;letter-spacing:-.01em;margin-top:20px}
+.cells p{margin-top:8px;font-size:16px;line-height:1.55;color:var(--dtext)}
+.cells-head{margin:72px 0 18px}
+/* Applications: the second paragraph carries the argument, the third the reach */
+.lead-split{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:72px;align-items:last baseline}
+.lead-split .big{font-size:clamp(22px,2.2vw,28px);line-height:1.4;letter-spacing:-.015em;color:var(--ink)}
+.lead-split p+p{font-size:16px;line-height:1.6;color:var(--dtext);max-width:30em}
+/* publications: the preview's row, year | tag · title · authors · venue · links */
+.pub>.dt{color:var(--tealt)}
+/* Contact: one sentence per audience */
+.aud>div{padding-bottom:20px}
+.aud>div>p:first-child{margin-top:0}
+@media (max-width:1180px){
+  .cells.c4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cells.c4 li:nth-child(3){border-left:0;padding-left:0}
+  .cells.c4 li:nth-child(n+3){border-top:1px solid var(--line)}
+  .cells.c4 li:nth-child(2){padding-right:0}
+}
+@media (max-width:1040px){
+  .area,.lead-split{grid-template-columns:minmax(0,1fr);gap:40px}
+  .lead-split{gap:20px}
+  .area-r .area-fig{order:0}
+  .area-fig{width:100%;max-width:640px}
+}
+@media (max-width:740px){
+  #research .pad[id]{scroll-margin-top:108px}
+  .eyebrow{gap:10px}
+  .eyebrow i{width:20px}
+  .eyebrow.micro{letter-spacing:.02em}
+  .cells.c4,.cells.c3{grid-template-columns:minmax(0,1fr)}
+  .cells li,.cells.c4 li:nth-child(n),.cells.c3 li:nth-child(n){display:grid;grid-template-columns:48px minmax(0,1fr);column-gap:14px;align-items:baseline;padding:20px 0 22px;border-left:0}
+  .cells li+li{border-top:1px solid var(--line)}
+  .cells .n{grid-row:1 / span 2;font-size:28px;line-height:1.1}
+  .cells h3{margin-top:0;font-size:18px}
+  .cells p{grid-column:2;margin-top:6px}
+  .cells-head{margin-top:56px}
+  .area-txt>p{font-size:17px}
+  .fig-stage{aspect-ratio:1/1}
+  .fig-pose{width:44%;left:28%;bottom:14%}
+  .fig-stage .orbit-back,.fig-stage .orbit-front{left:14%;width:72%;top:69%;height:12%}
+  .triad{left:16px;bottom:16px}
+  .net{top:17%}
+  .stage-bottom.omics{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:10px}
+  .pub{grid-template-columns:48px minmax(0,1fr);gap:14px}
+}
+/* ================= LabWebsite v1.0 ================= */
+/* hero: the moving body. The canvas shows once the motion pack has played its first frame;
+   until then (and on any failure) the four SVG poses stay, as in v8 */
+.body3d{position:absolute;inset:0;width:100%;height:100%;display:none;z-index:2}
+.stage.gl-on .body3d{display:block}
+.stage.gl-on .poses{display:none}
+.stage.gl-on .tdot{animation:none;opacity:calc(.35 + .65*var(--p,0));box-shadow:0 0 0 calc(5px*var(--p,0)) rgba(22,141,132,.14)}
+.stage.gl-on .tdot:after{animation:none;opacity:var(--ro,0);transform:scale(var(--rs,.4))}
+@media (prefers-reduced-motion:no-preference){
+  .stage.gl-on .body3d{animation:viewIn .9s var(--ease) both}
+}
+/* Framework: the preview's linear flow, four cards joined by labelled connectors */
+.flow{display:grid;grid-template-columns:minmax(0,1fr) 108px minmax(0,1fr) 108px minmax(0,1fr) 108px minmax(0,1fr);align-items:stretch}
+.flow-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:24px 20px 28px;display:flex;flex-direction:column;min-width:0}
+.flow-card>.micro{color:var(--teal)}
+.flow-icon{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;border:1px solid var(--line2);margin-top:22px}
+.flow-icon svg{width:36px;height:36px;overflow:visible;fill:none;stroke:var(--teal);stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round}
+.flow-icon .fill{fill:var(--teal);stroke:none}
+.flow-card h3{font-size:20px;line-height:1.25;font-weight:600;letter-spacing:-.015em;margin-top:26px}
+.flow-card p{font-size:16px;line-height:1.55;color:var(--dtext);margin-top:8px}
+.connector{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-width:0}
+.connector i{position:relative;display:block;width:100%;height:1px;background:#538989}
+.connector i:after{content:"";position:absolute;right:1px;top:-3px;width:6px;height:6px;border-top:1px solid #538989;border-right:1px solid #538989;transform:rotate(45deg)}
+.connector span{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.04em;color:var(--tealt);white-space:nowrap}
+/* Framework: the ring as the figure for "closed loop", beside the long-term line */
+.lt-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:center}
+.lt-row h2{margin-top:18px;max-width:16em}
+.lt-row .loop-fig figcaption{margin-top:36px}
+/* Publications: a project row carries one line of description; the Scholar line sits under the last ruled row */
+.pub-more{font-size:16px;line-height:1.6;color:var(--muted);padding:18px 0 4px}
+.pub-more a{color:var(--tealt);text-decoration:none;font-weight:500}
+.pub-more a:hover{text-decoration:underline;text-underline-offset:3px}
+.pub .ds{font-size:16px;line-height:1.55;color:var(--dtext);margin-top:6px;max-width:48em}
+/* Publications fold (v1.4): one ruled row, a real button on the .pub grid (MORE in the year column), then the panel.
+   Shut only under html.js and until .is-open, so without JS it stays open; the panel unfolds by its grid row (0fr -> 1fr).
+   Motion only without reduced motion: rows .55s, chevron .3s, hover tint .3s; the first open lets the rows rise in (rowIn, 60 ms apart). */
+.pubfold-btn{display:grid;grid-template-columns:64px minmax(0,1fr) auto;column-gap:24px;align-items:baseline;width:100%;min-height:56px;margin:0;padding:17px 0 16px;border:0;border-bottom:1px solid var(--line);border-radius:0;background:none;font:inherit;line-height:22px;color:var(--ink);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pubfold-btn .micro{color:var(--tealt)}
+.pubfold-t{font-size:14px;font-weight:500;color:var(--ink)}
+@media (hover:hover){.pubfold-btn:hover .pubfold-t{color:var(--teal)}}
+.pubfold-act{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--teal);white-space:nowrap}
+.pubfold-chev{display:block;flex:none}
+.pubfold.is-open .pubfold-chev{transform:rotate(180deg)}
+.pub-group .pubfold-btn:focus-visible{outline:2px solid rgba(22,141,132,.35);outline-offset:4px;border-radius:0}
+.pubfold-panel{display:grid;grid-template-rows:1fr}
+html.js .pubfold:not(.is-open) .pubfold-panel{grid-template-rows:0fr;opacity:0}
+.pubfold-inner{min-height:0;overflow:hidden}
+.pubfold .pub:first-of-type{padding-top:22px}
+html:not(.js) .pubfold-act{display:none}
+html:not(.js) .pubfold-btn{cursor:default;pointer-events:none}
+@media (prefers-reduced-motion:no-preference){
+  .pubfold-panel{transition:grid-template-rows .55s var(--ease),opacity .55s var(--ease)}
+  .pubfold-chev{transition:transform .3s var(--ease)}
+  .pubfold-t{transition:color .3s var(--ease)}
+  .pubfold-now .pubfold-panel,.pubfold-now .pubfold-chev{transition:none}
+  .pubfold.rise .pub>*{animation:rowIn .6s var(--ease) both;animation-delay:calc(var(--fi,0)*60ms)}
+}
+@media (max-width:740px){
+  .pubfold-btn{grid-template-columns:48px minmax(0,1fr) auto;column-gap:14px}
+}
+/* phones: the line would break inside "2003–2012"; the count takes its own line instead, like a title over its author line */
+@media (max-width:420px){
+  .pubfold-sep{display:none}
+  .pubfold-n{display:block}
+}
+@media print{
+  .pubfold-btn{display:none}
+  .pubfold-panel{grid-template-rows:1fr!important;opacity:1!important}
+}
+@media (max-width:1180px){
+  .flow{grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr) 92px minmax(0,1fr) 92px minmax(0,1fr)}
+  .flow-card{padding:22px 16px 24px}
+  .flow-card h3{font-size:18px}
+  .connector span{letter-spacing:0}
+}
+@media (max-width:1040px){
+  .flow{grid-template-columns:minmax(0,1fr);max-width:640px}
+  .connector{height:64px;gap:6px}
+  .connector i{width:1px;height:30px}
+  .connector i:after{right:auto;left:-3px;top:auto;bottom:1px;transform:rotate(135deg)}
+  .lt-row{grid-template-columns:minmax(0,1fr);gap:48px}
+  .lt-row .loop-fig{max-width:460px;width:100%;margin:0 auto}
+}
+@media (max-width:740px){
+  .hero-fig .stage{aspect-ratio:1/1}
+  .flow-card{display:grid;grid-template-columns:52px minmax(0,1fr);column-gap:18px;align-items:start;padding:20px}
+  .flow-card>.micro{grid-column:2;grid-row:1}
+  .flow-icon{grid-column:1;grid-row:1 / span 3;width:52px;height:52px;margin-top:2px}
+  .flow-icon svg{width:30px;height:30px}
+  .flow-card h3{grid-column:2;grid-row:2;margin-top:4px;font-size:18px}
+  .flow-card p{grid-column:2;grid-row:3;margin-top:6px}
+  .connector{height:56px}
+  .connector i{height:24px}
+  .lt-row{gap:40px}
+}
+/* ---------- Home = the preview, 00–07 (v8's grounds, cards, rules and type; the preview's structure and copy) ---------- */
+/* section headings link to their detail pages */
+.hl{color:inherit;text-decoration:none;transition:color .25s var(--ease)}
+.hl:hover{color:var(--teal)}
+.hh{font-size:clamp(34px,4.2vw,56px);line-height:1.05;font-weight:500;letter-spacing:-.03em;margin-top:16px;text-wrap:balance}
+.more-row{margin-top:28px}
+/* 01 research: two cards, each with a borderless visual panel (not a card in a card) */
+.rgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.rcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:30px 32px 28px;display:flex;flex-direction:column;min-width:0}
+.rcard h3{font-size:clamp(24px,2.2vw,28px);line-height:1.2;font-weight:500;letter-spacing:-.02em}
+.rcard>p{font-size:16px;line-height:1.6;color:var(--dtext);margin-top:10px}
+.rcard .srows{margin-top:22px}
+.rvis{position:relative;height:270px;margin:20px 0 26px;border-radius:14px;background:var(--bg);overflow:hidden}
+.rvis-a .orbit{position:absolute;border:1px solid rgba(22,141,132,.22);border-radius:50%;z-index:1}
+.rvis-a .o1{width:180px;height:56px;left:calc(50% - 90px);bottom:26px}
+.rvis-a .o2{width:240px;height:76px;left:calc(50% - 120px);bottom:16px;border-color:rgba(22,141,132,.13)}
+.rvis-pose{position:absolute;left:50%;bottom:30px;height:82%;width:auto;transform:translateX(-50%);z-index:2}
+.rvis .body3d{z-index:2}
+.rvis.gl-on .body3d{display:block}
+.rvis.gl-on .rvis-pose{display:none}
+.rvis .triad{left:18px;bottom:16px}
+.rvis-b .net{left:50%;top:16px;width:auto;height:calc(100% - 74px);transform:translateX(-50%)}
+.rvis-b .e .w{stroke:#cad6d2;stroke-dasharray:2 5}
+/* Home 01 / B functional panel (replaces the network once the pack with bands is decoded; the network is the fallback) */
+.rvis-b .fn{position:absolute;left:16px;top:12px;width:calc(100% - 32px);height:calc(100% - 66px);display:none;z-index:2}
+.rvis-b.fn-on .fn{display:block}
+.rvis-b.fn-on .net{display:none}
+.rvis-b.fn-on .omics span{animation:none!important}
+.omics{position:absolute;left:16px;right:16px;bottom:14px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;z-index:3}
+.omics span{display:block;text-align:center;padding:6px 0;border:1px solid var(--line2);border-radius:7px;background:var(--card);font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.06em;color:var(--tealt)}
+@media (prefers-reduced-motion:no-preference){
+  .net-live .nd{animation:drift 7s ease-in-out infinite}
+  .net-live .nd:nth-of-type(2n){animation-duration:9s;animation-delay:-3s}
+  .net-live .nd:nth-of-type(3n){animation-duration:8s;animation-delay:-5s}
+  .net-live .nd circle,.net-live .hub{transform-box:fill-box;transform-origin:center;animation:breathe 6s ease-in-out infinite}
+  .net-live .nd:nth-of-type(odd) circle{animation-delay:-3s}
+  .net-live .e path{animation:edgepulse 5s ease-in-out infinite}
+  .net-live .e path:nth-child(2){animation-delay:-.6s}.net-live .e path:nth-child(3){animation-delay:-1.2s}
+  .net-live .e path:nth-child(4){animation-delay:-1.8s}.net-live .e path:nth-child(5){animation-delay:-2.4s}
+  .net-live .e path:nth-child(6){animation-delay:-3s}.net-live .e path.w{animation-duration:7s}
+  .rvis-b .omics span{animation:cellseq 12s ease-in-out infinite}
+  .rvis-b .omics span:nth-child(2){animation-delay:3s}
+  .rvis-b .omics span:nth-child(3){animation-delay:6s}
+  .rvis-b .omics span:nth-child(4){animation-delay:9s}
+  .rgrid.paused .rvis-b *,.rvis-b.resting *{animation-play-state:paused!important}
+}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(var(--dx,2px),var(--dy,-2px))}}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.06);opacity:1}}
+@keyframes edgepulse{0%,100%{stroke-opacity:.55}50%{stroke-opacity:.8}}
+@keyframes cellseq{0%,30%,100%{border-color:#cad6d2;color:#396c71;background:#fff}8%,22%{border-color:#168d84;color:#168d84;background:rgba(22,141,132,.06)}}
+/* 02 framework: the preview's long-term row under the flow */
+.vision{display:grid;grid-template-columns:200px minmax(0,1fr);gap:40px;align-items:baseline;margin-top:48px;padding-top:24px;border-top:1px solid var(--rule-lt)}
+.vision p{font-size:18px;line-height:1.55;color:var(--dtext);max-width:44em}
+.vision b{color:var(--ink);font-weight:600}
+/* 03 application domain: the preview's two columns (Home preview removed in v1.6; rules kept, unused) */
+.app-layout{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:72px;align-items:start}
+.app-l .lead{font-size:20px;line-height:1.5;color:var(--ink);margin-top:24px}
+.app-l p{font-size:16px;line-height:1.6;color:var(--dtext);margin-top:16px}
+.app-l .muted{font-size:15px;color:var(--muted)}
+.qlist{border-top:1px solid var(--rule-lt)}
+.q-title{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.q-title b{font-size:14px;font-weight:600;color:var(--ink)}
+.qlist li{display:grid;grid-template-columns:56px minmax(0,1fr);padding:20px 0;border-bottom:1px solid var(--line)}
+.qlist li>.micro{color:var(--teal);padding-top:4px}
+.qlist h3{font-size:19px;line-height:1.35;font-weight:600;letter-spacing:-.01em}
+.qlist p{font-size:15px;line-height:1.55;color:var(--dtext);margin-top:4px}
+/* 04 methods: label + h2 beside the 3×2 cells */
+.m-layout{display:grid;grid-template-columns:minmax(0,.65fr) minmax(0,1.35fr);gap:60px;align-items:start}
+/* 05 people: the preview's grid, one wide card and three */
+.pgrid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:16px}
+.pc{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:22px;min-width:0;transition:border-color .35s var(--ease),box-shadow .35s var(--ease)}
+.pc:hover{border-color:rgba(22,141,132,.26);box-shadow:0 22px 44px -36px rgba(20,39,44,.34)}
+.pc-wide{display:grid;grid-template-columns:88px minmax(0,1fr);gap:22px;align-items:start}
+.pc .portrait{width:56px;margin-bottom:20px}
+.pc-wide .portrait{width:88px;margin:0}
+.pc .micro{display:block}
+.pc h3{font-size:18px;line-height:1.3;font-weight:600;letter-spacing:-.01em;margin-top:6px}
+.pc p{font-size:14px;line-height:1.5;color:var(--muted);margin-top:4px}
+.pc .xp{color:var(--dtext);margin-top:12px}
+/* .plist rows, year · tag/title/authors · link (Home 04 lab news and the News view's Lab news block since v1.6; was 06 selected work) */
+.plist{border-top:1px solid var(--rule-lt)}
+.plist article{display:grid;grid-template-columns:72px minmax(0,1fr) 88px;gap:24px;align-items:baseline;padding:22px 0;border-bottom:1px solid var(--line)}
+.plist .dt{color:var(--tealt)}
+.plist .micro{display:block;color:var(--tealt)}
+.plist h3{font-size:18px;line-height:1.4;font-weight:600;margin-top:6px;text-wrap:pretty}
+.plist p{font-size:14px;color:var(--muted);margin-top:4px}
+.plist .pl{justify-self:end;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--tealt);text-decoration:none;white-space:nowrap}
+.plist a.pl:hover{color:var(--ink)}
+/* News view: the Lab news rows sit in a .pub-group like the papers below: the group's rule is the only top rule, the first row starts as .pub:first-of-type does, and the year column is .pub's 64px so both blocks share one text edge */
+.pub-group .plist{border-top:0}
+.pub-group .plist article:first-child{padding-top:4px}
+@media (min-width:741px){.pub-group .plist article{grid-template-columns:64px minmax(0,1fr) 88px}}
+/* .contact band: the Contact page's band, the h2's second sentence in teal (Home 07 preview removed in v1.6) */
+.contact h2 em{display:block;font-style:normal;color:var(--teal);font-weight:400}
+.contact .kv{margin-top:26px}
+@media (max-width:1180px){
+  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pc-wide{grid-column:1 / -1}
+}
+@media (max-width:1040px){
+  .rgrid,.app-layout,.m-layout{grid-template-columns:minmax(0,1fr);gap:20px}
+  .app-layout,.m-layout{gap:40px}
+}
+@media (max-width:740px){
+  .rcard{padding:22px 20px 22px}
+  .rvis{height:240px}
+  .vision{grid-template-columns:1fr;gap:10px}
+  .pgrid{grid-template-columns:minmax(0,1fr)}
+  .pc-wide{grid-template-columns:64px minmax(0,1fr);gap:16px}
+  .pc-wide .portrait{width:64px}
+  .plist article{grid-template-columns:48px minmax(0,1fr);gap:14px}
+  .plist .pl{grid-column:2;justify-self:start}
+  .qlist li{grid-template-columns:44px minmax(0,1fr)}
+}
+/* ---------- 02 framework flow: a small travelling ball, a faint drop-on-water at each card (one 10 s loop, all on one clock) ----------
+   t = 0 Represent ripples · 0.7–2.9 s ball on connector 1 → Generate & assess ripples · 3.6–5.8 s connector 2 → Measure
+   · 6.5–8.7 s connector 3 → Learn · the ball fades at each arrival; each icon circle lights for 0.7 s and breathes once */
+.flow-icon{position:relative}
+.flow-icon svg{position:relative;z-index:1}
+.flow-icon:before{content:"";position:absolute;inset:-18px;border-radius:50%;background:radial-gradient(closest-side,rgba(22,141,132,.06),rgba(22,141,132,0));pointer-events:none}
+.rip{position:absolute;inset:-1px;border-radius:50%;pointer-events:none}
+.rip:before,.rip:after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid #168d84;opacity:0}
+.connector .ball{position:absolute;left:0;top:0;width:6px;height:6px;margin:-2.5px 0 0 -3px;border-radius:50%;background:#168d84;box-shadow:0 0 6px rgba(22,141,132,.2);opacity:0;pointer-events:none}
+@media (prefers-reduced-motion:no-preference){
+  .flow-icon:before{animation:water 8s ease-in-out infinite}
+  .flow>li:nth-child(3) .flow-icon:before{animation-delay:-2s}
+  .flow>li:nth-child(5) .flow-icon:before{animation-delay:-4s}
+  .flow>li:nth-child(7) .flow-icon:before{animation-delay:-6s}
+  .flow-icon{animation:iconpulse 10s linear infinite}
+  .rip:before{animation:ripple 10s linear infinite}
+  .rip:after{animation:ripple 10s linear .25s infinite}
+  .flow>li:nth-child(3) .flow-icon{animation-delay:2.9s}
+  .flow>li:nth-child(3) .rip:before{animation-delay:2.9s}.flow>li:nth-child(3) .rip:after{animation-delay:3.15s}
+  .flow>li:nth-child(5) .flow-icon{animation-delay:5.8s}
+  .flow>li:nth-child(5) .rip:before{animation-delay:5.8s}.flow>li:nth-child(5) .rip:after{animation-delay:6.05s}
+  .flow>li:nth-child(7) .flow-icon{animation-delay:8.7s}
+  .flow>li:nth-child(7) .rip:before{animation-delay:8.7s}.flow>li:nth-child(7) .rip:after{animation-delay:8.95s}
+  /* the card the ball reaches trembles once, damped, with the ripple (CSS translate, so the reveal's transform is untouched) */
+  .flow>li.flow-card{animation:cardtremor 10s infinite}
+  .flow>li.flow-card:nth-child(3){animation-delay:2.9s}
+  .flow>li.flow-card:nth-child(5){animation-delay:5.8s}
+  .flow>li.flow-card:nth-child(7){animation-delay:8.7s}
+  .connector .ball{animation:ballx 10s infinite}
+  .flow>li:nth-child(2) .ball{animation-delay:.7s}
+  .flow>li:nth-child(4) .ball{animation-delay:3.6s}
+  .flow>li:nth-child(6) .ball{animation-delay:6.5s}
+  .flow.paused *,.flow.paused *:before,.flow.paused *:after{animation-play-state:paused!important}
+}
+@keyframes cardtremor{0%{translate:0 0;box-shadow:0 6px 18px rgba(20,39,44,0);animation-timing-function:ease-out}2%{translate:0 -2px;box-shadow:0 6px 18px rgba(20,39,44,.06);animation-timing-function:ease-out}3.7%{translate:0 1px;animation-timing-function:ease-out}5.3%{translate:0 -.5px;animation-timing-function:ease-out}7%,100%{translate:0 0;box-shadow:0 6px 18px rgba(20,39,44,0)}}
+@keyframes water{0%,100%{transform:scale(.98)}50%{transform:scale(1.02)}}
+@keyframes ripple{0%{opacity:.35;transform:scale(1)}14%,100%{opacity:0;transform:scale(1.7)}}
+@keyframes iconpulse{0%{transform:scale(1);border-color:#168d84}3%{transform:scale(1.02)}6%{transform:scale(1)}7%{border-color:#168d84}12%,100%{transform:scale(1);border-color:#cad6d2}}
+@keyframes ballx{0%{left:0;opacity:0;animation-timing-function:cubic-bezier(.45,0,.55,1)}2%,20%{opacity:1}22%,100%{left:100%;opacity:0}}
+@keyframes bally{0%{top:0;opacity:0;animation-timing-function:cubic-bezier(.45,0,.55,1)}2%,20%{opacity:1}22%,100%{top:100%;opacity:0}}
+@media (max-width:1040px){
+  .connector .ball{left:0;margin:-3.5px 0 0 -3px}
+}
+@media (max-width:1040px) and (prefers-reduced-motion:no-preference){
+  .connector .ball{animation-name:bally}
+}
+/* ---------- measured reveals (once, on scroll into view; v8's .rv system). The "before" states exist only while an element
+   is .rv and not yet .in, and only without reduced motion, so content already on screen and reduced-motion visits are static.
+   Only transform, opacity, color and background change; durations 0.6–1.2 s, ease-out (var(--ease)). ---------- */
+.srows>div,.qlist li{position:relative;border-bottom-color:transparent!important}
+.srows>div:after,.qlist li:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--line);transform-origin:0 50%}
+.bg-paper .srows>div:after{background:var(--line2)}
+.plist .dt{color:var(--teal)}
+.plist .pl span{display:inline-block;transition:translate .35s var(--ease)}
+.plist article:hover .pl span{translate:3px 0}
+.pc{transition:border-color .35s var(--ease),box-shadow .35s var(--ease),translate .35s var(--ease)}
+.pc:hover{translate:0 -2px;box-shadow:0 18px 36px -30px rgba(20,39,44,.28)}
+.m-layout .cells li{transition:background-color .6s var(--ease)}
+@media (prefers-reduced-motion:no-preference){
+  /* transitions live on .in only: the "before" state snaps in silently when .rv is set, and only the reveal animates */
+  /* 00 thesis (and every statement band): the emphasis tints from ink to teal after the sentence has landed */
+  .statement .rv:not(.in) h2 strong{color:var(--ink)}
+  .statement .in h2 strong{transition:color 1s var(--ease) 1.3s}
+  /* 01 research cards (and the Research page's areas): header, then rows one by one with their rules drawing; gold last */
+  .rv:not(.in) .scale-top,.rv:not(.in) .srows>div>*{opacity:0}
+  .rv:not(.in) .srows>div:after{transform:scaleX(0)}
+  .rv:not(.in) .srows .fut .micro{color:#30535a}
+  .in .scale-top{transition:opacity .7s var(--ease) .1s}
+  .in .srows>div>*{transition:opacity .7s var(--ease)}
+  .in .srows>div:after{transition:transform .8s var(--ease)}
+  .in .srows>div:nth-child(1)>*,.in .srows>div:nth-child(1):after{transition-delay:.18s}
+  .in .srows>div:nth-child(2)>*,.in .srows>div:nth-child(2):after{transition-delay:.25s}
+  .in .srows>div:nth-child(3)>*,.in .srows>div:nth-child(3):after{transition-delay:.32s}
+  .in .srows>div:nth-child(4)>*,.in .srows>div:nth-child(4):after{transition-delay:.39s}
+  .in .srows .fut .micro{transition:opacity .7s var(--ease) .39s,color 1s var(--ease) 1s}
+  /* 03 application domain: the three paragraphs in sequence; Q1–Q4 rules draw and the Q labels tint, 120 ms apart (Home preview removed in v1.6; rules kept, unused) */
+  .app-l.rv:not(.in)>p{opacity:0}
+  .app-l.in>p{transition:opacity .8s var(--ease)}
+  .app-l.in>p:nth-of-type(1){transition-delay:.2s}.app-l.in>p:nth-of-type(2){transition-delay:.35s}.app-l.in>p:nth-of-type(3){transition-delay:.5s}
+  .qlist.rv:not(.in) li>div{opacity:0}
+  .qlist.rv:not(.in) li:after{transform:scaleX(0)}
+  .qlist.rv:not(.in) li>.micro{color:#30535a}
+  .qlist.in li>div{transition:opacity .7s var(--ease)}
+  .qlist.in li:after{transition:transform .9s var(--ease)}
+  .qlist.in li>.micro{transition:color .9s var(--ease)}
+  .qlist.in li:nth-child(1)>*,.qlist.in li:nth-child(1):after{transition-delay:.2s}
+  .qlist.in li:nth-child(2)>*,.qlist.in li:nth-child(2):after{transition-delay:.32s}
+  .qlist.in li:nth-child(3)>*,.qlist.in li:nth-child(3):after{transition-delay:.44s}
+  .qlist.in li:nth-child(4)>*,.qlist.in li:nth-child(4):after{transition-delay:.56s}
+  /* 04 methods (and the shared cells on the detail pages): cells in order, 90 ms apart, their numbers tinting teal */
+  .cells li.rv:not(.in) .n{color:#cad6d2}
+  .cells li.rv{transition-delay:0s}
+  .cells li:nth-child(2).rv{transition-delay:.09s}.cells li:nth-child(3).rv{transition-delay:.18s}.cells li:nth-child(4).rv{transition-delay:.27s}
+  .cells li:nth-child(5).rv{transition-delay:.36s}.cells li:nth-child(6).rv{transition-delay:.45s}
+  .cells li.in .n{transition:color 1s var(--ease) .35s}
+  .cells li.in:nth-child(2) .n{transition-delay:.44s}.cells li.in:nth-child(3) .n{transition-delay:.53s}.cells li.in:nth-child(4) .n{transition-delay:.62s}
+  .cells li.in:nth-child(5) .n{transition-delay:.71s}.cells li.in:nth-child(6) .n{transition-delay:.8s}
+  .m-layout .cells li{animation:cellbreath 10s ease-in-out infinite}
+  .m-layout .cells li:nth-child(2){animation-delay:1.6s}.m-layout .cells li:nth-child(3){animation-delay:3.2s}
+  .m-layout .cells li:nth-child(4){animation-delay:4.8s}.m-layout .cells li:nth-child(5){animation-delay:6.4s}
+  .m-layout .cells li:nth-child(6){animation-delay:8s}
+  .m-layout.paused .cells li{animation-play-state:paused!important}
+  /* 05 people: portraits settle from .96 with their ring */
+  .pc.rv:not(.in) .portrait,.pcard.rv:not(.in) .portrait{transform:scale(.96)}
+  .pc.in .portrait,.pcard.in .portrait{transition:transform 1s var(--ease) .15s}
+  /* .plist rows (Home 04 and News view lab news): rows 80 ms apart, the year tinting teal after its row */
+  .plist article.rv{transition-delay:calc(var(--i,0)*80ms)}
+  .plist article.rv:not(.in) .dt{color:#30535a}
+  .plist article.in .dt{transition:color .9s var(--ease) calc(var(--i,0)*80ms + .3s)}
+  /* .contact band (Home 07 preview removed in v1.6; Contact page header block): heading rises, then the teal sentence tints in */
+  .contact .rv:not(.in) h2 em{color:var(--ink)}
+  .contact .in h2 em{transition:color 1s var(--ease) .5s}
+}
+@keyframes cellbreath{0%{background-color:rgba(22,141,132,0)}8%{background-color:rgba(22,141,132,.035)}16%,100%{background-color:rgba(22,141,132,0)}}
+/* ================= v1.6: Research rebuilt on the v2.0 template (loop · A · B; no C) — rules copied from v2.0 ================= */
+/* Research: loop figure beside the long-term line */
+.loop-txt h2{font-size:clamp(24px,2.4vw,32px);line-height:1.32;font-weight:300;letter-spacing:-.01em;color:var(--ink);margin-top:18px;max-width:18em}
+.loop-txt h2 strong{color:var(--teal);font-weight:300}
+.disc{display:grid;gap:6px;margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:14px;line-height:1.55;color:var(--muted)}
+/* Research: one direction = eyebrow · question | aim, then the path, then where we are */
+.dir-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:start}
+.dir-eb{color:#30535a}
+.dir-eb b{color:var(--teal)}
+.dir-q{font-size:clamp(26px,2.6vw,36px);line-height:1.2;font-weight:500;letter-spacing:-.025em;color:var(--ink);margin-top:16px;text-wrap:balance}
+.dir-aim{font-size:17px;line-height:1.6;color:var(--dtext);padding-top:30px}
+/* the path: one ruled row, four nodes sitting on the rule; done = small filled, now = teal with halo + chip, future = gold ring */
+.path{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:56px;border-top:1px solid var(--rule-lt);counter-reset:none}
+.path li{position:relative;padding:26px 24px 4px 0;min-width:0}
+.path li:before{content:"";position:absolute;left:0;top:-5px;width:9px;height:9px;border-radius:50%;background:var(--card);border:1px solid #9fb6b3;box-sizing:border-box}
+.path li.done:before{background:var(--tealt);border-color:var(--tealt)}
+.path li.now:before{background:var(--teal);border-color:var(--teal);box-shadow:0 0 0 4px rgba(22,141,132,.14)}
+.path li.fut:before{border-color:var(--gold)}
+.path .micro{display:flex;align-items:center;gap:12px;color:#30535a}
+.path .live{color:var(--teal);letter-spacing:.06em}
+.path .fut-tag{color:var(--gold)}
+.path h3{font-size:19px;line-height:1.3;font-weight:600;letter-spacing:-.01em;margin-top:10px}
+.path li.fut h3{color:#30535a}
+.path p{font-size:15px;line-height:1.5;color:var(--dtext);margin-top:6px}
+/* where we are: the .vision row; then the finished-work cards */
+.vision.where{margin-top:44px}
+.vision.where p{font-size:17px}
+.wgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:28px}
+.wgrid-a{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);align-items:start}
+.wcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:22px 24px 20px;display:flex;flex-direction:column;min-width:0}
+.wcard>.micro{color:var(--tealt)}
+.wcard h3{font-size:18px;line-height:1.35;font-weight:600;letter-spacing:-.01em;margin-top:8px}
+.wcard>p{font-size:15px;line-height:1.55;color:var(--dtext);margin-top:6px}
+.wcard .wlink{margin-top:14px}
+.wcard .wlink .more{font-size:15px}
+/* Research A card 1: the moving body (card A of v1.5) and, once drawn, its functional panel (card B of v1.5) */
+.wvis{display:flex;gap:12px;margin-bottom:18px}
+.wvis .rvis{margin:0;flex:1 1 0;min-width:0;height:260px}
+.wvis .rvis-b{display:none}
+.wvis .rvis-b.fn-on{display:block}
+.wvis .rvis-b .fn{left:14px;top:12px;width:calc(100% - 28px);height:calc(100% - 22px)}
+@media (max-width:1040px){
+  .dir-head{grid-template-columns:minmax(0,1fr);gap:20px}
+  .dir-aim{padding-top:0}
+  .wgrid,.wgrid-a{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:740px){
+  .dir-aim{font-size:16px}
+  .path{grid-template-columns:minmax(0,1fr);margin-top:40px;border-top:0;border-left:1px solid var(--rule-lt);margin-left:4px}
+  .path li{padding:0 0 26px 24px}
+  .path li:last-child{padding-bottom:4px}
+  .path li:before{left:-5px;top:3px}
+  .path h3{margin-top:6px}
+  .vision.where{margin-top:32px}
+  .wvis{flex-direction:column}
+  .wvis .rvis{flex:none;height:240px}
+  .wvis .rvis-b{height:220px}
+  .wcard{padding:20px}
+}
+/* schematic tag: small, quiet, in a corner of the visual */
+.rvis .vtag{position:absolute;right:16px;bottom:14px;z-index:3;font-size:11px;letter-spacing:.08em;color:#7d9497;line-height:1}
+/* response-across-scales schematic (Research B wide card) */
+.scl{position:absolute;overflow:visible}
+.rvis-s .scl{left:20px;top:18px;width:calc(100% - 40px);height:calc(100% - 58px)}
+.scl text{font-family:var(--mono);font-size:12.5px;font-weight:500;letter-spacing:.08em;fill:var(--tealt)}
+.scl .ax{font-size:11px;fill:#456267}
+.scl .base{fill:none;stroke:#cad6d2;stroke-width:1}
+.scl .col{fill:rgba(22,141,132,.05)}
+.scl .bout{fill:rgba(22,141,132,.22);stroke:var(--teal);stroke-width:1.2}
+.scl .cv{fill:none;stroke:#538989;stroke-width:2;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:1 1;stroke-dashoffset:0}
+.scl .cv.last{stroke:var(--teal)}
+.scl .axis{fill:none;stroke:#9fb6b3;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+.wvis .rvis-s{display:block}
+.wcard .wlink{display:flex;flex-wrap:wrap;gap:4px 24px}
+/* stepper: earlier stages ink-grey, current teal with halo */
+.path li.done:before{background:#7d9497;border-color:#7d9497}
+/* one-time draw-in of the B schematic (waits for the reader) */
+@media (prefers-reduced-motion:no-preference){
+  .rv:not(.in) .scl .cv{stroke-dashoffset:1}
+  .rv:not(.in) .scl .bout,.rv:not(.in) .scl .col{opacity:0}
+  .in .scl .bout{transition:opacity .6s var(--ease) .1s}
+  .in .scl .col{transition:opacity .9s var(--ease) .3s}
+  .in .scl .cv{transition:stroke-dashoffset 1.2s var(--ease) .4s}
+  .in .scl .cv:nth-of-type(2){transition-delay:.65s}
+  .in .scl .cv:nth-of-type(3){transition-delay:.9s}
+  .in .scl .cv:nth-of-type(4){transition-delay:1.15s}
+}
+.where-side{border-top:1px solid var(--rule-lt);padding-top:16px;display:grid;gap:8px}
+.where-side p{font-size:17px;line-height:1.55;color:var(--dtext)}
+.dir header+ol+.wgrid{margin-top:44px}
+/* v1.6: application domain under B: same head as A/B, then the four questions */
+#research-applications .cells{margin-top:56px}
+@media (max-width:740px){#research-applications .cells{margin-top:40px}}
+/* v1.6: a path stage reached by its id (#research-a-body …, from the Home 01 rows) stops below the sticky header + sub-nav */
+#research .path li[id]{scroll-margin-top:160px}
+@media (max-width:740px){#research .path li[id]{scroll-margin-top:148px}}
+/* v1.6: each Home 01 row is one link (label + keywords, the full row height) to its Research path stage; hover inks the label, gold rows stay gold */
+.srows>div>a{grid-column:1/-1;display:grid;grid-template-columns:128px minmax(0,1fr);gap:14px;margin:-12px 0;padding:12px 0;color:inherit;text-decoration:none}
+.srows>div>a:hover .micro{color:var(--ink)}
+.srows>div.fut>a:hover .micro{color:var(--gold)}
+@media (prefers-reduced-motion:no-preference){.srows>div>a .micro{transition:color .25s var(--ease)}}
+@media (max-width:740px){.srows>div>a{grid-template-columns:1fr;gap:4px}}
+/* ================= v1.7 polish (appended; overrides above). Numbers refer to the v1.7 list in NOTES.md ================= */
+/* 1 ticker: the rule above it stays crisp; only the moving words dissolve at both ends (64 px, eased ramp) */
+.ticker{-webkit-mask-image:none;mask-image:none}
+.ticker-in{display:flex;align-items:center;flex:1 1 auto;min-width:0;align-self:stretch;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.08) 12px,rgba(0,0,0,.3) 26px,rgba(0,0,0,.62) 40px,rgba(0,0,0,.88) 52px,#000 64px,#000 calc(100% - 64px),rgba(0,0,0,.88) calc(100% - 52px),rgba(0,0,0,.62) calc(100% - 40px),rgba(0,0,0,.3) calc(100% - 26px),rgba(0,0,0,.08) calc(100% - 12px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.08) 12px,rgba(0,0,0,.3) 26px,rgba(0,0,0,.62) 40px,rgba(0,0,0,.88) 52px,#000 64px,#000 calc(100% - 64px),rgba(0,0,0,.88) calc(100% - 52px),rgba(0,0,0,.62) calc(100% - 40px),rgba(0,0,0,.3) calc(100% - 26px),rgba(0,0,0,.08) calc(100% - 12px),transparent 100%)}
+/* 2 hero: the stage spans the copy column's full height (top = eyebrow, bottom = the meta row), so the figure has room to be the hero */
+@media (min-width:1041px){
+  .hero-layout{align-items:stretch}
+  .hero-fig .stage{aspect-ratio:auto;height:100%;max-height:none}
+}
+/* 3 Home 02 flow: the row reveals as one (index script: .flow, not .flow>li), so no card lags the others; a paused flow rests
+   (all four cards on the row, no ball, no ripple) and restarts its 10 s cycle when it becomes the active zone. Pausing used to freeze
+   card 01 inside its arrival tremor (up to 2 px above the row): the flow starts paused at load, at t = 0, which is card 01's tremor */
+@media (prefers-reduced-motion:no-preference){.flow.paused *,.flow.paused *:before,.flow.paused *:after{animation:none!important}}
+/* 4 Home 03 people: one card grammar for all four (portrait, role, name, one line), four equal columns */
+.pgrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.pc .portrait{width:64px;margin:0 0 20px}
+@media (max-width:1180px){.pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:740px){
+  .pgrid{grid-template-columns:minmax(0,1fr);gap:12px}
+  .pc{display:grid;grid-template-columns:56px minmax(0,1fr);column-gap:16px;align-items:center;padding:18px 20px}
+  .pc .portrait{width:56px;margin:0}
+}
+/* 5 Home 01 cards: both cards share one row grid (subgrid), so title, text, the four ruled rows and the foot sit at the same y;
+   both visual panels keep one 16 px inner inset */
+@supports (grid-template-rows:subgrid){
+  @media (min-width:1041px){
+    .rgrid{grid-template-rows:repeat(9,auto);row-gap:0}
+    .rcard{display:grid;grid-row:span 9;grid-template-rows:subgrid;row-gap:0}
+    .rcard .srows{display:grid;grid-row:span 4;grid-template-rows:subgrid;row-gap:0}
+  }
+}
+.rvis .triad{left:16px;bottom:16px}
+.rvis-b .fn{left:16px;top:16px;width:calc(100% - 32px);height:calc(100% - 70px)}
+.omics{left:16px;right:16px;bottom:16px}
+.wvis .rvis-b .fn{left:16px;top:16px;width:calc(100% - 32px);height:calc(100% - 32px)}
+/* 6 Research loop: each node label hangs to its outer corner (inner edge 2 % past the node centre), so no label reaches an arc;
+   one line each above 740 px; the ring (not ring + caption) is centred on the text; the caption sits right under the figure */
+.nl.n1,.nl.n4{left:auto;right:73%;transform:none;align-items:flex-end;text-align:right}
+.nl.n2,.nl.n3{left:73%;transform:none;align-items:flex-start;text-align:left}
+.nl.n1,.nl.n2{bottom:calc(80.75% + 12px)}
+.nl.n3,.nl.n4{top:calc(80.75% + 12px)}
+@media (min-width:741px){.nl br{display:none}}
+.lt-row .loop-fig figcaption{margin-top:-12px}   /* the ring box keeps ~37 px under its bottom labels; this leaves 24 px */
+@media (max-width:740px){.lt-row .loop-fig figcaption{margin-top:calc(76px - .1925 * min(100vw - 32px,460px))}}
+@supports (grid-template-rows:subgrid){
+  @media (min-width:1041px){
+    .lt-row{grid-template-rows:auto auto;row-gap:0;align-items:start}
+    .lt-row>.loop-fig{grid-column:1;grid-row:1 / span 2;display:grid;grid-template-rows:subgrid;row-gap:0}
+    .lt-row>.loop-txt{grid-column:2;grid-row:1;align-self:center}
+  }
+}
+/* 7 Q1–Q4: one colour for all four numerals (no staggered tint); the row reveals as one; numeral, question and text share rows */
+.cells .n{color:#538989}
+@supports (grid-template-rows:subgrid){
+  @media (min-width:741px){
+    .cells.c4 li{display:grid;grid-row:span 3;grid-template-rows:subgrid;row-gap:0;align-content:start}
+  }
+}
+/* 12 phones: the B schematic panel is as tall as its drawing (it kept ~140 px of empty panel under the curves at 390) */
+@media (max-width:740px){.wvis .rvis.rvis-s{height:calc((100vw - 112px) * 222 / 640 + 58px)}}
+/* 12 compounds and dashes do not break across lines ("long- / term", "movement-to- / response", a line starting with "—designed") */
+.nw{white-space:nowrap}
+/* 10 vertical rhythm: every top-level content section 96 px (72 on phones); heading block to content 48 px (34 on phones) */
+@media (min-width:741px){.pad{padding:96px 0}}
+.path,#research-applications .cells{margin-top:48px}
+@media (max-width:740px){.path,#research-applications .cells{margin-top:34px}}
+/* 11 links: one hover vocabulary, .25 s on the site easing.
+   text links: a 1 px underline at .22em that inks in; arrow links: ink + the arrow moves (→ 3 px right, ↗ 2 px up-right);
+   bordered links and chips: the 1 px rule turns teal. Focus: the site ring everywhere (2 px teal, 3 px offset) */
+.util a,.foot a,.pub-intro a,.pub-more a{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.22em;text-decoration-color:transparent}
+.util a:hover,.foot a:hover,.pub-intro a:hover,.pub-more a:hover{color:var(--ink);text-decoration-color:currentColor}
+.scale-foot a:hover{text-decoration:none;color:var(--ink)}
+.util a,.foot a,.pub-intro a,.pub-more a,.more,.scale-foot a,.tlink,.kv a,.chip,.hl,.nl,.site-nav a,.subnav a,.plist .pl,.area-foot a,.pubfold-t{transition:color .25s var(--ease),border-color .25s var(--ease),background-color .25s var(--ease),text-decoration-color .25s var(--ease)}
+.site-nav a:after,.subnav a:after{transition:transform .25s var(--ease),opacity .25s var(--ease)}
+.more span[aria-hidden],.tlink span[aria-hidden],.scale-foot a span[aria-hidden],.btn .ar{display:inline-block;transition:transform .25s var(--ease)}
+.more:hover span[aria-hidden],.tlink:hover span[aria-hidden],.scale-foot a:hover span[aria-hidden],.btn:hover .ar{transform:translateX(3px)}
+.more[href^="http"]:hover span[aria-hidden],.tlink[href^="http"]:hover span[aria-hidden]{transform:translate(2px,-2px)}
+.plist .pl span{font-family:var(--sans);font-weight:500;transition:translate .25s var(--ease)}
+.plist article:hover .pl span{translate:2px -2px}
+.pub-group .pubfold-btn:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="util">
+  <div class="wrap">
+    <span><a href="https://www.stat.purdue.edu" rel="noopener">Department of Statistics</a><span class="full"><span class="sep">·</span>College of Science</span><span class="sep">·</span><a href="https://www.purdue.edu" rel="noopener">Purdue University</a></span>
+    <a href="#contact">Contact</a>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap nav">
+    <a class="logo" href="#home" aria-label="Human Motion and Molecular Health Lab, home">
+      <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="27" cy="9.5" r="3.6" fill="#168d84"/><path class="arm" d="M8 22 C16 16 30 15 41 19" fill="none" stroke="#14272c" stroke-width="2.8" stroke-linecap="round"/><path d="M25 17 C21 25 27 30 23 38 M23 38 L14 44 M24 33 C29 36 33 39 36 44" fill="none" stroke="#14272c" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span><b>Human Motion &amp; Molecular Health Lab</b><small>Department of Statistics · Purdue University</small></span>
+    </a>
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav"><i></i><i></i></button>
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
+      <a href="#home" data-view="home">Home</a>
+      <a href="#research" data-view="research">Research</a>
+      <a href="#people" data-view="people">People</a>
+      <a href="#news" data-view="news">News</a>
+      <a href="#contact" data-view="contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- =====================================================================
+     HOME  (the preview, all sections in order: hero · 00 thesis · 01 research · 02 framework · 03 people · 04 lab news; the detail pages are the views Research (loop, A, B, applications), People, News, Contact. The eight Home 01 rows link to the Research path stages. v1.6 removed the Home previews 03 application domain, 04 methods and 07 collaborate, and replaced 06 selected work with 04 lab news)
+     ===================================================================== -->
+<section class="view" id="home" aria-labelledby="home-title">
+
+  <div class="hero lt">
+    <div class="wrap hero-layout">
+      <div class="hero-copy">
+        <div class="eyebrow micro"><i></i>Computational movement × molecular health</div>
+        <h1 id="home-title" tabindex="-1">Modeling movement. <em>Decoding response.</em></h1>
+        <p class="hero-intro">We study health-oriented movement across scales, from 3D representations of the moving human body to physiological, biomarker and molecular response.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#research">Explore research <span class="ar" aria-hidden="true">→</span></a>
+          <a class="tlink" href="#research-loop">How the work connects <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="hero-meta">
+          <div><span class="micro">Movement systems</span><span>Tai Chi · Qigong · Yoga</span></div>
+          <div><span class="micro">Biological scales</span><span>Biomarkers · Multi-omics</span></div>
+        </div>
+      </div>
+
+      <!-- CONFIRM WITH PI: the hero and the Home 01 / A card ship two decimated SMPL-X bodies (female and male; 1,802-vertex rest meshes, skin weights and joint rotations, shared/assets/motion/taiji-umons-f.bin and taiji-umons-m.bin) to every visitor. SMPL-X is under the MPI-IS research licence; check that showing a derived mesh on a public site is allowed. -->
+      <!-- Hero body: SMPL-X female body (MPI-IS, research licence), decimated web mesh, skinned in the browser; Home 01 / A: SMPL-X male body.
+           The movement is derived from recordings of a person, fitted to a parametric body: UMONS-TAICHI optical motion capture
+           (Tits M, Laraba S, Caulier E, Tilmanne J, Dutoit T. UMONS-TAICHI: a multimodal motion capture dataset of expertise in
+           Taijiquan gestures. Data in Brief 19 (2018) 1214-1221, doi:10.1016/j.dib.2018.05.088; Zenodo 2784581; CC BY-NC-SA 4.0),
+           modified: medoid trials of skilled performers (hero: a female expert, card A: a male performer), joint centres from the
+           markers, SMPL-X joint rotations fitted to them, feet cleaned against the floor, forms joined by short planned steps.
+           Packs: shared/assets/motion/taiji-umons-f.bin, taiji-umons-m.bin (shared/MOTION_FORMAT.md v2). No visible caption, at the user's request. -->
+      <figure class="hero-fig" id="hero-fig" aria-label="A parametric body model in motion" data-loop>
+        <div class="stage">
+          <i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i>
+          <div class="stage-top"><span class="micro">Parametric body<span class="xs-hide"> + motion</span></span><span class="micro live">Research space</span></div>
+          <div class="orbit-back"></div>
+          <div class="poses">
+            <img class="ps1" src="../../shared/assets/pose-1-light.svg" width="300" height="430" alt="A triangulated parametric body model in four successive poses of one movement.">
+            <img class="ps2" src="../../shared/assets/pose-2-light.svg" width="300" height="430" alt="">
+            <img class="ps3" src="../../shared/assets/pose-3-light.svg" width="300" height="430" alt="">
+            <img class="ps4" src="../../shared/assets/pose-4-light.svg" width="300" height="430" alt="">
+          </div>
+          <canvas class="body3d" id="body3d" aria-hidden="true"></canvas>
+          <div class="orbit-front"></div>
+          <i class="tdot d1"></i><i class="tdot d2"></i><i class="tdot d3"></i><i class="tdot d4"></i>
+          <div class="stage-bottom">
+            <div><small>01</small><b>Body</b><span>shape + anatomy</span></div>
+            <div><small>02</small><b>Motion</b><span>pose + dynamics</span></div>
+            <div><small>03</small><b>Assessment</b><span>quality + feedback</span></div>
+          </div>
+        </div>
+      </figure>
+    </div>
+
+    <div class="wrap ticker" aria-hidden="true">
+      <div class="ticker-in">
+        <div class="ticker-track"><span>3D HUMAN MODELING</span><i></i><span>MOTION GENERATION</span><i></i><span>BIOMECHANICS</span><i></i><span>STATISTICAL INFERENCE</span><i></i><span>METABOLOMICS</span><i></i><span>PROTEOMICS</span><i></i><span>GENOMICS</span><i></i><span>EPIGENETICS</span><i></i><span>3D HUMAN MODELING</span><i></i><span>MOTION GENERATION</span><i></i><span>BIOMECHANICS</span><i></i><span>STATISTICAL INFERENCE</span><i></i><span>METABOLOMICS</span><i></i><span>PROTEOMICS</span><i></i><span>GENOMICS</span><i></i><span>EPIGENETICS</span><i></i></div>
+        <div class="ticker-track"><span>3D HUMAN MODELING</span><i></i><span>MOTION GENERATION</span><i></i><span>BIOMECHANICS</span><i></i><span>STATISTICAL INFERENCE</span><i></i><span>METABOLOMICS</span><i></i><span>PROTEOMICS</span><i></i><span>GENOMICS</span><i></i><span>EPIGENETICS</span><i></i><span>3D HUMAN MODELING</span><i></i><span>MOTION GENERATION</span><i></i><span>BIOMECHANICS</span><i></i><span>STATISTICAL INFERENCE</span><i></i><span>METABOLOMICS</span><i></i><span>PROTEOMICS</span><i></i><span>GENOMICS</span><i></i><span>EPIGENETICS</span><i></i></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="statement lt" aria-labelledby="home-thesis">
+    <div class="wrap statement-layout">
+      <div class="micro"><b>00</b> / Thesis</div>
+      <div><h2 id="home-thesis">Movement becomes most useful as a health intervention when we can <strong>represent it precisely</strong> and <strong>measure what it changes</strong>.</h2></div>
+    </div>
+  </section>
+
+  <section class="lt bg-paper pad" aria-labelledby="home-scales">
+    <div class="wrap">
+      <header class="sec-head">
+        <div><div class="micro"><b>01</b> / Research</div><h2 id="home-scales"><a class="hl" href="#research">Two scales of the same problem.</a></h2></div>
+        <p>Our research joins computational models of body and movement with quantitative analysis of health and molecular response.</p>
+      </header>
+      <div class="rgrid" data-loop>
+        <article class="rcard">
+          <div class="scale-top"><span class="L">A</span><span class="micro">Movement scale</span></div>
+          <div class="rvis rvis-a" id="home-body" aria-hidden="true">
+            <i class="orbit o1"></i><i class="orbit o2"></i>
+            <img class="rvis-pose" src="../../shared/assets/pose-3-light.svg" width="300" height="430" alt="" loading="lazy">
+            <canvas class="body3d"></canvas>
+            <svg class="triad" viewBox="0 0 64 64" focusable="false"><path d="M16 48 V12 M16 48 H52 M16 48 L5 59"/><text x="21" y="15">y</text><text x="50" y="42">x</text><text x="0" y="52">z</text></svg>
+          </div>
+          <h3>3D Human Body &amp; Motion Modeling</h3>
+          <p>Computational representations of the person and the <span class="nw">movement—designed</span> to support generation, analysis, assessment, and personalized instruction.</p>
+          <div class="srows">
+            <div><a href="#research-a-body"><span class="micro">Body</span><span>3D shape · joints · anatomical structure</span></a></div>
+            <div><a href="#research-a-motion"><span class="micro">Motion</span><span>pose · transfer · synthesis · generation</span></a></div>
+            <div><a href="#research-a-intelligence"><span class="micro">Intelligence</span><span>diagnosis · feedback · training</span></a></div>
+            <div class="fut"><a href="#research-a-extending"><span class="micro">Extending</span><span>muscle · tendon · dynamic models</span></a></div>
+          </div>
+          <div class="scale-foot"><a href="#research-a">Movement scale <span aria-hidden="true">→</span></a></div>
+        </article>
+        <article class="rcard">
+          <div class="scale-top"><span class="L">B</span><span class="micro">Biological scale</span></div>
+          <div class="rvis rvis-b" aria-hidden="true">
+            <svg class="net net-live" viewBox="0 0 400 250" focusable="false">
+              <g class="e">
+                <path d="M200 125 L92 62"/><path d="M200 125 L306 50"/><path d="M200 125 L336 158"/><path d="M200 125 L250 210"/><path d="M200 125 L106 188"/><path d="M200 125 L196 30"/>
+                <path class="w" d="M92 62 L40 128 M92 62 L196 30 M306 50 L370 96 M336 158 L370 96 M106 188 L40 128 M250 210 L336 158 M106 188 L250 210"/>
+              </g>
+              <circle class="hub" cx="200" cy="125" r="16"/><circle class="n" cx="200" cy="125" r="4.5"/>
+              <g class="nd" style="--dx:3px;--dy:-2px"><circle class="n" cx="92" cy="62" r="7"/></g>
+              <g class="nd" style="--dx:-2px;--dy:-3px"><circle class="n" cx="306" cy="50" r="6"/></g>
+              <g class="nd" style="--dx:-3px;--dy:2px"><circle class="n" cx="336" cy="158" r="7"/></g>
+              <g class="nd" style="--dx:2px;--dy:3px"><circle class="n" cx="106" cy="188" r="6"/></g>
+              <g class="nd" style="--dx:2px;--dy:-2px"><circle class="o" cx="250" cy="210" r="5"/></g>
+              <g class="nd" style="--dx:-2px;--dy:2px"><circle class="o" cx="196" cy="30" r="4.5"/></g>
+              <g class="nd" style="--dx:3px;--dy:1px"><circle class="o" cx="40" cy="128" r="4"/></g>
+              <g class="nd" style="--dx:-1px;--dy:-3px"><circle class="o" cx="370" cy="96" r="4"/></g>
+            </svg>
+            <!-- Functional panel: curves computed in the browser from card A's motion pack (wrist height, knee flexion, pelvis yaw, model-estimated kinetic energy); pale bands = across-performer mean ± 1 SD of UMONS-TAICHI optical trials of the same form (Tits et al. 2018, Data in Brief 19, doi:10.1016/j.dib.2018.05.088; CC BY-NC-SA 4.0; modified: joint centres, time-normalised, scaled to the model's stature). No biological numbers. -->
+            <canvas class="fn"></canvas>
+            <div class="omics"><span>MET</span><span>PRO</span><span>GEN</span><span>EPI</span></div>
+          </div>
+          <h3>Exercise Effects &amp; Molecular Response</h3>
+          <p>Statistical and computational analysis of how movement affects health across physiological, biomarker, metabolic, and molecular levels.</p>
+          <div class="srows">
+            <div><a href="#research-b-outcomes"><span class="micro">Outcomes</span><span>physiology · clinical measures · biomarkers</span></a></div>
+            <div><a href="#research-b-molecules"><span class="micro">Molecules</span><span>metabolism · proteomics · genomics · epigenetics</span></a></div>
+            <div><a href="#research-b-inference"><span class="micro">Inference</span><span>longitudinal · multivariate · causal</span></a></div>
+            <div class="fut"><a href="#research-b-personalization"><span class="micro">Personalization</span><span>heterogeneous response · prediction</span></a></div>
+          </div>
+          <div class="scale-foot"><a href="#research-b">Biological scale <span aria-hidden="true">→</span></a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="lt bg-light pad" aria-labelledby="home-fw">
+    <div class="wrap">
+      <header class="sec-head">
+        <div><div class="micro"><b>02</b> / Framework</div><h2 id="home-fw"><a class="hl" href="#research-loop">From movement representation to health mechanism.</a></h2></div>
+        <p>The two research areas converge in a single <span class="nw">movement-to-response framework.</span></p>
+      </header>
+      <ol class="flow" data-loop>
+        <li class="flow-card"><span class="micro">01</span><span class="flow-icon"><i class="rip" aria-hidden="true"></i><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="4.4" r="2.2"/><path d="M6.5 9 L17.5 9 L12 14.5 Z M6.5 9 L3 14.2 M17.5 9 L21 14.2 M12 14.5 L8.6 21.5 M12 14.5 L15.4 21.5 M6.5 9 L8.6 21.5 M17.5 9 L15.4 21.5 M8.6 21.5 L15.4 21.5"/></svg></span><h3>Represent</h3><p>Body structure, individual shape, pose and movement.</p></li>
+        <li class="connector" aria-hidden="true"><i><b class="ball"></b></i><span>BODY</span></li>
+        <li class="flow-card"><span class="micro">02</span><span class="flow-icon"><i class="rip" aria-hidden="true"></i><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 13 C5 7 8 7 10.5 12 S16 17 18.5 11 S21.5 8 22 9"/><path d="M2 8.8 C5 2.8 8 2.8 10.5 7.8 S16 12.8 18.5 6.8" stroke-dasharray="1.2 2.2"/><path d="M2 17.2 C5 11.2 8 11.2 10.5 16.2 S16 21.2 18.5 15.2" stroke-dasharray="1.2 2.2"/><circle class="fill" cx="20.6" cy="4.6" r="1.6"/></svg></span><h3>Generate &amp; assess</h3><p>Movement synthesis, quality, diagnosis and instruction.</p></li>
+        <li class="connector" aria-hidden="true"><i><b class="ball"></b></i><span>INTERVENTION</span></li>
+        <li class="flow-card"><span class="micro">03</span><span class="flow-icon"><i class="rip" aria-hidden="true"></i><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 6 L17.2 9 L17.2 15 L12 18 L6.8 15 L6.8 9 Z"/><path d="M17.2 9 L20.6 7 M6.8 15 L3.4 17 M12 6 L12 2.6"/><circle class="fill" cx="20.9" cy="6.8" r="1.3"/><circle class="fill" cx="3.1" cy="17.2" r="1.3"/><circle class="fill" cx="12" cy="2.2" r="1.3"/><circle cx="12" cy="12" r="2.2"/></svg></span><h3>Measure</h3><p>Physiology, biomarkers, metabolism and molecular systems.</p></li>
+        <li class="connector" aria-hidden="true"><i><b class="ball"></b></i><span>DATA</span></li>
+        <li class="flow-card"><span class="micro">04</span><span class="flow-icon"><i class="rip" aria-hidden="true"></i><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 3 V21 H21"/><path d="M5.5 16.5 L20 5.5 M5.5 16.5 L20 11 M5.5 16.5 L20 16"/><circle class="fill" cx="20" cy="5.5" r="1.3"/><circle class="fill" cx="20" cy="11" r="1.3"/><circle class="fill" cx="20" cy="16" r="1.3"/></svg></span><h3>Learn</h3><p>Mechanisms, heterogeneity and personalized response.</p></li>
+      </ol>
+      <div class="vision"><span class="micro">Long-term direction</span><p>A closed-loop platform that can <b>model a person</b>, <b>adapt movement</b>, <b>evaluate performance</b>, and <b>learn health response over time</b>.</p></div>
+    </div>
+  </section>
+
+  <section class="lt bg-mist pad" aria-labelledby="home-people">
+    <div class="wrap">
+      <header class="sec-head">
+        <div><div class="micro"><b>03</b> / People</div><h2 id="home-people"><a class="hl" href="#people">Research team.</a></h2></div>
+        <p>Computational, quantitative, and health perspectives in one collaborative environment.</p>
+      </header>
+      <div class="pgrid">
+        <article class="pc">
+          <img class="portrait" src="../../shared/assets/people/zhu.webp" width="320" height="320" alt="" loading="lazy">
+          <div><span class="micro">Faculty</span><h3>Michael Yu Zhu</h3><p>Professor of Statistics</p></div>
+        </article>
+        <article class="pc">
+          <img class="portrait" src="../../shared/assets/people/reese.webp" width="320" height="320" alt="" loading="lazy">
+          <div><span class="micro">Faculty</span><h3>Timothy Reese</h3><p>Assistant Professor of Practice</p></div>
+        </article>
+        <!-- CONFIRM WITH PI: Yuyue Zhang shown as "Lab Manager", second line "Student, Department of Statistics, Purdue University" ("Student" is the user's wording, no degree stated); email zhan6013@purdue.edu published at the user's request (2026-09-30) -->
+        <article class="pc">
+          <img class="portrait" src="../../shared/assets/people/yuyue-zhang.webp" width="320" height="320" alt="" loading="lazy">
+          <div><span class="micro">Lab manager</span><h3>Yuyue Zhang</h3><p>Student, Department of Statistics, Purdue University</p></div>
+        </article>
+        <!-- CONFIRM WITH PI: Yang He entry: portrait copied from the Purdue directory at the user's request (same treatment as zhu.webp); email he917@purdue.edu not shown -->
+        <article class="pc">
+          <img class="portrait" src="../../shared/assets/people/yang-he.webp" width="320" height="320" alt="" loading="lazy">
+          <div><span class="micro">Ph.D. student</span><h3>Yang He</h3><p>Department of Statistics, Purdue University</p></div>
+        </article>
+      </div>
+      <p class="more-row"><a class="more" href="#people">All people <span aria-hidden="true">→</span></a></p>
+    </div>
+  </section>
+
+  <section class="lt bg-light pad" aria-labelledby="home-news">
+    <div class="wrap">
+      <header class="sec-head">
+        <div><div class="micro"><b>04</b> / News</div><h2 id="home-news"><a class="hl" href="#news">Lab news.</a></h2></div>
+        <p>Papers, grants, awards and people from across the lab.</p>
+      </header>
+      <!-- CONFIRM WITH PI: news items carried over from the d-portal-v7 News view; verify dates and wording -->
+      <div class="plist">
+        <article><span class="dt">2026</span><div><span class="micro">Paper</span><h3>Linguistic markers of aging in social media text published in Natural Language Processing Journal</h3><p>Yan Cong, Jingying Hu, Timothy Reese, Hui Liu. <em>Natural Language Processing Journal</em> 14, 100203.</p></div><a class="pl" href="https://doi.org/10.1016/j.nlp.2026.100203" target="_blank" rel="noopener">DOI <span aria-hidden="true">↗</span></a></article>
+        <article><span class="dt">2026</span><div><span class="micro">Award</span><h3>Timothy Reese receives the 2026 Purdue University Online Award for Excellence in Online Education</h3><p>The award recognizes his development of the STAT 350 Winter Session.</p></div><a class="pl" href="https://www.stat.purdue.edu/news/2026/statistics-professors-honored-with-purdue-university-online-awards-for-excellence-in-online-education.html" target="_blank" rel="noopener">Purdue <span aria-hidden="true">↗</span></a></article>
+        <article><span class="dt">2025</span><div><span class="micro">Grant</span><h3>NIH/NIA R03 grant begins</h3><p>Development of analytical tools integrating external datasets with MoTrPAC data (1R03AG102039); PI Timothy Reese, 2025–2027.</p></div><a class="pl" href="https://reporter.nih.gov/project-details/11250186" target="_blank" rel="noopener">NIH RePORTER <span aria-hidden="true">↗</span></a></article>
+        <article><span class="dt">2024</span><div><span class="micro">Award</span><h3>Timothy Reese receives a BMVC 2024 Outstanding Reviewer Award</h3><p>Recognized as an outstanding reviewer for the British Machine Vision Conference.</p></div></article>
+      </div>
+      <p class="more-row"><a class="more" href="#news">All news &amp; publications <span aria-hidden="true">→</span></a></p>
+    </div>
+  </section>
+</section>
+
+<!-- =====================================================================
+     RESEARCH  (v1.6 rebuilt on the v2.0 Research template without direction C: header 01 / Research · sub-nav · #research-loop
+     (Framework ring, long-term sentence, Disciplines line) · #research-a and #research-b (question · aim · ol.path with routable stage ids
+     #research-a-body … #research-b-personalization · work cards) · #research-applications (application domain, Q1–Q4))
+     ===================================================================== -->
+<section class="view" id="research" aria-labelledby="research-title">
+  <div class="phead">
+    <div class="wrap phead-in">
+      <div><div class="micro"><b>01</b> / Research</div><h1 id="research-title" tabindex="-1">Two scales, one loop.</h1></div>
+      <p class="lede">We model the moving body, measure what movement changes in it, and build the statistical and AI methods that connect the two.</p>
+    </div>
+  </div>
+
+  <nav class="subnav" aria-label="Research sections">
+    <div class="wrap">
+      <ul>
+        <li><a href="#research-loop">Loop</a></li>
+        <li><a href="#research-a">A · Movement</a></li>
+        <li><a href="#research-b">B · Biological</a></li>
+        <li><a href="#research-applications">Applications</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="lt bg-light pad" id="research-loop" aria-labelledby="rs-loop">
+    <div class="wrap lt-row">
+        <figure class="loop-fig">
+          <div class="ring">
+            <svg viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+              <defs>
+                <marker id="ahc-f" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L8 5 L1 9" fill="none" stroke="#396c71" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+                <marker id="ahf-f" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L8 5 L1 9" fill="none" stroke="#538989" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+                <path id="tp1-f" d="M208 140.7 A184 184 0 0 1 392 140.7"/>
+                <path id="tp2-f" d="M459.3 208 A184 184 0 0 1 459.3 392"/>
+                <path id="tp3-f" d="M203.5 467.1 A193 193 0 0 0 396.5 467.1"/>
+                <path id="tp4-f" d="M140.7 392 A184 184 0 0 1 140.7 208"/>
+              </defs>
+              <circle class="base" cx="300" cy="300" r="210"/>
+              <circle class="base" cx="300" cy="300" r="150" style="stroke-dasharray:2 7"/>
+              <path class="arc" d="M191.8 120 A210 210 0 0 1 408.2 120" marker-end="url(#ahc-f)"/>
+              <path class="arc" d="M480 191.8 A210 210 0 0 1 480 408.2" marker-end="url(#ahc-f)"/>
+              <path class="arc" d="M408.2 480 A210 210 0 0 1 191.8 480" marker-end="url(#ahc-f)"/>
+              <path class="arc fb" d="M120 408.2 A210 210 0 0 1 120 191.8" marker-end="url(#ahf-f)"/>
+              <text class="arc-label"><textPath href="#tp1-f" startOffset="50%" text-anchor="middle">BODY</textPath></text>
+              <text class="arc-label"><textPath href="#tp2-f" startOffset="50%" text-anchor="middle">INTERVENTION</textPath></text>
+              <text class="arc-label"><textPath href="#tp3-f" startOffset="50%" text-anchor="middle">DATA</textPath></text>
+              <text class="arc-label"><textPath href="#tp4-f" startOffset="50%" text-anchor="middle">FEEDBACK</textPath></text>
+              <g class="spin"><circle class="spark-glow" cx="300" cy="90" r="9"/><circle class="spark" cx="300" cy="90" r="3.5"/></g>
+              <g><circle class="node-bg" cx="151.5" cy="151.5" r="36"/><g class="icon" transform="translate(133.5 133.5) scale(1.5)"><circle cx="12" cy="4.4" r="2.2"/><path d="M6.5 9 L17.5 9 L12 14.5 Z M6.5 9 L3 14.2 M17.5 9 L21 14.2 M12 14.5 L8.6 21.5 M12 14.5 L15.4 21.5 M6.5 9 L8.6 21.5 M17.5 9 L15.4 21.5 M8.6 21.5 L15.4 21.5"/></g></g>
+              <g><circle class="node-bg" cx="448.5" cy="151.5" r="36"/><g class="icon" transform="translate(430.5 133.5) scale(1.5)"><path d="M2 13 C5 7 8 7 10.5 12 S16 17 18.5 11 S21.5 8 22 9"/><path d="M2 8.8 C5 2.8 8 2.8 10.5 7.8 S16 12.8 18.5 6.8" stroke-dasharray="1.2 2.2"/><path d="M2 17.2 C5 11.2 8 11.2 10.5 16.2 S16 21.2 18.5 15.2" stroke-dasharray="1.2 2.2"/><circle class="fill" cx="20.6" cy="4.6" r="1.6"/></g></g>
+              <g><circle class="node-bg" cx="448.5" cy="448.5" r="36"/><g class="icon" transform="translate(430.5 430.5) scale(1.5)"><path d="M12 6 L17.2 9 L17.2 15 L12 18 L6.8 15 L6.8 9 Z"/><path d="M17.2 9 L20.6 7 M6.8 15 L3.4 17 M12 6 L12 2.6"/><circle class="fill" cx="20.9" cy="6.8" r="1.3"/><circle class="fill" cx="3.1" cy="17.2" r="1.3"/><circle class="fill" cx="12" cy="2.2" r="1.3"/><circle cx="12" cy="12" r="2.2"/></g></g>
+              <g><circle class="node-bg" cx="151.5" cy="448.5" r="36"/><g class="icon" transform="translate(133.5 430.5) scale(1.5)"><path d="M3 3 V21 H21"/><path d="M5.5 16.5 L20 5.5 M5.5 16.5 L20 11 M5.5 16.5 L20 16"/><circle class="fill" cx="20" cy="5.5" r="1.3"/><circle class="fill" cx="20" cy="11" r="1.3"/><circle class="fill" cx="20" cy="16" r="1.3"/></g></g>
+            </svg>
+            <a class="nl n1" href="#research-a"><small>01</small>Represent</a>
+            <a class="nl n2" href="#research-a"><small>02</small>Generate &amp;<br> assess</a>
+            <a class="nl n3" href="#research-b"><small>03</small>Measure</a>
+            <a class="nl n4" href="#research-b"><small>04</small>Learn</a>
+            <div class="ring-center"><div class="micro">Framework</div><p class="rc">Model a person. Adapt movement. Measure it. Learn the response.</p></div>
+          </div>
+          <figcaption><span class="micro cap-tag">Schematic</span>Solid arcs connect the four steps; the dashed arc closes the loop, the long-term direction.</figcaption>
+        </figure>
+      <div class="loop-txt">
+        <div class="micro">Long-term direction</div>
+        <h2 id="rs-loop">A closed-loop platform that can <strong>model a person</strong>, <strong>adapt movement</strong>, <strong>evaluate performance</strong>, and <strong>learn health response</strong> over time.</h2>
+        <p class="disc"><span class="micro">Disciplines</span><span>computer&nbsp;vision&nbsp;· graphics&nbsp;&amp;&nbsp;modeling&nbsp;· biomechanics&nbsp;· statistics&nbsp;&amp;&nbsp;ML&nbsp;· bioinformatics&nbsp;· health&nbsp;science</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Direction A -->
+  <section class="lt bg-paper pad dir" id="research-a" aria-labelledby="rd-a">
+    <div class="wrap">
+      <header class="dir-head">
+        <div>
+          <h2 class="micro dir-eb" id="rd-a"><b>A</b> / 3D Human Body &amp; Motion Modeling</h2>
+          <p class="dir-q">What exactly is the body doing, and what makes a movement effective?</p>
+        </div>
+        <p class="dir-aim">We build computational representations of the person and of the movement, designed to support generation, analysis, assessment and personalized instruction. The goal is a person-specific digital body: one that can be posed, compared with others and with itself over time, and used to teach. The body comes first, then the movement on it, then the judgement a good teacher would make. Muscle, tendon and dynamic models will later extend the body from geometry to mechanics.</p>
+      </header>
+      <ol class="path" aria-label="Path of direction A">
+        <li id="research-a-body" class="done"><span class="micro">01</span><h3>Body</h3><p>3D&nbsp;shape&nbsp;· joints&nbsp;· anatomical&nbsp;structure</p></li>
+        <li id="research-a-motion" class="now" aria-current="step"><span class="micro">02<span class="live">We are here</span></span><h3>Motion</h3><p>pose&nbsp;· transfer&nbsp;· synthesis&nbsp;· generation</p></li>
+        <li id="research-a-intelligence"><span class="micro">03</span><h3>Intelligence</h3><p>diagnosis&nbsp;· feedback&nbsp;· training</p></li>
+        <li id="research-a-extending" class="fut"><span class="micro">04<span class="fut-tag">Future</span></span><h3>Extending</h3><p>muscle&nbsp;· tendon&nbsp;· dynamic&nbsp;models</p></li>
+      </ol>
+      <div class="vision where"><span class="micro">Where we are</span><p>Between Body and Motion: recorded movement now drives a parametric body, and we are testing what words and anatomy can define on it.</p></div>
+      <div class="wgrid wgrid-a" data-loop>
+        <article class="wcard">
+          <!-- CONFIRM WITH PI: this card ships a decimated SMPL-X body (male; shared/assets/motion/taiji-umons-m.bin) to every visitor. SMPL-X is under the MPI-IS research licence; check that showing a derived mesh on a public site is allowed.
+               The movement: UMONS-TAICHI optical motion capture (Tits M, Laraba S, Caulier E, Tilmanne J, Dutoit T. Data in Brief 19 (2018) 1214-1221,
+               doi:10.1016/j.dib.2018.05.088; Zenodo 2784581; CC BY-NC-SA 4.0), modified: medoid trial of a skilled male performer, joint centres from the
+               markers, SMPL-X joint rotations fitted to them, feet cleaned against the floor, forms joined by short planned steps. -->
+          <div class="wvis">
+            <div class="rvis rvis-a" id="research-body" aria-hidden="true">
+              <i class="orbit o1"></i><i class="orbit o2"></i>
+              <img class="rvis-pose" src="../../shared/assets/pose-3-light.svg" width="300" height="430" alt="" loading="lazy">
+              <canvas class="body3d"></canvas>
+              <svg class="triad" viewBox="0 0 64 64" focusable="false"><path d="M16 48 V12 M16 48 H52 M16 48 L5 59"/><text x="21" y="15">y</text><text x="50" y="42">x</text><text x="0" y="52">z</text></svg>
+            </div>
+            <!-- Functional panel: curves computed in the browser from the same motion pack (wrist height, knee flexion, pelvis yaw, model-estimated kinetic energy); pale bands = across-performer mean ± 1 SD of UMONS-TAICHI optical trials of the same form (Tits et al. 2018, Data in Brief 19, doi:10.1016/j.dib.2018.05.088; CC BY-NC-SA 4.0; modified: joint centres, time-normalised, scaled to the model's stature). No biological numbers. Shown only once it has drawn. -->
+            <div class="rvis rvis-b" aria-hidden="true"><canvas class="fn"></canvas></div>
+          </div>
+          <span class="micro">Motion</span>
+          <h3>Tai Chi motion on a parametric body</h3>
+          <p>Optical motion capture of a skilled performer, fitted to an SMPL-X body; beside it, curves computed from the same movement against the range of other performers.</p>
+          <p class="wlink"><a class="more" href="https://doi.org/10.1016/j.dib.2018.05.088" target="_blank" rel="noopener">Data: UMONS-TAICHI <span aria-hidden="true">↗</span></a></p>
+        </article>
+        <article class="wcard">
+          <span class="micro">Body · manuscript 2026</span>
+          <h3>Can a body location defined in words be computed?</h3>
+          <p>A manuscript in preparation (Zhang, Reese, Zhu) asks how far the WHO standard acupuncture point locations, written in words, pin down a point on a body, and which degrees of freedom they leave open.</p>
+          <p class="wlink"><a class="more" href="#news-papers">Publications <span aria-hidden="true">→</span></a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Direction B -->
+  <section class="lt bg-light pad dir" id="research-b" aria-labelledby="rd-b">
+    <div class="wrap">
+      <header class="dir-head">
+        <div>
+          <h2 class="micro dir-eb" id="rd-b"><b>B</b> / Exercise Effects &amp; Molecular Response</h2>
+          <p class="dir-q">What changes biologically, and can movement be personalized?</p>
+        </div>
+        <p class="dir-aim">We study, statistically and computationally, how movement affects health across physiological, biomarker, metabolic and molecular levels. Movement is an intervention, so we ask of it what is asked of a drug: what it changes, by how much, in whom, and through which pathways. Answering that needs repeated measurements over time, many correlated outcomes at once, and designs that support causal claims. The aim is movement that can be prescribed and adapted like a dose.</p>
+      </header>
+      <ol class="path" aria-label="Path of direction B">
+        <li id="research-b-outcomes" class="now" aria-current="step"><span class="micro">01<span class="live">We are here</span></span><h3>Outcomes</h3><p>physiology&nbsp;· clinical&nbsp;measures&nbsp;· biomarkers</p></li>
+        <li id="research-b-molecules"><span class="micro">02</span><h3>Molecules</h3><p>metabolism&nbsp;· proteomics&nbsp;· genomics&nbsp;· epigenetics</p></li>
+        <li id="research-b-inference"><span class="micro">03</span><h3>Inference</h3><p>longitudinal&nbsp;· multivariate&nbsp;· causal</p></li>
+        <li id="research-b-personalization"><span class="micro">04</span><h3>Personalization</h3><p>heterogeneous&nbsp;response&nbsp;· prediction</p></li>
+      </ol>
+      <div class="vision where"><span class="micro">Where we are</span><p>Starting point. The framework is defined; the first study is being designed.</p></div>
+      <div class="wgrid wgrid-a">
+        <article class="wcard">
+          <!-- Schematic, no data: one movement bout on a time axis; four response scales, each starting later and lasting longer than the one above. Draws in once. -->
+          <div class="wvis">
+            <div class="rvis rvis-s" aria-hidden="true">
+<svg class="scl" viewBox="0 0 640 222" focusable="false">
+<rect class="col" x="130.0" y="12.0" width="40.0" height="192.0"/>
+<text x="8" y="28.0">MOVEMENT</text>
+<path class="base" d="M130 24 L630 24"/>
+<rect class="bout" x="130.0" y="18.0" width="40.0" height="12" rx="3"/>
+<text x="8" y="64.0">PHYSIOLOGY</text>
+<path class="cv " pathLength="1" d="M130.0 60.0 L133.0 60.0 L136.0 60.0 L139.0 60.0 L142.0 60.0 L145.0 60.0 L148.0 59.5 L151.0 58.1 L154.0 56.1 L157.0 53.5 L160.0 50.6 L163.0 47.5 L166.0 44.4 L169.0 41.6 L172.0 39.2 L175.0 37.3 L178.0 36.2 L181.0 36.0 L184.0 36.2 L187.0 36.5 L190.0 37.0 L193.0 37.7 L196.0 38.5 L199.0 39.4 L202.0 40.4 L205.0 41.6 L208.0 42.8 L211.0 44.0 L214.0 45.3 L217.0 46.7 L220.0 48.0 L223.0 49.3 L226.0 50.7 L229.0 52.0 L232.0 53.2 L235.0 54.4 L238.0 55.6 L241.0 56.6 L244.0 57.5 L247.0 58.3 L250.0 59.0 L253.0 59.5 L256.0 59.8 L259.0 60.0 L262.0 60.0 L265.0 60.0 L268.0 60.0 L271.0 60.0 L274.0 60.0 L277.0 60.0 L280.0 60.0 L283.0 60.0 L286.0 60.0 L289.0 60.0 L292.0 60.0 L295.0 60.0 L298.0 60.0 L301.0 60.0 L304.0 60.0 L307.0 60.0 L310.0 60.0 L313.0 60.0 L316.0 60.0 L319.0 60.0 L322.0 60.0 L325.0 60.0 L328.0 60.0 L331.0 60.0 L334.0 60.0 L337.0 60.0 L340.0 60.0 L343.0 60.0 L346.0 60.0 L349.0 60.0 L352.0 60.0 L355.0 60.0 L358.0 60.0 L361.0 60.0 L364.0 60.0 L367.0 60.0 L370.0 60.0 L373.0 60.0 L376.0 60.0 L379.0 60.0 L382.0 60.0 L385.0 60.0 L388.0 60.0 L391.0 60.0 L394.0 60.0 L397.0 60.0 L400.0 60.0 L403.0 60.0 L406.0 60.0 L409.0 60.0 L412.0 60.0 L415.0 60.0 L418.0 60.0 L421.0 60.0 L424.0 60.0 L427.0 60.0 L430.0 60.0 L433.0 60.0 L436.0 60.0 L439.0 60.0 L442.0 60.0 L445.0 60.0 L448.0 60.0 L451.0 60.0 L454.0 60.0 L457.0 60.0 L460.0 60.0 L463.0 60.0 L466.0 60.0 L469.0 60.0 L472.0 60.0 L475.0 60.0 L478.0 60.0 L481.0 60.0 L484.0 60.0 L487.0 60.0 L490.0 60.0 L493.0 60.0 L496.0 60.0 L499.0 60.0 L502.0 60.0 L505.0 60.0 L508.0 60.0 L511.0 60.0 L514.0 60.0 L517.0 60.0 L520.0 60.0 L523.0 60.0 L526.0 60.0 L529.0 60.0 L532.0 60.0 L535.0 60.0 L538.0 60.0 L541.0 60.0 L544.0 60.0 L547.0 60.0 L550.0 60.0 L553.0 60.0 L556.0 60.0 L559.0 60.0 L562.0 60.0 L565.0 60.0 L568.0 60.0 L571.0 60.0 L574.0 60.0 L577.0 60.0 L580.0 60.0 L583.0 60.0 L586.0 60.0 L589.0 60.0 L592.0 60.0 L595.0 60.0 L598.0 60.0 L601.0 60.0 L604.0 60.0 L607.0 60.0 L610.0 60.0 L613.0 60.0 L616.0 60.0 L619.0 60.0 L622.0 60.0 L625.0 60.0 L628.0 60.0"/>
+<text x="8" y="100.0">BIOMARKERS</text>
+<path class="cv " pathLength="1" d="M130.0 96.0 L133.0 96.0 L136.0 96.0 L139.0 96.0 L142.0 96.0 L145.0 96.0 L148.0 96.0 L151.0 96.0 L154.0 96.0 L157.0 96.0 L160.0 96.0 L163.0 96.0 L166.0 96.0 L169.0 96.0 L172.0 95.9 L175.0 95.7 L178.0 95.2 L181.0 94.5 L184.0 93.7 L187.0 92.7 L190.0 91.6 L193.0 90.4 L196.0 89.1 L199.0 87.8 L202.0 86.4 L205.0 85.0 L208.0 83.6 L211.0 82.2 L214.0 80.9 L217.0 79.6 L220.0 78.4 L223.0 77.3 L226.0 76.3 L229.0 75.5 L232.0 74.8 L235.0 74.3 L238.0 74.1 L241.0 74.0 L244.0 74.1 L247.0 74.3 L250.0 74.5 L253.0 74.8 L256.0 75.3 L259.0 75.7 L262.0 76.3 L265.0 76.9 L268.0 77.6 L271.0 78.3 L274.0 79.0 L277.0 79.8 L280.0 80.6 L283.0 81.5 L286.0 82.3 L289.0 83.2 L292.0 84.1 L295.0 85.0 L298.0 85.9 L301.0 86.8 L304.0 87.7 L307.0 88.5 L310.0 89.4 L313.0 90.2 L316.0 91.0 L319.0 91.7 L322.0 92.4 L325.0 93.1 L328.0 93.7 L331.0 94.3 L334.0 94.7 L337.0 95.2 L340.0 95.5 L343.0 95.7 L346.0 95.9 L349.0 96.0 L352.0 96.0 L355.0 96.0 L358.0 96.0 L361.0 96.0 L364.0 96.0 L367.0 96.0 L370.0 96.0 L373.0 96.0 L376.0 96.0 L379.0 96.0 L382.0 96.0 L385.0 96.0 L388.0 96.0 L391.0 96.0 L394.0 96.0 L397.0 96.0 L400.0 96.0 L403.0 96.0 L406.0 96.0 L409.0 96.0 L412.0 96.0 L415.0 96.0 L418.0 96.0 L421.0 96.0 L424.0 96.0 L427.0 96.0 L430.0 96.0 L433.0 96.0 L436.0 96.0 L439.0 96.0 L442.0 96.0 L445.0 96.0 L448.0 96.0 L451.0 96.0 L454.0 96.0 L457.0 96.0 L460.0 96.0 L463.0 96.0 L466.0 96.0 L469.0 96.0 L472.0 96.0 L475.0 96.0 L478.0 96.0 L481.0 96.0 L484.0 96.0 L487.0 96.0 L490.0 96.0 L493.0 96.0 L496.0 96.0 L499.0 96.0 L502.0 96.0 L505.0 96.0 L508.0 96.0 L511.0 96.0 L514.0 96.0 L517.0 96.0 L520.0 96.0 L523.0 96.0 L526.0 96.0 L529.0 96.0 L532.0 96.0 L535.0 96.0 L538.0 96.0 L541.0 96.0 L544.0 96.0 L547.0 96.0 L550.0 96.0 L553.0 96.0 L556.0 96.0 L559.0 96.0 L562.0 96.0 L565.0 96.0 L568.0 96.0 L571.0 96.0 L574.0 96.0 L577.0 96.0 L580.0 96.0 L583.0 96.0 L586.0 96.0 L589.0 96.0 L592.0 96.0 L595.0 96.0 L598.0 96.0 L601.0 96.0 L604.0 96.0 L607.0 96.0 L610.0 96.0 L613.0 96.0 L616.0 96.0 L619.0 96.0 L622.0 96.0 L625.0 96.0 L628.0 96.0"/>
+<text x="8" y="136.0">METABOLITES</text>
+<path class="cv " pathLength="1" d="M130.0 132.0 L133.0 132.0 L136.0 132.0 L139.0 132.0 L142.0 132.0 L145.0 132.0 L148.0 132.0 L151.0 132.0 L154.0 132.0 L157.0 132.0 L160.0 132.0 L163.0 132.0 L166.0 132.0 L169.0 132.0 L172.0 132.0 L175.0 132.0 L178.0 132.0 L181.0 132.0 L184.0 132.0 L187.0 132.0 L190.0 132.0 L193.0 132.0 L196.0 132.0 L199.0 132.0 L202.0 132.0 L205.0 131.9 L208.0 131.6 L211.0 131.3 L214.0 130.9 L217.0 130.5 L220.0 129.9 L223.0 129.3 L226.0 128.6 L229.0 127.9 L232.0 127.2 L235.0 126.4 L238.0 125.5 L241.0 124.7 L244.0 123.8 L247.0 122.9 L250.0 122.0 L253.0 121.1 L256.0 120.2 L259.0 119.3 L262.0 118.5 L265.0 117.6 L268.0 116.8 L271.0 116.1 L274.0 115.4 L277.0 114.7 L280.0 114.1 L283.0 113.5 L286.0 113.1 L289.0 112.7 L292.0 112.4 L295.0 112.1 L298.0 112.0 L301.0 112.0 L304.0 112.0 L307.0 112.1 L310.0 112.3 L313.0 112.4 L316.0 112.6 L319.0 112.9 L322.0 113.2 L325.0 113.5 L328.0 113.8 L331.0 114.2 L334.0 114.6 L337.0 115.1 L340.0 115.5 L343.0 116.0 L346.0 116.5 L349.0 117.0 L352.0 117.5 L355.0 118.1 L358.0 118.7 L361.0 119.2 L364.0 119.8 L367.0 120.4 L370.0 121.0 L373.0 121.6 L376.0 122.2 L379.0 122.8 L382.0 123.4 L385.0 124.0 L388.0 124.6 L391.0 125.2 L394.0 125.7 L397.0 126.3 L400.0 126.8 L403.0 127.3 L406.0 127.8 L409.0 128.3 L412.0 128.8 L415.0 129.2 L418.0 129.7 L421.0 130.0 L424.0 130.4 L427.0 130.7 L430.0 131.0 L433.0 131.3 L436.0 131.5 L439.0 131.7 L442.0 131.8 L445.0 131.9 L448.0 132.0 L451.0 132.0 L454.0 132.0 L457.0 132.0 L460.0 132.0 L463.0 132.0 L466.0 132.0 L469.0 132.0 L472.0 132.0 L475.0 132.0 L478.0 132.0 L481.0 132.0 L484.0 132.0 L487.0 132.0 L490.0 132.0 L493.0 132.0 L496.0 132.0 L499.0 132.0 L502.0 132.0 L505.0 132.0 L508.0 132.0 L511.0 132.0 L514.0 132.0 L517.0 132.0 L520.0 132.0 L523.0 132.0 L526.0 132.0 L529.0 132.0 L532.0 132.0 L535.0 132.0 L538.0 132.0 L541.0 132.0 L544.0 132.0 L547.0 132.0 L550.0 132.0 L553.0 132.0 L556.0 132.0 L559.0 132.0 L562.0 132.0 L565.0 132.0 L568.0 132.0 L571.0 132.0 L574.0 132.0 L577.0 132.0 L580.0 132.0 L583.0 132.0 L586.0 132.0 L589.0 132.0 L592.0 132.0 L595.0 132.0 L598.0 132.0 L601.0 132.0 L604.0 132.0 L607.0 132.0 L610.0 132.0 L613.0 132.0 L616.0 132.0 L619.0 132.0 L622.0 132.0 L625.0 132.0 L628.0 132.0"/>
+<text x="8" y="172.0">MOLECULES</text>
+<path class="cv last" pathLength="1" d="M130.0 168.0 L133.0 168.0 L136.0 168.0 L139.0 168.0 L142.0 168.0 L145.0 168.0 L148.0 168.0 L151.0 168.0 L154.0 168.0 L157.0 168.0 L160.0 168.0 L163.0 168.0 L166.0 168.0 L169.0 168.0 L172.0 168.0 L175.0 168.0 L178.0 168.0 L181.0 168.0 L184.0 168.0 L187.0 168.0 L190.0 168.0 L193.0 168.0 L196.0 168.0 L199.0 168.0 L202.0 168.0 L205.0 168.0 L208.0 168.0 L211.0 168.0 L214.0 168.0 L217.0 168.0 L220.0 168.0 L223.0 168.0 L226.0 168.0 L229.0 168.0 L232.0 168.0 L235.0 168.0 L238.0 168.0 L241.0 168.0 L244.0 167.9 L247.0 167.8 L250.0 167.7 L253.0 167.5 L256.0 167.2 L259.0 167.0 L262.0 166.6 L265.0 166.3 L268.0 165.9 L271.0 165.4 L274.0 165.0 L277.0 164.5 L280.0 163.9 L283.0 163.4 L286.0 162.8 L289.0 162.3 L292.0 161.7 L295.0 161.1 L298.0 160.4 L301.0 159.8 L304.0 159.2 L307.0 158.6 L310.0 158.0 L313.0 157.3 L316.0 156.7 L319.0 156.1 L322.0 155.5 L325.0 155.0 L328.0 154.4 L331.0 153.9 L334.0 153.4 L337.0 152.9 L340.0 152.4 L343.0 152.0 L346.0 151.6 L349.0 151.3 L352.0 150.9 L355.0 150.7 L358.0 150.4 L361.0 150.2 L364.0 150.1 L367.0 150.0 L370.0 150.0 L373.0 150.0 L376.0 150.0 L379.0 150.1 L382.0 150.1 L385.0 150.2 L388.0 150.3 L391.0 150.4 L394.0 150.5 L397.0 150.7 L400.0 150.8 L403.0 151.0 L406.0 151.2 L409.0 151.4 L412.0 151.6 L415.0 151.8 L418.0 152.0 L421.0 152.3 L424.0 152.5 L427.0 152.8 L430.0 153.0 L433.0 153.3 L436.0 153.6 L439.0 153.9 L442.0 154.2 L445.0 154.5 L448.0 154.8 L451.0 155.1 L454.0 155.4 L457.0 155.8 L460.0 156.1 L463.0 156.4 L466.0 156.8 L469.0 157.1 L472.0 157.5 L475.0 157.8 L478.0 158.2 L481.0 158.5 L484.0 158.9 L487.0 159.2 L490.0 159.6 L493.0 159.9 L496.0 160.3 L499.0 160.6 L502.0 161.0 L505.0 161.3 L508.0 161.7 L511.0 162.0 L514.0 162.3 L517.0 162.7 L520.0 163.0 L523.0 163.3 L526.0 163.6 L529.0 163.9 L532.0 164.2 L535.0 164.5 L538.0 164.8 L541.0 165.1 L544.0 165.3 L547.0 165.6 L550.0 165.8 L553.0 166.1 L556.0 166.3 L559.0 166.5 L562.0 166.7 L565.0 166.9 L568.0 167.1 L571.0 167.2 L574.0 167.4 L577.0 167.5 L580.0 167.6 L583.0 167.7 L586.0 167.8 L589.0 167.9 L592.0 167.9 L595.0 168.0 L598.0 168.0 L601.0 168.0 L604.0 168.0 L607.0 168.0 L610.0 168.0 L613.0 168.0 L616.0 168.0 L619.0 168.0 L622.0 168.0 L625.0 168.0 L628.0 168.0"/>
+<path class="axis" d="M130 204 L630 204 M624 200 L630 204 L624 208"/>
+<text class="ax" x="630" y="221" text-anchor="end">TIME</text>
+</svg>
+              <span class="micro vtag">Schematic</span>
+            </div>
+          </div>
+          <span class="micro">Outcomes · schematic</span>
+          <h3>Response across scales</h3>
+          <p>What we will measure, at which scale, and when. The first study is being designed around this picture.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Application domain (v1.6: the former Applications view, compact: header and the four questions) -->
+  <section class="lt bg-paper pad" id="research-applications" aria-labelledby="rs-ap">
+    <div class="wrap">
+      <header class="dir-head">
+        <div>
+          <div class="micro dir-eb">Application domain</div>
+          <h2 class="dir-q" id="rs-ap">Health-oriented movement as a scientific model system.</h2>
+        </div>
+        <p class="dir-aim">Tai Chi and Qigong combine coordinated whole-body motion, balance, controlled transitions, breathing, attention, repetition, and <span class="nw">long-term</span> adaptation.</p>
+      </header>
+      <ol class="cells c4" aria-label="Questions we want to understand">
+        <li><span class="n">Q1</span><h3>What exactly is the body doing?</h3><p>Represent complex movement with spatial, temporal, and biomechanical detail.</p></li>
+        <li><span class="n">Q2</span><h3>What makes movement effective?</h3><p>Quantify movement quality, variation, and individual execution.</p></li>
+        <li><span class="n">Q3</span><h3>What changes biologically?</h3><p>Link movement characteristics to biomarkers and molecular pathways.</p></li>
+        <li><span class="n">Q4</span><h3>Can movement be personalized?</h3><p>Use biomechanical and biological evidence to adapt movement and training.</p></li>
+      </ol>
+    </div>
+  </section>
+</section>
+
+<!-- =====================================================================
+     PEOPLE  (header 02 / People; Home preview 03 / People; cards as v7)
+     ===================================================================== -->
+<section class="view" id="people" aria-labelledby="people-title">
+  <div class="phead">
+    <div class="wrap phead-in">
+      <div><div class="micro"><b>02</b> / People</div><h1 id="people-title" tabindex="-1">Research team.</h1></div>
+      <p class="lede">Computational, quantitative, and health perspectives in one collaborative environment.</p>
+    </div>
+  </div>
+  <section class="lt bg-light pad" aria-label="Members">
+    <div class="wrap">
+      <div class="gut" id="people-faculty">
+        <h2 class="micro">Faculty</h2>
+        <div class="cards2 one" style="padding-bottom:22px">
+          <article class="pcard wide">
+            <img class="portrait" src="../../shared/assets/people/zhu.webp" width="320" height="320" alt="" loading="lazy">
+            <div>
+              <h3>Michael Yu Zhu</h3>
+              <p class="role">Professor of Statistics</p>
+              <p class="dept">Department of Statistics, Purdue University</p>
+              <dl>
+                <div><dt>Focus</dt><dd>Statistical learning for high-dimensional data: dimension reduction, variable selection, statistical bioinformatics, design of experiments.</dd></div>
+                <div><dt>Education</dt><dd>Ph.D. Statistics, University of Michigan (2000); B.S. and M.S. Applied Mathematics, Tsinghua University.</dd></div>
+                <div><dt>Office</dt><dd>MATH 238 · <a href="mailto:yuzhu@purdue.edu" style="color:#396c71;text-decoration:none">yuzhu@purdue.edu</a></dd></div>
+              </dl>
+              <div class="chips"><a class="chip" href="https://www.stat.purdue.edu/people/faculty/yuzhu.html" rel="noopener">Profile ↗</a><a class="chip" href="https://scholar.google.com/citations?user=0TbycfEAAAAJ" rel="noopener">Scholar ↗</a><a class="chip" href="https://orcid.org/0009-0006-9345-8935" rel="noopener">ORCID ↗</a><a class="chip" href="mailto:yuzhu@purdue.edu">Email</a></div>
+            </div>
+          </article>
+          <article class="pcard wide">
+            <img class="portrait" src="../../shared/assets/people/reese.webp" width="320" height="320" alt="" loading="lazy">
+            <div>
+              <h3>Timothy Reese</h3>
+              <p class="role">Assistant Professor of Practice</p>
+              <p class="dept">Department of Statistics, Purdue University</p>
+              <dl>
+                <div><dt>Focus</dt><dd>Computer vision and pose estimation for human movement, 3D human capture, multi-omics integration with MoTrPAC data.</dd></div>
+                <div><dt>Education</dt><dd>Ph.D. Statistics, Purdue University (2022), advised by Michael Yu Zhu.</dd></div>
+                <div><dt>Office</dt><dd>MATH 210 · <a href="mailto:reese18@purdue.edu" style="color:#396c71;text-decoration:none">reese18@purdue.edu</a></dd></div>
+              </dl>
+              <div class="chips"><a class="chip" href="https://www.stat.purdue.edu/people/faculty/reese18.html" rel="noopener">Profile ↗</a><a class="chip" href="https://treese41528.github.io/" rel="noopener">Homepage ↗</a><a class="chip" href="https://scholar.google.com/citations?user=bHAczcUAAAAJ" rel="noopener">Scholar ↗</a><a class="chip" href="https://orcid.org/0000-0002-8528-3390" rel="noopener">ORCID ↗</a><a class="chip" href="https://github.com/treese41528" rel="noopener">GitHub ↗</a><a class="chip" href="mailto:reese18@purdue.edu">Email</a></div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="gut" id="people-members">
+        <h2 class="micro">Members</h2>
+        <div class="cards2 one" style="padding-bottom:22px">
+          <!-- CONFIRM WITH PI: Yuyue Zhang shown as "Lab Manager", second line "Student, Department of Statistics, Purdue University" ("Student" is the user's wording, no degree stated); email zhan6013@purdue.edu published at the user's request (2026-09-30) -->
+          <article class="pcard wide">
+            <img class="portrait" src="../../shared/assets/people/yuyue-zhang.webp" width="320" height="320" alt="" loading="lazy">
+            <div>
+              <h3>Yuyue Zhang</h3>
+              <p class="role">Lab Manager</p>
+              <p class="dept">Student, Department of Statistics, Purdue University</p>
+              <div class="chips"><a class="chip" href="https://elwyn921.github.io" rel="noopener">Homepage ↗</a><a class="chip" href="https://scholar.google.com/citations?user=ebxlouQAAAAJ&amp;hl=en" rel="noopener">Scholar ↗</a><a class="chip" href="https://github.com/Elwyn921" rel="noopener">GitHub ↗</a><a class="chip" href="#news-papers">Paper</a><a class="chip" href="mailto:zhan6013@purdue.edu">Email</a></div>
+            </div>
+          </article>
+          <!-- CONFIRM WITH PI: Yang He entry: portrait copied from the Purdue directory at the user's request (same treatment as zhu.webp); email he917@purdue.edu not shown -->
+          <article class="pcard wide">
+            <img class="portrait" src="../../shared/assets/people/yang-he.webp" width="320" height="320" alt="" loading="lazy">
+            <div>
+              <h3>Yang He</h3>
+              <p class="role">Ph.D. student</p>
+              <p class="dept">Department of Statistics, Purdue University</p>
+              <div class="chips"><a class="chip" href="https://www.stat.purdue.edu/people/graduate_students/index.html" rel="noopener">Directory ↗</a><a class="chip" href="https://github.com/YangHe1216" rel="noopener">GitHub ↗</a></div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="gut">
+        <h2 class="micro">Recruiting</h2>
+        <!-- CONFIRM WITH PI: current recruiting -->
+        <p class="recruit" style="padding-bottom:8px">Ph.D. students (Statistics) and Purdue undergraduates. <a class="more" href="#contact">How to join <span aria-hidden="true">→</span></a></p>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- =====================================================================
+     NEWS  (header 03 / News; Home preview 04 / News. Lab news rows (same as Home 04) · Publications (fold) · Projects.
+     Was the Publications view until v1.6; ids moved from publications-* / pub-more to news-*)
+     ===================================================================== -->
+<section class="view" id="news" aria-labelledby="news-title">
+  <div class="phead">
+    <div class="wrap phead-in">
+      <div><div class="micro"><b>03</b> / News</div><h1 id="news-title" tabindex="-1">News &amp; publications.</h1></div>
+      <p class="lede">Papers, grants, awards and people from across the lab.</p>
+    </div>
+  </div>
+  <section class="lt bg-light pad" aria-label="News and publications">
+    <div class="wrap">
+      <!-- CONFIRM WITH PI: news items carried over from the d-portal-v7 News view; verify dates and wording (same rows as Home 04) -->
+      <div class="pub-group" id="news-lab">
+        <div class="gl"><h2 class="micro">Lab news</h2></div>
+        <div class="plist">
+          <article><span class="dt">2026</span><div><span class="micro">Paper</span><h3>Linguistic markers of aging in social media text published in Natural Language Processing Journal</h3><p>Yan Cong, Jingying Hu, Timothy Reese, Hui Liu. <em>Natural Language Processing Journal</em> 14, 100203.</p></div><a class="pl" href="https://doi.org/10.1016/j.nlp.2026.100203" target="_blank" rel="noopener">DOI <span aria-hidden="true">↗</span></a></article>
+          <article><span class="dt">2026</span><div><span class="micro">Award</span><h3>Timothy Reese receives the 2026 Purdue University Online Award for Excellence in Online Education</h3><p>The award recognizes his development of the STAT 350 Winter Session.</p></div><a class="pl" href="https://www.stat.purdue.edu/news/2026/statistics-professors-honored-with-purdue-university-online-awards-for-excellence-in-online-education.html" target="_blank" rel="noopener">Purdue <span aria-hidden="true">↗</span></a></article>
+          <article><span class="dt">2025</span><div><span class="micro">Grant</span><h3>NIH/NIA R03 grant begins</h3><p>Development of analytical tools integrating external datasets with MoTrPAC data (1R03AG102039); PI Timothy Reese, 2025–2027.</p></div><a class="pl" href="https://reporter.nih.gov/project-details/11250186" target="_blank" rel="noopener">NIH RePORTER <span aria-hidden="true">↗</span></a></article>
+          <article><span class="dt">2024</span><div><span class="micro">Award</span><h3>Timothy Reese receives a BMVC 2024 Outstanding Reviewer Award</h3><p>Recognized as an outstanding reviewer for the British Machine Vision Conference.</p></div></article>
+        </div>
+      </div>
+
+      <!-- Verification: DOIs checked via Crossref/OpenAlex on 2026-09-30; Michael Yu Zhu's items also on his Scholar/ORCID/Purdue page. -->
+      <div class="pub-group" id="news-papers">
+        <div class="gl"><h2 class="micro">Publications</h2><span class="cnt">17 papers</span></div>
+        <div>
+          <article class="pub">
+            <span class="dt">2026</span>
+            <div>
+              <span class="micro">Body modeling</span>
+              <h3>Computable determinacy of natural-language spatial standards: degrees of freedom in the WHO Standard Acupuncture Point Locations</h3>
+              <p class="au"><b>Yuyue Zhang</b>, <b>Timothy Reese</b>, <b>Michael Yu Zhu</b></p>
+              <p class="ve"><em>Manuscript in preparation</em>, 2026</p>
+              
+            </div>
+          </article>
+          <article class="pub">
+            <span class="dt">2026</span>
+            <div>
+              <span class="micro">Health science</span>
+              <h3>How robust are linguistic markers of aging? The case of aging-related social media text</h3>
+              <p class="au">Yan Cong, Jingying Hu, <b>Timothy Reese</b>, Hui Liu</p>
+              <p class="ve"><em>Natural Language Processing Journal</em> 14, 100203, 2026</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.1016/j.nlp.2026.100203" target="_blank" rel="noopener">DOI ↗</a></div>
+            </div>
+          </article>
+          <!-- v1.6 fold (2026-10-15): everything but the two 2026 papers (15 papers, 2003–2022; the 2022 and 2020 rows moved in), reverse-chronological, behind one ruled row (CSS and JS: "Publications fold") -->
+          <div class="pubfold">
+            <button class="pubfold-btn" type="button" aria-expanded="true" aria-controls="news-more"><span class="micro">More</span><span class="pubfold-t">Earlier work<span class="pubfold-sep"> ·</span> <span class="pubfold-n">15 papers, 2003–2022</span></span><span class="pubfold-act" aria-hidden="true"><span class="pubfold-w">Hide</span><svg class="pubfold-chev" width="10" height="10" viewBox="0 0 10 10" focusable="false"><path d="M1.5 3.25 5 6.75 8.5 3.25" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+            <div class="pubfold-panel" id="news-more">
+              <div class="pubfold-inner">
+          <article class="pub">
+            <span class="dt">2022</span>
+            <div>
+              <span class="micro">Statistics &amp; ML</span>
+              <h3>Score-based Image-to-Image Regression with Synchronized Diffusion</h3>
+              <p class="au">H. Xin, <b>M. Y. Zhu</b></p>
+              <p class="ve"><em>IEEE International Conference on Machine Learning and Applications (ICMLA)</em>, 2022</p>
+              <div class="chips"><a class="chip" href="https://scholar.google.com/citations?user=0TbycfEAAAAJ" rel="noopener">Scholar ↗</a></div>
+            </div>
+          </article>
+          <article class="pub">
+            <span class="dt">2020</span>
+            <div>
+              <span class="micro">Statistics &amp; ML</span>
+              <h3>LB-CNN: Convolutional Neural Network with Latent Binarization for Large Scale Multi-class Classification</h3>
+              <p class="au"><b>T. Reese</b>, <b>M. Zhu</b></p>
+              <p class="ve"><em>IEEE ICMLA</em>, 2020</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.1109/ICMLA51294.2020.00031" target="_blank" rel="noopener">DOI ↗</a>
+              <details class="bib">
+                <summary class="chip">BibTeX</summary>
+                <div class="bib-box"><pre id="bib-lbcnn">@inproceedings{reese2020lbcnn,
+  author    = {Reese, T. and Zhu, M.},
+  title     = {{LB-CNN}: Convolutional Neural Network with Latent Binarization for Large Scale Multi-class Classification},
+  booktitle = {IEEE International Conference on Machine Learning and Applications (ICMLA)},
+  year      = {2020},
+  doi       = {10.1109/ICMLA51294.2020.00031}
+}</pre><button class="copy nojs-hide" type="button" data-copy="bib-lbcnn">Copy</button></div>
+              </details></div>
+            </div>
+          </article>
+          <article class="pub">
+            <span class="dt">2016</span>
+            <div>
+              <span class="micro">Bioinformatics</span>
+              <h3>Deconvolution of base pair level RNA-Seq read counts for quantification of transcript expression levels</h3>
+              <p class="au">Han Wu, <b>Yu B. Zhu</b></p>
+              <p class="ve"><em>Annals of Applied Statistics</em> 10(3), 2016</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.1214/16-aoas906" target="_blank" rel="noopener">DOI ↗</a></div>
+            </div>
+          </article>
+          <article class="pub">
+            <span class="dt">2012</span>
+            <div>
+              <span class="micro">Statistics</span>
+              <h3>Correlation pursuit: forward stepwise variable selection for index models</h3>
+              <p class="au">W. Zhong, T. Zhang, <b>Y. Zhu</b>, J. S. Liu</p>
+              <p class="ve"><em>Journal of the Royal Statistical Society: Series B</em> 74(5), 849–870, 2012</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.1111/j.1467-9868.2011.01026.x" target="_blank" rel="noopener">DOI ↗</a></div>
+            </div>
+          </article>
+          <article class="pub">
+            <span class="dt">2012</span>
+            <div>
+              <span class="micro">Bioinformatics</span>
+              <h3>Using Poisson mixed-effects model to quantify transcript-level gene expression in RNA-Seq</h3>
+              <p class="au">M. Hu, <b>Y. Zhu</b>, J. M. G. Taylor, J. S. Liu, Z. S. Qin</p>
+              <p class="ve"><em>Bioinformatics</em> 28(1), 63–68, 2012</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.1093/bioinformatics/btr616" target="_blank" rel="noopener">DOI ↗</a></div>
+            </div>
+          </article>
+          <article class="pub">
+            <span class="dt">2012</span>
+            <div>
+              <span class="micro">Bioinformatics</span>
+              <h3>Systematic comparison of RNA-Seq normalization methods using measurement error models</h3>
+              <p class="au">Z. Sun, <b>Y. Zhu</b></p>
+              <p class="ve"><em>Bioinformatics</em> 28(20), 2584–2591, 2012</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.1093/bioinformatics/bts497" target="_blank" rel="noopener">DOI ↗</a></div>
+            </div>
+          </article>
+          <article class="pub">
+            <span class="dt">2012</span>
+            <div>
+              <span class="micro">Statistics</span>
+              <h3>A Lasso-type approach for estimation and variable selection in single index models</h3>
+              <p class="au">P. Zeng, T. He, <b>Y. Zhu</b></p>
+              <p class="ve"><em>Journal of Computational and Graphical Statistics</em> 21(1), 92–109, 2012</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.1198/jcgs.2011.09156" target="_blank" rel="noopener">DOI ↗</a></div>
+            </div>
+          </article>
+          <article class="pub">
+            <span class="dt">2010</span>
+            <div>
+              <span class="micro">Statistics</span>
+              <h3>Bayesian density regression with logistic Gaussian process and subspace projection</h3>
+              <p class="au">S. T. Tokdar, <b>Y. Zhu</b>, J. K. Ghosh</p>
+              <p class="ve"><em>Bayesian Analysis</em> 5(2), 319–344, 2010</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.1214/10-ba605" target="_blank" rel="noopener">DOI ↗</a></div>
+            </div>
+          </article>
+          <article class="pub">
+            <span class="dt">2010</span>
+            <div>
+              <span class="micro">Statistics</span>
+              <h3>An integral transform method for estimating the central mean and central subspaces</h3>
+              <p class="au">P. Zeng, <b>Y. Zhu</b></p>
+              <p class="ve"><em>Journal of Multivariate Analysis</em> 101(2), 271–290, 2010</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.1016/j.jmva.2009.08.004" target="_blank" rel="noopener">DOI ↗</a></div>
+            </div>
+          </article>
+          <article class="pub">
+            <span class="dt">2009</span>
+            <div>
+              <span class="micro">Statistics</span>
+              <h3>A functional EM algorithm for mixing density estimation via nonparametric penalized likelihood maximization</h3>
+              <p class="au">L. Liu, M. A. Levine, <b>Y. Zhu</b></p>
+              <p class="ve"><em>Journal of Computational and Graphical Statistics</em> 18(2), 481–504, 2009</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.1198/jcgs.2009.07111" target="_blank" rel="noopener">DOI ↗</a></div>
+            </div>
+          </article>
+          <article class="pub">
+            <span class="dt">2007</span>
+            <div>
+              <span class="micro">Statistics</span>
+              <h3>Optimal compound orthogonal arrays and single arrays for robust parameter design experiments</h3>
+              <p class="au"><b>Y. Zhu</b>, P. Zeng, K. Jennings</p>
+              <p class="ve"><em>Technometrics</em> 49(4), 440–453, 2007</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.1198/004017007000000029" target="_blank" rel="noopener">DOI ↗</a></div>
+            </div>
+          </article>
+          <article class="pub">
+            <span class="dt">2006</span>
+            <div>
+              <span class="micro">Statistics</span>
+              <h3>Fourier methods for estimating the central subspace and the central mean subspace in regression</h3>
+              <p class="au"><b>Y. Zhu</b>, P. Zeng</p>
+              <p class="ve"><em>Journal of the American Statistical Association</em> 101, 1638–1651, 2006</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.1198/016214506000000140" target="_blank" rel="noopener">DOI ↗</a></div>
+            </div>
+          </article>
+          <article class="pub">
+            <span class="dt">2005</span>
+            <div>
+              <span class="micro">Bioinformatics</span>
+              <h3>RSIR: regularized sliced inverse regression for motif discovery</h3>
+              <p class="au">W. Zhong, P. Zeng, P. Ma, J. S. Liu, <b>Y. Zhu</b></p>
+              <p class="ve"><em>Bioinformatics</em> 21(22), 4169–4175, 2005</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.1093/bioinformatics/bti680" target="_blank" rel="noopener">DOI ↗</a></div>
+            </div>
+          </article>
+          <article class="pub">
+            <span class="dt">2005</span>
+            <div>
+              <span class="micro">Statistics &amp; ML</span>
+              <h3>Privacy-preserving clustering with distributed EM mixture modeling</h3>
+              <p class="au">X. Lin, C. Clifton, <b>M. Zhu</b></p>
+              <p class="ve"><em>Knowledge and Information Systems</em> 8(1), 68–81, 2005</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.1007/s10115-004-0148-7" target="_blank" rel="noopener">DOI ↗</a></div>
+            </div>
+          </article>
+          <article class="pub">
+            <span class="dt">2003</span>
+            <div>
+              <span class="micro">Statistics</span>
+              <h3>Structure function for aliasing patterns in 2<sup>l−n</sup> design with multiple groups of factors</h3>
+              <p class="au"><b>Y. Zhu</b></p>
+              <p class="ve"><em>Annals of Statistics</em> 31(3), 2003</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.1214/aos/1056562471" target="_blank" rel="noopener">DOI ↗</a></div>
+            </div>
+          </article>
+              </div>
+            </div>
+          </div>
+          <p class="pub-more">Full lists on Google Scholar: <a href="https://scholar.google.com/citations?user=0TbycfEAAAAJ" rel="noopener">Michael Yu Zhu ↗</a> · <a href="https://scholar.google.com/citations?user=bHAczcUAAAAJ" rel="noopener">Timothy Reese ↗</a> · <a href="https://scholar.google.com/citations?user=ebxlouQAAAAJ&amp;hl=en" rel="noopener">Yuyue Zhang ↗</a></p>
+        </div>
+      </div>
+
+      <div class="pub-group" id="news-projects">
+        <div class="gl"><h2 class="micro">Projects</h2><span class="cnt">1 project</span></div>
+        <div>
+          <article class="pub">
+            <span class="dt">2026</span>
+            <div>
+              <span class="micro">Body modeling · Code</span>
+              <h3>scan-to-smplx</h3>
+              <p class="ds">Photogrammetry-based 3D human capture: multi-view video to a clean mesh with COLMAP, optionally registered to SMPL-X.</p>
+              <p class="au"><b>Timothy Reese</b></p>
+              <p class="ve">Public · MIT</p>
+              <div class="chips"><a class="chip" href="https://github.com/treese41528/scan-to-smplx" rel="noopener">Code ↗</a></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- =====================================================================
+     CONTACT  (header 04 / Collaborate; no Home preview since v1.6)
+     ===================================================================== -->
+<section class="view" id="contact" aria-labelledby="contact-title">
+  <div class="phead">
+    <div class="wrap phead-in">
+      <div><div class="micro"><b>04</b> / Collaborate</div><h1 id="contact-title" tabindex="-1">Movement is the intervention. <em>Measurement reveals the mechanism.</em></h1></div>
+      <p class="lede">We welcome students and collaborators across computer science, statistics, biomechanics, bioinformatics, molecular biology, and health science.</p>
+    </div>
+  </div>
+  <section class="lt bg-light pad" id="contact-email" aria-label="Email">
+    <div class="wrap">
+      <div class="kv">
+        <div><div><h3>Michael Yu Zhu</h3><p>Professor of Statistics · MATH 238</p></div><div class="em"><a href="mailto:yuzhu@purdue.edu">yuzhu@purdue.edu</a></div></div>
+        <div><div><h3>Timothy Reese</h3><p>Assistant Professor of Practice · MATH 210</p></div><div class="em"><a href="mailto:reese18@purdue.edu">reese18@purdue.edu</a></div></div>
+        <div><div><h3>Yuyue Zhang</h3><p>Lab Manager</p></div><div class="em"><a href="mailto:zhan6013@purdue.edu">zhan6013@purdue.edu</a></div></div>
+        <div class="addr"><p>Department of Statistics, Purdue University<br>150&nbsp;N.&nbsp;University&nbsp;Street, West&nbsp;Lafayette,&nbsp;IN&nbsp;47907</p></div>
+      </div>
+    </div>
+  </section>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="logo" href="#home"><svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="27" cy="9.5" r="3.6" fill="#168d84"/><path class="arm" d="M8 22 C16 16 30 15 41 19" fill="none" stroke="#14272c" stroke-width="2.8" stroke-linecap="round"/><path d="M25 17 C21 25 27 30 23 38 M23 38 L14 44 M24 33 C29 36 33 39 36 44" fill="none" stroke="#14272c" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Human Motion &amp; Molecular Health Lab</b><small>Department of Statistics · Purdue University</small></span></a>
+        <!-- CONFIRM WITH PI: lab name and affiliation wording -->
+        <p>We are part of the Department of Statistics at Purdue University.</p>
+      </div>
+      <div>
+        <h2>Lab</h2>
+        <ul><li><a href="#research">Research</a></li><li><a href="#research-a">Body &amp; motion</a></li><li><a href="#research-b">Molecular response</a></li></ul>
+      </div>
+      <div>
+        <h2>People</h2>
+        <ul><li><a href="#people">People</a></li><li><a href="#news">News</a></li><li><a href="#contact">Contact</a></li></ul>
+      </div>
+      <div>
+        <h2>Elsewhere</h2>
+        <ul><li><a href="https://www.stat.purdue.edu" rel="noopener">Purdue Statistics ↗</a></li><li><a href="https://motrpac-data.org" rel="noopener">MoTrPAC Data Hub ↗</a></li></ul>
+      </div>
+    </div>
+    <div class="foot-base"><span>Department of Statistics, Purdue University, 150&nbsp;N.&nbsp;University&nbsp;Street, West&nbsp;Lafayette,&nbsp;IN&nbsp;47907</span><span>© 2026 Human Motion &amp; Molecular Health Lab</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var d=document,w=window;
+  var reduce=!!(w.matchMedia&&w.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var SITE='Human Motion & Molecular Health Lab';
+  var NAMES={home:'',research:'Research',people:'People',news:'News',contact:'Contact'};
+  var VIEWS=Object.keys(NAMES);
+  var views={};
+  VIEWS.forEach(function(v){views[v]=d.getElementById(v);});
+  var navLinks=[].slice.call(d.querySelectorAll('.site-nav a[data-view]'));
+  var tog=d.querySelector('.nav-toggle'),nav=d.getElementById('site-nav');
+  var current=null;
+
+  function setNavOpen(o){
+    if(!nav||!tog)return;
+    nav.classList.toggle('open',o);
+    tog.setAttribute('aria-expanded',o?'true':'false');
+    tog.setAttribute('aria-label',o?'Close navigation':'Open navigation');
+  }
+  if(tog&&nav){
+    tog.addEventListener('click',function(){setNavOpen(!nav.classList.contains('open'));});
+    d.addEventListener('keydown',function(e){if(e.key==='Escape'&&nav.classList.contains('open')){setNavOpen(false);tog.focus();}});
+  }
+
+  /* reveal: only content that starts below the fold waits for the reader; nothing above it is ever hidden */
+  var RV='.sec-head,.statement-layout>div,.lt-row>*,.flow,.rcard,.vision,.app-l,.qlist,.m-layout>div,.pc,.plist article,.more-row,.contact-layout>div:first-child,.scale,.loop-fig,.dir-head>*,.path,.vision.where,.wcard,.steps-list li,.cta-layout>div,.area-txt,.area-fig,.lead-split>*,.cells-head,.cells,.pcard,.recruit,.aud>div,.kv>div';
+  var io=null;
+  if(!reduce&&'IntersectionObserver' in w){
+    io=new IntersectionObserver(function(es){
+      var hit=es.filter(function(e){return e.isIntersecting;}).sort(function(a,b){return a.boundingClientRect.top-b.boundingClientRect.top;});
+      hit.forEach(function(e,i){e.target.style.setProperty('--i',Math.min(i,5));e.target.classList.add('in');io.unobserve(e.target);});
+    },{rootMargin:'0px 0px -6% 0px',threshold:0.06});
+  }
+  function prime(v){
+    if(!io||!v)return;
+    var H=w.innerHeight;
+    [].slice.call(v.querySelectorAll(RV)).forEach(function(el){
+      if(el.classList.contains('rv'))return;
+      var r=el.getBoundingClientRect();
+      if(r.bottom<=0||r.top<H*0.94)return;
+      el.classList.add('rv');io.observe(el);
+    });
+  }
+  var hdr=d.querySelector('.top'),hdrOn=false;
+  function hdrState(){var on=w.scrollY>4;if(on!==hdrOn){hdrOn=on;if(hdr)hdr.classList.toggle('scrolled',on);}}
+  w.addEventListener('scroll',hdrState,{passive:true});
+
+  var popping=false;
+  function focusEl(el){
+    if(!el)return;
+    if(!el.hasAttribute('tabindex'))el.setAttribute('tabindex','-1');
+    try{el.focus({preventScroll:true});}catch(e){}
+  }
+  function route(opts){
+    opts=opts||{};
+    var raw=(location.hash||'').replace(/^#/,'');
+    try{raw=decodeURIComponent(raw);}catch(e){}
+    var base=raw.split('-')[0];
+    var el=raw?d.getElementById(raw):null;
+    if(VIEWS.indexOf(base)<0||!views[base]){
+      /* a hash naming a non-view element (e.g. #main from the skip link) stays on the current view */
+      if(el&&current){
+        var h0=views[current].querySelector('h1');
+        if(raw==='main'&&h0){h0.scrollIntoView({block:'start'});focusEl(h0);}else{foldReveal(el);el.scrollIntoView({block:'start'});}
+        return;
+      }
+      base='home';raw='';el=null;
+    }
+    var changed=base!==current;
+    if(changed){
+      VIEWS.forEach(function(k){if(views[k])views[k].classList.toggle('on',k===base);});
+      d.documentElement.setAttribute('data-view',base);
+      navLinks.forEach(function(a){
+        if(a.getAttribute('data-view')===base)a.setAttribute('aria-current','page');
+        else a.removeAttribute('aria-current');
+      });
+      d.title=NAMES[base]?NAMES[base]+' · '+SITE:SITE;
+      current=base;
+    }
+    setNavOpen(false);
+    var target=(raw&&raw!==base)?el:null;
+    foldReveal(target);
+    if(opts.pop&&history.state&&typeof history.state.y==='number'){
+      w.scrollTo(0,history.state.y);
+    }else if(target){
+      target.scrollIntoView({block:'start',behavior:(changed||reduce)?'auto':'smooth'});
+    }else{
+      w.scrollTo(0,0);
+    }
+    if(!opts.initial&&(changed||target)){
+      var f=target?(target.matches('h1,h2,h3')?target:target.querySelector('h1,h2,h3')):views[base].querySelector('h1');
+      focusEl(f);
+    }
+    spy();
+    hdrState();
+    w.requestAnimationFrame(function(){prime(views[base]);});
+  }
+
+  /* research sub-nav scrollspy */
+  var subLinks=[].slice.call(d.querySelectorAll('.subnav a'));
+  var subSecs=subLinks.map(function(a){return d.getElementById(a.getAttribute('href').slice(1));});
+  var ticking=false;
+  function spy(){
+    ticking=false;
+    if(current!=='research'||!subLinks.length)return;
+    var line=(parseInt(getComputedStyle(d.documentElement).getPropertyValue('--hdr'),10)||72)+80,act=-1;
+    subSecs.forEach(function(s,i){if(s&&s.getBoundingClientRect().top<=line)act=i;});
+    /* the last section is short: at the bottom of the page it is the one being read */
+    if(subSecs.length&&w.innerHeight+w.scrollY>=d.documentElement.scrollHeight-2)act=subSecs.length-1;
+    subLinks.forEach(function(a,i){
+      var on=i===act;a.classList.toggle('on',on);
+      if(on)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current');
+    });
+  }
+  w.addEventListener('scroll',function(){if(!ticking){ticking=true;w.requestAnimationFrame(spy);}},{passive:true});
+
+  /* remember where the reader was, so Back returns there; same-hash clicks (hashchange does not fire) */
+  d.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#"]');
+    if(!a)return;
+    if(a.classList.contains('skip')){
+      e.preventDefault();
+      var h=current&&views[current].querySelector('h1');
+      if(h){h.scrollIntoView({block:'start'});focusEl(h);}
+      return;
+    }
+    try{history.replaceState({y:w.scrollY},'');}catch(err){}
+    if(a.getAttribute('href')===location.hash){e.preventDefault();route();}
+  });
+
+  /* loop arbiter: of the looping zones ([data-loop]: hero, Home 01 cards, Home 02 flow, Research A work cards) only the one with the most
+     visible pixels runs; every other zone gets .paused (CSS loops stop; the body viewers watch the class) */
+  var zones=[].slice.call(d.querySelectorAll('[data-loop]'));
+  if(zones.length&&'IntersectionObserver' in w){
+    var seen=new Map(),th=[];for(var k=0;k<=20;k++)th.push(k/20);
+    var zio=new IntersectionObserver(function(es){
+      es.forEach(function(e){seen.set(e.target,e.isIntersecting?e.intersectionRect.height:0);});
+      var best=null,bv=0;seen.forEach(function(v,el){if(v>bv){bv=v;best=el;}});
+      zones.forEach(function(z){z.classList.toggle('paused',z!==best);});
+    },{threshold:th});
+    zones.forEach(function(z){zio.observe(z);});
+  }
+
+  /* copy buttons */
+  function flash(btn){var o=btn.textContent;btn.textContent='Copied';btn.classList.add('ok');setTimeout(function(){btn.textContent=o;btn.classList.remove('ok');},1600);}
+  function fallback(txt,btn){
+    var ta=d.createElement('textarea');ta.value=txt;ta.setAttribute('readonly','');
+    ta.style.position='fixed';ta.style.top='0';ta.style.opacity='0';d.body.appendChild(ta);ta.select();
+    try{if(d.execCommand('copy'))flash(btn);}catch(e){}
+    d.body.removeChild(ta);
+  }
+  [].slice.call(d.querySelectorAll('[data-copy]')).forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var src=d.getElementById(btn.getAttribute('data-copy'));if(!src)return;
+      var txt=src.textContent.trim();
+      if(navigator.clipboard&&w.isSecureContext){navigator.clipboard.writeText(txt).then(function(){flash(btn);},function(){fallback(txt,btn);});}
+      else fallback(txt,btn);
+    });
+  });
+
+  /* publications fold (v1.4): CSS keeps the panel shut under html.js until .is-open. The first open lets the rows rise in
+     (.rise, about 1 s), later opens only unfold; a close sets inert once the rows have settled, so shut rows are not tabbable.
+     foldReveal() opens it at once (no motion) when the router targets something inside it. State is not stored. */
+  var fold=d.querySelector('.pubfold'),fBtn,fPan,fIn,fWord,fFirst=true,fRise=0,fShut=0;
+  function foldInert(){clearTimeout(fShut);if(fold&&!fold.classList.contains('is-open'))fIn.setAttribute('inert','');}
+  function foldSet(open,instant){
+    if(!fold)return;
+    var now=instant||reduce;
+    clearTimeout(fShut);
+    if(now)fold.classList.add('pubfold-now');
+    if(open){
+      fIn.removeAttribute('inert');
+      if(fFirst&&!now){fold.classList.add('rise');fRise=setTimeout(function(){fold.classList.remove('rise');},1200);}
+      fFirst=false;
+    }
+    fold.classList.toggle('is-open',open);
+    fBtn.setAttribute('aria-expanded',open?'true':'false');
+    fWord.textContent=open?'Hide':'Show';
+    if(now){void fPan.offsetHeight;fold.classList.remove('pubfold-now');}
+    if(!open){if(now)foldInert();else fShut=setTimeout(foldInert,700);}
+  }
+  function foldReveal(t){if(fold&&t&&fPan.contains(t)&&!fold.classList.contains('is-open'))foldSet(true,true);}
+  if(fold){
+    fBtn=fold.querySelector('.pubfold-btn');fPan=d.getElementById('news-more');fIn=fPan&&fPan.querySelector('.pubfold-inner');fWord=fold.querySelector('.pubfold-w');
+    if(fBtn&&fIn&&fWord){
+      [].slice.call(fIn.children).forEach(function(el,i){el.style.setProperty('--fi',Math.min(i,8));});
+      fIn.setAttribute('inert','');fBtn.setAttribute('aria-expanded','false');fWord.textContent='Show';
+      fBtn.addEventListener('click',function(){foldSet(!fold.classList.contains('is-open'));});
+      fPan.addEventListener('transitionend',function(e){if(e.target===fPan&&e.propertyName==='grid-template-rows')foldInert();});
+    }else fold=null;
+  }
+
+  try{if('scrollRestoration' in history)history.scrollRestoration='manual';}catch(e){}
+  w.addEventListener('popstate',function(){popping=true;});
+  w.addEventListener('hashchange',function(){var p=popping;popping=false;route({pop:p});});
+  route({initial:true});
+  /* the browser's own fragment scroll runs after load; route again so the view starts where it should (focus stays with the page, not the content) */
+  w.addEventListener('load',function(){w.requestAnimationFrame(function(){setTimeout(function(){current=null;route({initial:true});},0);});});
+})();
+</script>
+<script type="module">
+/* Body viewers: the hero (female body, pack motion-src), the Home 01 / A card and the Research A work card (male body, pack motion-src-m; see BODY).
+   Each plays its skinned motion pack (format: shared/MOTION_FORMAT.md, v2) from one decoded copy per pack; each view has its own
+   canvas, renderer, camera and skeleton.
+   Skinning is linear blend skinning on the CPU (bones posed by slerp, then sum of w * boneWorld * (rest - restJoint)) into one
+   position buffer that the flat-shaded surface and the unique-edge wireframe share, the same picture as the first version.
+   Pack bytes: from the inline text/plain blocks with ids "motion-data" / "motion-data-m" (base64; the single-file dist and the
+   artifact, written by tools/build.py) or else fetched from the preload links (source served over http).
+   Any failure (no WebGL2, no pack, unexpected pack) leaves the SVG poses in place. */
+import * as THREE from 'three';
+const {WebGLRenderer,Scene,PerspectiveCamera,BufferGeometry,BufferAttribute,DynamicDrawUsage,Bone,Object3D,Mesh,LineSegments,
+  MeshLambertMaterial,LineBasicMaterial,HemisphereLight,DirectionalLight,Vector3,Quaternion}=THREE;
+
+const d=document,w=window,D2R=Math.PI/180;
+/* which body each view plays (one-line swap): '' = motion-src / motion-data (female pack), '-m' = motion-src-m / motion-data-m (male pack) */
+const BODY={hero:'',card:'-m'};
+const srcOf=k=>d.getElementById('motion-src'+k),inlOf=k=>d.getElementById('motion-data'+k);
+const mq=w.matchMedia?w.matchMedia('(prefers-reduced-motion: reduce)'):null;
+const reduced=()=>!!(mq&&mq.matches);
+const GLOPT={alpha:true,antialias:true,premultipliedAlpha:true,powerPreference:'low-power'};
+
+async function packBytes(k){
+  const inl=inlOf(k),src=srcOf(k);
+  if(inl){
+    const b=atob(inl.textContent.replace(/\s+/g,'')),u=new Uint8Array(b.length);
+    for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
+    return u.buffer;
+  }
+  if(!src)throw new Error('motion pack: no source '+k);
+  const r=await fetch(src.href);
+  if(!r.ok)throw new Error('motion pack: HTTP '+r.status);
+  return r.arrayBuffer();
+}
+function parsePack(buf){
+  const hl=new DataView(buf).getUint32(0,true),pad=n=>(n+3)&~3;
+  const h=JSON.parse(new TextDecoder().decode(new Uint8Array(buf,4,hl)));
+  if(h.format!=='hmmh-motion-2')throw new Error('motion pack: format '+h.format);
+  const V=h.vertexCount,T=h.faceCount,F=h.frames,J=h.jointCount;
+  if(!(J>0)||h.parents.length!==J||h.restJoints.length!==J)throw new Error('motion pack: skeleton');
+  let o=4+hl;
+  if(buf.byteLength<o+pad(V*6)+pad(T*6)+V*8+F*J*8+pad(F*6))throw new Error('motion pack: short file');
+  const rq=new Uint16Array(buf,o,V*3);o+=pad(V*6);
+  const faces=new Uint16Array(buf.slice(o,o+T*6));o+=pad(T*6);
+  const si=new Uint8Array(buf,o,V*4);o+=V*4;
+  const sw=new Uint8Array(buf,o,V*4);o+=V*4;
+  const rq4=new Int16Array(buf,o,F*J*4);o+=F*J*8;
+  const tq=new Int16Array(buf,o,F*3);
+  const rest=new Float32Array(V*3),a=h.restOffset,s=h.restScale;
+  for(let i=0;i<V*3;i+=3){rest[i]=a[0]+rq[i]*s[0];rest[i+1]=a[1]+rq[i+1]*s[1];rest[i+2]=a[2]+rq[i+2]*s[2];}
+  const skinIndex=Uint16Array.from(si),skinWeight=new Float32Array(V*4);
+  for(let v=0;v<V;v++){const k=v*4,t=sw[k]+sw[k+1]+sw[k+2]+sw[k+3]||1;for(let j=0;j<4;j++)skinWeight[k+j]=sw[k+j]/t;}
+  const Q=new Float32Array(F*J*4);
+  for(let i=0;i<F*J*4;i+=4){const x=rq4[i]/32767,y=rq4[i+1]/32767,z=rq4[i+2]/32767,q=rq4[i+3]/32767,n=Math.hypot(x,y,z,q)||1;Q[i]=x/n;Q[i+1]=y/n;Q[i+2]=z/n;Q[i+3]=q/n;}
+  const TR=new Float32Array(F*3);for(let i=0;i<F*3;i++)TR[i]=tq[i]/1000;
+  return {h,V,F,J,rest,faces,skinIndex,skinWeight,Q,TR,RJ:h.restJoints,par:h.parents};
+}
+
+/* skeleton helpers: bones in the header's parents order, posed by slerp between the two pack frames around time t */
+const qa=new Quaternion(),qb=new Quaternion();
+function rig(pk){
+  const bones=pk.par.map(()=>new Bone());
+  bones.forEach((b,j)=>{const p=pk.par[j],r=pk.RJ[j];if(p<0)b.position.set(r[0],r[1],r[2]);else{const q=pk.RJ[p];b.position.set(r[0]-q[0],r[1]-q[1],r[2]-q[2]);bones[p].add(b);}});
+  return bones;
+}
+function frameAt(pk,t){const fps=pk.h.fps||30,F=pk.F,x=t*fps;
+  if(pk.h.loop==='cycle'){const m=((x%F)+F)%F,i0=Math.floor(m);return [i0,(i0+1)%F,m-i0];}
+  const L=F-1,per=2*L,m=((x%per)+per)%per,p=m<=L?m:per-m,i0=Math.min(L-1,Math.floor(p));return [i0,i0+1,p-i0];}
+function pose(pk,bones,t){
+  const [i0,i1,f]=frameAt(pk,t),J=pk.J,Q=pk.Q,TR=pk.TR,r=pk.RJ[0];
+  for(let j=0;j<J;j++){qa.fromArray(Q,(i0*J+j)*4);qb.fromArray(Q,(i1*J+j)*4);bones[j].quaternion.slerpQuaternions(qa,qb,f);}
+  bones[0].position.set(r[0]+TR[i0*3]+(TR[i1*3]-TR[i0*3])*f,r[1]+TR[i0*3+1]+(TR[i1*3+1]-TR[i0*3+1])*f,r[2]+TR[i0*3+2]+(TR[i1*3+2]-TR[i0*3+2])*f);
+}
+/* linear blend skinning on the CPU: out = sum_k w_k * boneWorld_j * (rest - restJoint_j); the rest pose has identity rotations */
+function skinInto(pk,bones,holder,out,step){
+  holder.updateMatrixWorld(true);
+  const {V,J,rest,skinIndex,skinWeight,RJ}=pk,M=[];
+  for(let j=0;j<J;j++)M[j]=bones[j].matrixWorld.elements;
+  for(let v=0,n=0;v<V;v+=step,n+=3){
+    let x=0,y=0,z=0;const px=rest[v*3],py=rest[v*3+1],pz=rest[v*3+2];
+    for(let k=0;k<4;k++){const wt=skinWeight[v*4+k];if(!wt)continue;const j=skinIndex[v*4+k],e=M[j],r=RJ[j],lx=px-r[0],ly=py-r[1],lz=pz-r[2];
+      x+=wt*(e[0]*lx+e[4]*ly+e[8]*lz+e[12]);y+=wt*(e[1]*lx+e[5]*ly+e[9]*lz+e[13]);z+=wt*(e[2]*lx+e[6]*ly+e[10]*lz+e[14]);}
+    out[n]=x;out[n+1]=y;out[n+2]=z;
+  }
+}
+function uniqueEdges(faces,V){
+  const seen=new Set(),out=[];
+  const add=(a,b)=>{const k=a<b?a*V+b:b*V+a;if(!seen.has(k)){seen.add(k);out.push(a,b);}};
+  for(let i=0;i<faces.length;i+=3){add(faces[i],faces[i+1]);add(faces[i+1],faces[i+2]);add(faces[i+2],faces[i]);}
+  return new Uint16Array(out);
+}
+/* once per pack: unique edges, and skinned sample points of the whole body over the sequence (camera fit) */
+function precompute(pk){
+  const holder=new Object3D(),bones=rig(pk),fps=pk.h.fps||30,F=pk.F,step=6,tmp=new Float32Array(Math.ceil(pk.V/step)*3);holder.add(bones[0]);
+  const body=[],every=Math.max(1,Math.round(F/36));
+  for(let f=0;f<F;f+=every){pose(pk,bones,f/fps);skinInto(pk,bones,holder,tmp,step);for(let i=0;i<tmp.length;i+=3)body.push(new Vector3(tmp[i],tmp[i+1],tmp[i+2]));}
+  pk.samples=body;pk.edges=uniqueEdges(pk.faces,pk.V);
+}
+
+function makeView(o,pk,gl){
+  const {h,F}=pk,fps=h.fps||30;
+  const renderer=new WebGLRenderer({canvas:o.cv,context:gl,antialias:true,alpha:true});
+  renderer.setClearAlpha(0);
+  const scene=new Scene(),cam=new PerspectiveCamera(o.fov,1,0.05,60);
+  const holder=new Object3D(),bones=rig(pk);holder.add(bones[0]);
+  const pos=new Float32Array(pk.V*3),pa=new BufferAttribute(pos,3);pa.setUsage(DynamicDrawUsage);
+  const gBody=new BufferGeometry();gBody.setAttribute('position',pa);gBody.setIndex(new BufferAttribute(pk.faces,1));
+  const gWire=new BufferGeometry();gWire.setAttribute('position',pa);gWire.setIndex(new BufferAttribute(pk.edges,1));
+  const body=new Mesh(gBody,new MeshLambertMaterial({color:'#e8eeeb',flatShading:true,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1}));
+  const wire=new LineSegments(gWire,new LineBasicMaterial({color:'#168d84',transparent:true,opacity:(w.devicePixelRatio||1)>=1.5?o.wire[1]:o.wire[0],depthWrite:false}));
+  body.frustumCulled=wire.frustumCulled=false;
+  scene.add(body,wire);
+  const sun=new DirectionalLight('#ffffff',1.5);
+  scene.add(new HemisphereLight('#ffffff','#cad6d2',2.1),sun);
+
+  /* floor circle(s) at groundY around the pelvis; markers on the front arc, which always faces the camera */
+  const b=h.bounds,g0=h.groundY,cx=(h.centre&&h.centre[0])||0,cz=(h.centre&&h.centre[1])||0;
+  const top=b.max[1],tall=top-g0,R=o.r*tall;
+  const onCircle=(a,r)=>new Vector3(cx+r*Math.sin(a),g0,cz+r*Math.cos(a));
+  const circle=r=>{const c=[];for(let i=0;i<96;i++)c.push(onCircle(i/96*2*Math.PI,r));return c;};
+  const pts=[new Vector3(cx,top+o.air*tall,cz)].concat(pk.samples);
+  const outer=circle(R*Math.max(1,...o.rings.map(x=>x[1])));
+  const dots=o.marks?o.marks.els:[];
+  let dist=3*tall,ty=g0+.5*tall;
+  const tmp=new Vector3();
+  function place(az){
+    const ca=Math.cos(az),sa=Math.sin(az);
+    cam.position.set(cx+dist*Math.cos(o.el)*sa,ty+dist*Math.sin(o.el),cz+dist*Math.cos(o.el)*ca);
+    cam.lookAt(cx,ty,cz);cam.updateMatrixWorld();
+    sun.position.set(cx-2.36*ca+1.46*sa,2.8,cz+2.36*sa+1.46*ca);   /* key light keeps its place relative to the camera: upper left, in front */
+  }
+  function extent(list,az,e){place(az);for(const p of list){tmp.copy(p).project(cam);e[0]=Math.min(e[0],tmp.x);e[1]=Math.max(e[1],tmp.x);e[2]=Math.min(e[2],tmp.y);e[3]=Math.max(e[3],tmp.y);}return e;}
+  function setBox(el,e){if(!el)return;el.style.left=((e[0]+1)*50).toFixed(3)+'%';el.style.width=((e[1]-e[0])*50).toFixed(3)+'%';el.style.top=((1-e[3])*50).toFixed(3)+'%';el.style.height=((e[3]-e[2])*50).toFixed(3)+'%';}
+  function fit(){
+    const W=o.stage.clientWidth,H=o.stage.clientHeight;if(!W||!H)return false;
+    renderer.setPixelRatio(Math.min(w.devicePixelRatio||1,2));renderer.setSize(W,H,false);
+    cam.aspect=W/H;cam.updateProjectionMatrix();
+    const bd=o.bands(H),yT=1-2*bd.top/H,yB=-1+2*bd.bot/H,xM=1-2*bd.side/W,all=pts.concat(outer);
+    for(let k=0;k<10;k++){
+      const e=[1e9,-1e9,1e9,-1e9],eb=[1e9,-1e9,1e9,-1e9];
+      for(const az of o.azFit){extent(all,az,e);extent(pk.samples,az,eb);}
+      const half=dist*Math.tan(cam.fov*D2R/2);
+      ty-=((yT+yB)/2-(e[2]+e[3])/2)*half;
+      /* everything inside the band, and the body itself no taller than o.fill of the band */
+      dist*=Math.max((e[3]-e[2])/(yT-yB),Math.max(-e[0],e[1])/xM,(eb[3]-eb[2])/(o.fill*(yT-yB)));
+    }
+    {const eb=[1e9,-1e9,1e9,-1e9];for(const az of o.azFit)extent(pk.samples,az,eb);o.stage.dataset.bodyFill=((eb[3]-eb[2])/(yT-yB)).toFixed(3);}
+    /* a circle's image does not change as the camera turns about its axis: place the CSS ellipses and markers once */
+    o.rings.forEach(([el,m])=>setBox(el,extent(circle(R*m),o.az0,[1e9,-1e9,1e9,-1e9])));
+    if(o.marks)o.marks.deg.forEach((t,i)=>{if(!dots[i])return;place(o.az0);tmp.copy(onCircle(o.az0+t*D2R,R)).project(cam);dots[i].style.left=((tmp.x+1)*50).toFixed(3)+'%';dots[i].style.top=((1-tmp.y)*50).toFixed(3)+'%';});
+    return true;
+  }
+
+  /* playback and keyframe pulses */
+  const KF=(h.keyframes&&h.keyframes.length===4?h.keyframes:[0,F/4,F/2,3*F/4]).map(k=>Math.min(F-1,Math.max(0,Math.round(k))));
+  const per=h.loop==='cycle'?F:2*(F-1);
+  const passed=(k,xa,xb)=>(h.loop==='cycle'?[k]:[k,per-k]).some(s=>s+Math.floor((xb-s)/per)*per>xa);
+  const last=[0,-1e9,-1e9,-1e9],gap=.9;
+  function pulse(t){
+    dots.forEach((el,i)=>{
+      const a=t-last[i];let p=0,ro=0,rs=.4;
+      if(a>=0){
+        p=a<.15*gap?a/(.15*gap):a<.9*gap?1:a<1.8*gap?1-(a-.9*gap)/(.9*gap):0;
+        if(a<.25*gap){ro=a/(.25*gap);rs=.4+.6*ro;}else if(a<1.6*gap){const u=(a-.25*gap)/(1.35*gap);ro=1-u;rs=1+.8*u;}
+      }
+      el.style.setProperty('--p',p.toFixed(3));el.style.setProperty('--ro',(.6*ro).toFixed(3));el.style.setProperty('--rs',rs.toFixed(3));
+    });
+  }
+  function setTime(t){pose(pk,bones,t);skinInto(pk,bones,holder,pos,1);pa.needsUpdate=true;if(o.onTime)o.onTime(t);}
+  function draw(az){place(az);renderer.render(scene,cam);}
+
+  let tPlay=0,xPrev=0,raf=0,tPrev=0,onScreen=true,alive=true,sized=false,tTurn=0,rate=1;
+  const azAt=t=>o.az0+o.yaw*Math.sin(2*Math.PI*t/o.yawT);
+  function still(){   /* reduced motion: keyframes[1], no camera motion; that keyframe's marker lit */
+    setTime(KF[1]/fps);draw(o.az0);
+    dots.forEach((el,i)=>{const on=i===1?1:0;el.style.setProperty('--p',on);el.style.setProperty('--ro',on);el.style.setProperty('--rs',1);});
+  }
+  function tick(now){
+    raf=w.requestAnimationFrame(tick);
+    const dt=Math.min(.1,Math.max(0,(now-tPrev)/1000));tPrev=now;
+    /* o.turn: this view and a partner (card B) take turns, so one thing moves at a time; the body eases to a stop and back */
+    if(o.turn){tTurn+=dt;const mine=(tTurn%o.turn.period)<o.turn.period/2;rate+=((mine?1:0)-rate)*Math.min(1,dt/.6);if(o.turn.el)o.turn.el.classList.toggle('resting',mine);}
+    tPlay+=dt*rate;
+    const x=tPlay*fps;
+    if(dots.length)KF.forEach((k,i)=>{if(passed(k,xPrev,x))last[i]=tPlay;});xPrev=x;
+    setTime(tPlay);draw(azAt(tPlay));pulse(tPlay);
+  }
+  function run(){
+    const go=alive&&sized&&onScreen&&!d.hidden&&!reduced()&&!(o.zone&&o.zone.classList.contains('paused'));
+    if(go&&!raf){tPrev=w.performance.now();raf=w.requestAnimationFrame(tick);}
+    else if(!go&&raf){w.cancelAnimationFrame(raf);raf=0;}
+  }
+  function redraw(){if(reduced())still();else{setTime(tPlay);draw(azAt(tPlay));pulse(tPlay);}}
+  const on=v=>{o.stage.classList.toggle('gl-on',v);o.fig.classList.toggle('gl-on',v);};
+
+  if(o.fn){try{const fp=fnPanel(pk,o.fn);if(fp)o.onTime=t=>fp.setTime(t);}catch(e){o.fn.classList.remove('fn-on');}}
+  sized=fit();
+  if(sized)redraw();
+  on(true);
+  if('ResizeObserver' in w)new ResizeObserver(()=>{sized=fit();if(sized)redraw();run();}).observe(o.stage);
+  else w.addEventListener('resize',()=>{sized=fit();if(sized)redraw();});
+  /* on screen = this stage, or the linked functional panel (card B runs on this view's clock, also when A is scrolled away) */
+  if('IntersectionObserver' in w){const vis=new Map(),io=new IntersectionObserver(es=>{es.forEach(e=>vis.set(e.target,e.isIntersecting));onScreen=[...vis.values()].some(Boolean);run();});io.observe(o.stage);if(o.fn)io.observe(o.fn);}
+  d.addEventListener('visibilitychange',run);
+  /* the page's loop arbiter pauses every looping zone but the most visible one */
+  if(o.zone&&'MutationObserver' in w)new MutationObserver(run).observe(o.zone,{attributes:true,attributeFilter:['class']});
+  if(mq){const onMq=()=>{run();if(reduced()&&sized)still();};if(mq.addEventListener)mq.addEventListener('change',onMq);else if(mq.addListener)mq.addListener(onMq);}
+  o.cv.addEventListener('webglcontextlost',()=>{alive=false;run();on(false);});
+  run();
+}
+
+/* Home 01 / B: the functions the body produces, from the SAME pack and the SAME clock as card A.
+   Per frame (forward kinematics of the pack): wrist height above groundY (mean of both wrists), knee flexion (mean of both knees,
+   180 - hip-knee-ankle angle), pelvis yaw (hip line, relative to the form's mean facing over its recorded frames; eased through the transitions), movement intensity = translational
+   kinetic energy of 14 joint-based segments (segment masses after de Leva 1996; model-estimated), 0.25 s moving average. Pale band = h.bands
+   (across-performer mean +- 1 SD, real recordings), drawn only where it exists. Curves draw in once; then only cursor + dots move. */
+function fnSeries(pk){
+  const {h,F}=pk,fps=h.fps||30,holder=new Object3D(),bones=rig(pk);holder.add(bones[0]);
+  const P=new Float32Array(F*22*3);
+  for(let f=0;f<F;f++){pose(pk,bones,f/fps);holder.updateMatrixWorld(true);for(let j=0;j<22;j++){const e=bones[j].matrixWorld.elements;P[(f*22+j)*3]=e[12];P[(f*22+j)*3+1]=e[13];P[(f*22+j)*3+2]=e[14];}}
+  const g=(f,j,k)=>P[(f*22+j)*3+k],wh=new Float32Array(F),kf=new Float32Array(F),yw=new Float32Array(F),ke=new Float32Array(F);
+  const flex=(f,a,b,c)=>{let ux=g(f,a,0)-g(f,b,0),uy=g(f,a,1)-g(f,b,1),uz=g(f,a,2)-g(f,b,2),vx=g(f,c,0)-g(f,b,0),vy=g(f,c,1)-g(f,b,1),vz=g(f,c,2)-g(f,b,2);
+    const cs=(ux*vx+uy*vy+uz*vz)/Math.hypot(ux,uy,uz)/Math.hypot(vx,vy,vz);return 180-Math.acos(Math.max(-1,Math.min(1,cs)))/D2R;};
+  const raw=new Float32Array(F);
+  for(let f=0;f<F;f++){wh[f]=(g(f,20,1)+g(f,21,1))/2-h.groundY;kf[f]=(flex(f,1,4,7)+flex(f,2,5,8))/2;raw[f]=Math.atan2(-(g(f,1,2)-g(f,2,2)),g(f,1,0)-g(f,2,0));}
+  /* yaw reference = each form's mean facing over its recorded frames (where the band exists); through the transitions the
+     reference eases from one form's mean to the next, so the curve stays continuous */
+  const bm=h.bands&&h.bands.series.pelvisYaw.mean,st=(h.bands&&h.bands.step)||3,rec=f=>!bm||(bm[Math.floor(f/st)]!=null&&bm[Math.ceil(f/st)]!=null),ref=new Float32Array(F).fill(NaN);
+  for(const s of h.segments){let cx=0,cy=0,n=0;for(let f=s.start;f<=s.end;f++)if(rec(f)){cx+=Math.cos(raw[f]);cy+=Math.sin(raw[f]);n++;}
+    if(!n)continue;const m=Math.atan2(cy,cx);for(let f=s.start;f<=s.end;f++)if(rec(f))ref[f]=m;}
+  const known=[];for(let f=0;f<F;f++)if(!isNaN(ref[f]))known.push(f);
+  if(known.length)for(let k=0;k<known.length;k++){const a=known[k],b=known[(k+1)%known.length],gap=((b-a)%F+F)%F;if(gap<=1)continue;
+    let dm=ref[b]-ref[a];dm=Math.atan2(Math.sin(dm),Math.cos(dm));for(let i=1;i<gap;i++){const u=i/gap,e=u*u*(3-2*u);ref[(a+i)%F]=ref[a]+dm*e;}}
+  for(let f=0;f<F;f++){const r0=isNaN(ref[f])?0:ref[f];let dd=raw[f]-r0;dd=Math.atan2(Math.sin(dd),Math.cos(dd));yw[f]=dd/D2R;}
+  /* segments: [joint a, joint b (or -1 = a alone), mass fraction]; COM at the midpoint */
+  const SEG=[[0,12,.497],[15,-1,.081],[16,18,.028],[17,19,.028],[18,20,.016],[19,21,.016],[20,-1,.006],[21,-1,.006],[1,4,.1],[2,5,.1],[4,7,.0465],[5,8,.0465],[7,10,.0145],[8,11,.0145]];
+  const mass=/female/i.test(h.body||'')?60:75,c=(f,a,b,k)=>b<0?g(f,a,k):(g(f,a,k)+g(f,b,k))/2;
+  const k0=new Float32Array(F);for(let f=0;f<F;f++){const p=(f+F-1)%F,n=(f+1)%F;let e=0;for(const [a,b,m] of SEG){let v2=0;for(let k=0;k<3;k++){const v=(c(n,a,b,k)-c(p,a,b,k))*fps/2;v2+=v*v;}e+=.5*m*mass*v2;}k0[f]=e;}
+  const hw=Math.round(.125*fps);for(let f=0;f<F;f++){let e=0;for(let i=-hw;i<=hw;i++)e+=k0[(f+i+F)%F];ke[f]=e/(2*hw+1);}   /* 0.25 s moving average */
+  return [{lab:'WRIST HEIGHT  m',y:wh,band:'wristHeight'},{lab:'KNEE FLEXION  °',y:kf,band:'kneeFlexion'},{lab:'PELVIS YAW  °',y:yw,band:'pelvisYaw'},{lab:'MOVEMENT INTENSITY  J, model-est., 0.25 s mean',y:ke,band:null}];
+}
+function fnPanel(pk,box){
+  const cv=box&&box.querySelector('canvas.fn');if(!cv||!pk.h.bands)return null;
+  const {h,F}=pk,B=h.bands,st=B.step||3,fps=h.fps||30,rows=fnSeries(pk),ctx=cv.getContext('2d');if(!ctx)return null;
+  const mono=(getComputedStyle(d.documentElement).getPropertyValue('--mono')||'ui-monospace,monospace').trim();
+  let W=0,H=0,dpr=1,prog=0,tNow=0,layer=null;
+  rows.forEach(r=>{let lo=Infinity,hi=-Infinity;for(let f=0;f<F;f++){lo=Math.min(lo,r.y[f]);hi=Math.max(hi,r.y[f]);}
+    const b=r.band&&B.series[r.band];if(b)b.mean.forEach((m,i)=>{if(m==null)return;lo=Math.min(lo,m-b.sd[i]);hi=Math.max(hi,m+b.sd[i]);});
+    const pad=(hi-lo)*.1||1;r.lo=lo-pad;r.hi=hi+pad;});
+  function geom(i){const top=i*H/4,ph=H/4;return {top,y0:top+15,y1:top+ph-4};}
+  const X=f=>f/(F-1)*W,Y=(r,gm,v)=>gm.y1-(v-r.lo)/(r.hi-r.lo)*(gm.y1-gm.y0);
+  function paint(){
+    if(!W)return;
+    layer=layer||d.createElement('canvas');layer.width=cv.width;layer.height=cv.height;
+    const c=layer.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
+    rows.forEach((r,i)=>{const gm=geom(i);
+      c.font='500 10px '+mono;c.fillStyle='#456267';c.textBaseline='top';c.fillText(r.lab,0,gm.top+1);
+      c.strokeStyle='#dbe3e0';c.lineWidth=1;c.beginPath();c.moveTo(0,gm.y1+.5);c.lineTo(W,gm.y1+.5);c.stroke();
+      c.save();c.beginPath();c.rect(0,0,prog*W,H);c.clip();
+      const b=r.band&&B.series[r.band];
+      if(b){c.fillStyle='rgba(22,141,132,.09)';let run=[];const flush=()=>{if(run.length>1){c.beginPath();run.forEach(([x,m,s],k)=>{k?c.lineTo(x,Y(r,gm,m+s)):c.moveTo(x,Y(r,gm,m+s));});
+          for(let k=run.length-1;k>=0;k--){const [x,m,s]=run[k];c.lineTo(x,Y(r,gm,m-s));}c.closePath();c.fill();}run=[];};
+        b.mean.forEach((m,k)=>{if(m==null){flush();return;}run.push([X(Math.min(F-1,k*st)),m,b.sd[k]]);});flush();}
+      c.strokeStyle='#168d84';c.lineWidth=1.25;c.lineJoin='round';c.beginPath();for(let f=0;f<F;f++){const x=X(f),y=Y(r,gm,r.y[f]);f?c.lineTo(x,y):c.moveTo(x,y);}c.stroke();
+      c.restore();});
+    draw();
+  }
+  function draw(){
+    if(!layer)return;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,cv.width,cv.height);ctx.drawImage(layer,0,0);
+    if(prog<1)return;
+    ctx.setTransform(dpr,0,0,dpr,0,0);const fr=((tNow*fps)%F+F)%F,i0=Math.floor(fr),i1=(i0+1)%F,a=fr-i0,x=fr/(F-1)*W;
+    ctx.strokeStyle='rgba(22,141,132,.55)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(Math.round(x)+.5,0);ctx.lineTo(Math.round(x)+.5,H);ctx.stroke();
+    ctx.fillStyle='#168d84';rows.forEach((r,i)=>{const gm=geom(i),v=r.y[i0]*(1-a)+r.y[i1]*a;ctx.beginPath();ctx.arc(x,Y(r,gm,v),2,0,2*Math.PI);ctx.fill();});
+  }
+  function size(){const r=cv.getBoundingClientRect();W=r.width;H=r.height;if(!W||!H)return;dpr=Math.min(w.devicePixelRatio||1,2);cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);paint();}
+  function reveal(){
+    const card=box.closest('.rcard,.wcard');
+    const go=()=>{if(reduced()){prog=1;paint();return;}const t0=w.performance.now();(function step(now){prog=Math.min(1,(now-t0)/1400);prog=prog*prog*(3-2*prog);paint();if(prog<1)w.requestAnimationFrame(step);})(t0);};
+    if(card&&card.classList.contains('rv')&&!card.classList.contains('in')&&'MutationObserver' in w){
+      const mo=new MutationObserver(()=>{if(card.classList.contains('in')){mo.disconnect();go();}});mo.observe(card,{attributes:true,attributeFilter:['class']});
+    }else go();
+  }
+  box.classList.add('fn-on');size();reveal();
+  if('ResizeObserver' in w)new ResizeObserver(size).observe(cv);
+  return {setTime(t){tNow=t;draw();}};
+}
+
+async function start(){
+  const views=[],AZ=30*D2R,YAW=12*D2R,azFit=[-12,-6,0,6,12].map(t=>AZ+t*D2R);
+  const hf=d.getElementById('hero-fig'),hs=hf&&hf.querySelector('.stage'),hc=d.getElementById('body3d');
+  if(hf&&hs&&hc)views.push({body:BODY.hero,fig:hf,stage:hs,cv:hc,zone:hf.closest('[data-loop]'),fov:24,az0:AZ,el:10*D2R,yaw:YAW,yawT:14,azFit,fill:.9,
+    r:.33,air:.03,wire:[.28,.35],rings:[[hs.querySelector('.orbit-back'),1],[hs.querySelector('.orbit-front'),1]],
+    marks:{els:[].slice.call(hs.querySelectorAll('.tdot')),deg:[-42,-13,13,42]},
+    bands:H=>{const tb=hs.querySelector('.stage-top'),bb=hs.querySelector('.stage-bottom');return {top:tb?tb.offsetTop+tb.offsetHeight+14:48,bot:bb?H-bb.offsetTop+16:80,side:28};}});
+  const mf=d.getElementById('home-body'),mc=mf&&mf.querySelector('canvas');
+  if(mf&&mc)views.push({body:BODY.card,fig:mf,stage:mf,cv:mc,zone:mf.closest('[data-loop]'),fov:22,az0:AZ,el:10*D2R,yaw:YAW,yawT:14,azFit,fill:.86,
+    r:.3,air:.03,wire:[.22,.3],rings:[[mf.querySelector('.o1'),1],[mf.querySelector('.o2'),1.4]],marks:null,fn:d.querySelector('#home .rvis-b'),
+    bands:()=>({top:16,bot:12,side:28})});
+  /* Research A work card (v2.0 template): the same male body and its own functional panel beside it */
+  const rf=d.getElementById('research-body'),rc=rf&&rf.querySelector('canvas');
+  if(rf&&rc)views.push({body:BODY.card,fig:rf,stage:rf,cv:rc,zone:rf.closest('[data-loop]'),fov:22,az0:AZ,el:10*D2R,yaw:YAW,yawT:14,azFit,fill:.86,
+    r:.3,air:.03,wire:[.22,.3],rings:[[rf.querySelector('.o1'),1],[rf.querySelector('.o2'),1.4]],marks:null,fn:d.querySelector('.wvis .rvis-b'),
+    bands:()=>({top:16,bot:12,side:28})});
+  if(!views.length)return;
+  const live=views.map(v=>({v,gl:v.cv.getContext('webgl2',GLOPT)})).filter(x=>x.gl&&(srcOf(x.v.body)||inlOf(x.v.body)));
+  if(!live.length)return;   /* no WebGL2 or no pack: the SVG poses stay */
+  /* one decoded copy per pack; a view whose pack fails keeps its SVG poses */
+  const packs={};
+  for(const k of new Set(live.map(x=>x.v.body)))packs[k]=packBytes(k).then(b=>{const pk=parsePack(b);precompute(pk);return pk;});
+  await Promise.all(live.map(async x=>{try{makeView(x.v,await packs[x.v.body],x.gl);}catch(e){x.v.stage.classList.remove('gl-on');x.v.fig.classList.remove('gl-on');}}));
+}
+start().catch(()=>{});
+</script>
+</body>
+</html>
